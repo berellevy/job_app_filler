@@ -8,7 +8,10 @@
   },
   "content_scripts": [
     {
-      "js": ["scripts/content.js"],
+      "js": [
+        "scripts/autodiscoverInputs.js",
+        "scripts/content.js"
+      ],
       "matches": [
         "https://*.wd1.myworkdayjobs.com/*"
       ]
