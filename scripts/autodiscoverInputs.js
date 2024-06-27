@@ -15,7 +15,8 @@ const get_answer = ({page, fieldName, type, }) => {
 
 
 const get_element = (parent, path) => {
-  return document.evaluate(path, parent, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+  const node = document.evaluate(path, parent, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+  return node
 }
 
 const get_elements = (parent, path) => {
@@ -27,28 +28,36 @@ const get_elements = (parent, path) => {
   return result
 }
 
+
+const getReactProps = (node) => {
+  for (key in node) {
+    if (key.startsWith("__reactProps")) {
+      return node[key]
+    }
+  }
+}
+
+
+
 const registerInput = (node) => {
   if (node.hasOwnProperty("jobAppFillerData")) {return}
-
+  // if (!getReactProps(node)) {return}
   const input = {
     node: node,
     type: "TextInput",
     get page() { return get_element(document, ".//h2").innerText },
-    get fieldName() { return get_element(node, ".//label").innerText },
+    get fieldName() { return get_element(this.node, ".//label").innerText },
     get path() { return { page: this.page, type: this.type, fieldName: this.fieldName, } },
-    get inputElement() {return get_element(node, ".//input")},
+    get inputElement() {return get_element(this.node, ".//input")},
     get currentValue() { return this.inputElement.value },
     get snapshot() { return { ...this.path, "answer": this.currentValue } },
     get answer() { return get_answer(this.path)},
     get isFilled() { return this.currentValue === this.answer },
+    get reactProps() { return getReactProps(this.inputElement ) },
     fill: function() {
+      console.dir(this.node);
       if (!this.isFilled) {
-        const inputElement = this.inputElement
-        // inputElement.value = this.answer
-        const keyPressEvent = new KeyboardEvent('keypress', { key: key, bubbles: true, cancelable: true });
-        inputElement.dispatchEvent(keyPressEvent);
-        console.log("fill");
-        // sendKeyPresses(inputElement, "hello")
+        
       }
     },
 
@@ -58,6 +67,4 @@ const registerInput = (node) => {
   button.innerHTML = "Fill"
   button.onclick = () => input.fill()
   node.appendChild(button)
-
-
 }
