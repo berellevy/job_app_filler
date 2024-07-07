@@ -1,4 +1,4 @@
-function injectScript(filePath) {
+function injectScript(filePath: string) {
   const script = document.createElement('script')
   script.src = chrome.runtime.getURL(filePath)
   script.type = 'module'

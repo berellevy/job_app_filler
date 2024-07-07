@@ -1,8 +1,5 @@
 import { RegisterTextInputs } from "../workday/textInput";
 
-
-
-
 const observer = new MutationObserver((_) => {
     RegisterTextInputs(document)
 })
