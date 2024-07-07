@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "Job App Filler",
+  "description": "Smart Autofill for Annoying Job Sites",
+  "version": "1.0",
+  "action": {
+    "default_icon": "logo.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "js": [
+        "contentScript.js"
+      ],
+      "matches": [
+        "https://*.wd1.myworkdayjobs.com/*"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "inject.js"
+      ],
+      "matches": [
+        "https://*.wd1.myworkdayjobs.com/*"
+      ]
+    }
+  ],
+  "permissions": [
+    "scripting",
+    "activeTab"
+  ]
+}
