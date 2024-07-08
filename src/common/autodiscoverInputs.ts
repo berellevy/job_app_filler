@@ -41,12 +41,6 @@
 //   const input = {
 //     node: node,
 //     type: "TextInput",
-//     get page() { return getElement(document, ".//h2").innerText },
-//     get fieldName() { return getElement(this.node, ".//label").innerText },
-//     get path() { return { page: this.page, type: this.type, fieldName: this.fieldName, } },
-//     get inputElement() {return getElement(this.node, ".//input")},
-//     get currentValue() { return this.inputElement.value },
-//     get snapshot() { return { ...this.path, "answer": this.currentValue } },
 //     get answer() { return get_answer(this.path)},
 //     get isFilled() { return this.currentValue === this.answer },
 //     get reactProps() { return getReactProps(this.inputElement ) },
