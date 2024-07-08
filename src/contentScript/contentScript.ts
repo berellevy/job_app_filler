@@ -1,3 +1,7 @@
+import { registerContentScriptEventHandler } from '../utils/storage'
+
+registerContentScriptEventHandler()
+
 function injectScript(filePath: string) {
   const script = document.createElement('script')
   script.src = chrome.runtime.getURL(filePath)
