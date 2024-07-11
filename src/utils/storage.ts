@@ -1,38 +1,5 @@
-import { FieldSnapshot } from '../workday/baseFormInput'
+import { FieldPath, FieldSnapshot } from '../workday/baseFormInput'
 
-
-const CUSTOM_EVENT_MESSAGE_NAME: string = 'JAFMessage'
-
-export type MessageType = 'SaveRequest' | 'SaveResponse'
-
-
-export const registerContentScriptEventHandler = () => {
-  document.addEventListener(CUSTOM_EVENT_MESSAGE_NAME, (e: CustomEvent) => {
-    contentScriptDispatch(e)
-  })
-}
-
-const contentScriptMethods: { [methodName: string]: ({}) => Promise<any> } = {}
-export const contentScriptDispatch = (e: CustomEvent) => {
-  const messageType = e.detail.messageType
-  contentScriptMethods[messageType](e.detail).then()
-}
-
-const sendEvent = (
-  target: Node,
-  messageType: MessageType,
-  from: string,
-  data: any
-) => {
-  const event = new CustomEvent(CUSTOM_EVENT_MESSAGE_NAME, {
-    detail: {
-      from,
-      data,
-      messageType,
-    },
-  })
-  target.dispatchEvent(event)
-}
 
 export interface AnswerData {
   [pageName: string]: {
@@ -45,19 +12,15 @@ export interface AnswerData {
 }
 
 export interface LocalStorage {
-  answers?: AnswerData
+  answers: AnswerData
 }
 
-export type SaveRequestDetail = {
-  from: string
-  data: FieldSnapshot
-  type: MessageType
-}
-export const saveRequest = (from: string, data: FieldSnapshot) => {
-  sendEvent(document, 'SaveRequest', from, data)
-}
-contentScriptMethods['SaveRequest'] = async (detail: SaveRequestDetail) => {
-  const { page, section, fieldType, fieldName, answer } = detail.data
+
+/**
+ * Checks for each level in the path and creates it if needed.
+ */
+export const saveAnswer = async (fieldSnapshot: FieldSnapshot) => {
+  const { page, section, fieldType, fieldName, answer } = fieldSnapshot
   const existingAnswers =
     (await chrome.storage.local.get(['answers'])).answers || {}
 
@@ -73,4 +36,32 @@ contentScriptMethods['SaveRequest'] = async (detail: SaveRequestDetail) => {
   existingAnswers[page][section][fieldType][fieldName] = answer
   const newStorage: LocalStorage = { answers: existingAnswers }
   await chrome.storage.local.set(newStorage)
+}
+
+
+export const getAnswers = async () => {
+  return await chrome.storage.local.get("answers")
+}
+
+
+
+/**
+ * If there is a full path match in answers storage we 
+ * consider it to have an aswer and object with an answer key is returned.
+ * Even if the value is undefined or null or false.
+ * 
+ * If a full path match is not found, return an empty object.
+ */
+export type AnswerResponse<AnswerType> = {answer: AnswerType} | Record<string, never>
+
+export const getAnswer = async <AnswerType>(path: FieldPath): Promise<AnswerResponse<AnswerType>> => {
+  const {answers} = await chrome.storage.local.get("answers")
+
+  const hasAnswer = path.fieldName in (answers?.[path.page]?.[path.section]?.[path.fieldType] || {})
+  if (hasAnswer) {
+    return {answer: answers?.[path.page]?.[path.section]?.[path.fieldType]?.[path.fieldName]}
+  } else {
+    return {}
+  }
+  return 
 }
