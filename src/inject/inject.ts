@@ -1,5 +1,5 @@
 
-import { Client } from '../utils/interContextServer'
+import { Client } from '../utils/crossContextCommunication'
 import { CONTENT_SCRIPT_URL } from '../utils/urls'
 import { RegisterInputs } from '../workday/textInput'
 

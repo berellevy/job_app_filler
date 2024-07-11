@@ -1,4 +1,4 @@
-import { Server } from "../utils/interContextServer";
+import { Server } from "../utils/crossContextCommunication";
 import { getAnswer, saveAnswer } from "../utils/storage";
 import { CONTENT_SCRIPT_URL } from "../utils/urls";
 import { FieldSnapshot } from "../workday/baseFormInput";
