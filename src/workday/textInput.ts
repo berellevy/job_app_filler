@@ -1,65 +1,69 @@
-import React from 'react'
 import { getElement } from '../utils/getElements'
-import '@fontsource/roboto'
 import { BaseFormInput, getReactProps } from './baseFormInput'
 import * as xpaths from './xpaths'
 
 
-type TextAnswerType = string | null
 
 
-export class TextInput extends BaseFormInput<TextAnswerType> {
+
+export class TextInput extends BaseFormInput {
   static XPATH = xpaths.TEXT_INPUT
   fieldType = "TextInput"
   
-  public get inputElement(): HTMLInputElement {
+  inputElement(): HTMLInputElement {
     return getElement(this.element, './/input') as HTMLInputElement
   }
 
   listenForChanges() {
-    this.inputElement.addEventListener("input", (e) => {
+    this.inputElement().addEventListener("input", (e) => {
       this.triggerReactUpdate()
     })
   }
 
-  public currentValue(): TextAnswerType {
-    return this.inputElement.value
+  currentValue(): any {
+    return this.inputElement().value
   }
 
-  async answer(): Promise<TextAnswerType> {
-    const res =  await this.fetchAnswer<TextAnswerType>()
+  async answer(): Promise<any> {
+    const res =  await this.fetchAnswer()
     return res.answer
   }
 
   async fill() {
     const answer = await this.answer()
-    const reactProps = getReactProps(this.inputElement)
+    const reactProps = getReactProps(this.inputElement())
     reactProps.onChange({ target: { value: answer } })
   }
 }
 
 
-export class PasswordInput extends BaseFormInput<TextAnswerType>{
+export class PasswordInput extends BaseFormInput{
   static XPATH = xpaths.PASSWORD_INPUT
   fieldType = "PasswordInput"
 
-  public get inputElement(): HTMLInputElement {
+  inputElement(): HTMLInputElement {
     return getElement(this.element, './/input') as HTMLInputElement
   }
 
-  currentValue(): string | null {
-    return this.inputElement.value
+  currentValue() {
+    return this.inputElement().value
   }
 
   listenForChanges() {
-    this.inputElement.addEventListener("input", (e) => {
+    this.inputElement().addEventListener("input", (e) => {
       this.triggerReactUpdate()
     })
   }
 
-  async answer(): Promise<TextAnswerType> {
-    const res = await this.fetchAnswer<TextAnswerType>()
-    return res.answer
+  async answer(): Promise<any> {
+    const res = await this.fetchAnswer()
+    return res.answer!
+  }
+
+  async fill() {
+    const answer = await this.answer()
+    const reactProps = getReactProps(this.inputElement())
+    reactProps.onChange({ target: { value: answer } })
   }
 }
 
