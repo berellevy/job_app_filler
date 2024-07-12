@@ -2,11 +2,10 @@ import React from 'react'
 import { getElement, getElements } from '../utils/getElements'
 import { createRoot } from 'react-dom/client'
 import '@fontsource/roboto'
-import {uid } from '../utils/uid'
 import {v4 as uuid4} from 'uuid'
 import { client } from '../inject/inject'
-import { App, attachReactApp, SaveButton } from '../App'
-import { AnswerResponse } from '../utils/storage'
+import { App, attachReactApp } from '../App'
+// import { AnswerResponse } from '../utils/storage'
 
 export type SaveStatus = "ok" | "loading" | "error"
 
@@ -35,34 +34,32 @@ export const getReactProps = (element: HTMLElement): any => {
 }
 
 
-export interface FormInputSubclass<AnswerType> {
-  listenForChanges:  () => never
-  currentValue: () => AnswerType | null
-  answer: () =>  Promise<AnswerType | null>
-}
+// export interface FormInputSubclass<AnswerType> {
+//   listenForChanges:  () => never
+//   currentValue: () => AnswerType | null
+//   answer: () =>  Promise<AnswerType | null>
+// }
 
-class NullAnswerType {}
-
-export class BaseFormInput<AnswerType> {
-  /** 
+export class BaseFormInput {
+  /**
    * The xpath used to identify the element.
    * Ususally an enclosing div since the label is contained within.
    */
   static XPATH: string
   /**
-   * The parent element of the field. Should include the field and the 
+   * The parent element of the field. Should include the field and the
    * label.
    */
   element: HTMLElement
   uuid: string
   /**
-   * used to send message events from this class to the rendered 
+   * used to send message events from this class to the rendered
    * react app.
    */
   reactMessageEventId: `reactMessage-${string}`
   /**
-   * Should be the subclasses name. `this.constructor.name` doesn't 
-   * work because the name changes when the js is minified and this name 
+   * Should be the subclasses name. `this.constructor.name` doesn't
+   * work because the name changes when the js is minified and this name
    * is used as part of the path to the answer.
    */
   fieldType: string
@@ -74,16 +71,13 @@ export class BaseFormInput<AnswerType> {
     /** prevents the element from being registered twice */
     this.element.setAttribute('job-app-filler', this.uuid)
     this.listenForChanges()
-    
-    attachReactApp(<App inputClass={this}/>, element)
-    
+    attachReactApp(<App inputClass={this} />, element)
   }
 
   static async autoDiscover(node: Node = document) {
     const elements = getElements(node, this.XPATH)
     elements.forEach((el) => {
       if (!el.hasAttribute('job-app-filler')) {
-        
         const input = new this(el)
       }
     })
@@ -95,21 +89,20 @@ export class BaseFormInput<AnswerType> {
    * call `triggerReactUpdate` on each change.
    */
   listenForChanges(): void {
-    throw new Error("'listenForChanges' method must be implemented by all subclasses of BaseFormInput")
+    throw new Error(
+      "'listenForChanges' method must be implemented by all subclasses of BaseFormInput"
+    )
   }
 
-
   /**
-   * communicate with the react display element by dispatching 
+   * communicate with the react display element by dispatching
    * an event on the form field parent element for which the react
    * display element is listening for.
    */
   triggerReactUpdate() {
     this.element.dispatchEvent(new CustomEvent(this.reactMessageEventId))
-    console.log("update");
   }
 
-  
   public get page(): string {
     return getElement(document, './/h2').innerText
   }
@@ -128,7 +121,7 @@ export class BaseFormInput<AnswerType> {
    */
   public get section(): string {
     // must always return a string, even a blank one
-    return ""
+    return ''
   }
 
   public get path(): FieldPath {
@@ -140,9 +133,11 @@ export class BaseFormInput<AnswerType> {
     }
   }
 
-currentValue(): AnswerType  {
-    throw new Error("Getter 'currentValue' must be implemented by all subclasses of BaseFormInput")
-    // return ''
+  currentValue(): any {
+    throw new Error(
+      "Getter 'currentValue' must be implemented by all subclasses of BaseFormInput"
+    )
+    return ''
   }
 
   public get fieldSnapshot(): FieldSnapshot {
@@ -153,39 +148,37 @@ currentValue(): AnswerType  {
   }
 
   async save() {
-    const response = await client.send("saveAnswer", this.fieldSnapshot)
+    const response = await client.send('saveAnswer', this.fieldSnapshot)
     return response.ok
   }
-
 
   /**
    * base method.
    * specify the answers type in this method.
    */
-  async fetchAnswer<AnswerType> (): Promise<AnswerResponse<AnswerType> | null> {
-    const res = await client.send<AnswerResponse<AnswerType>>("getAnswer", this.path)
+  async fetchAnswer(): Promise<any> {
+    const res = await client.send('getAnswer', this.path)
     if (res.ok) {
       return res.data
     } else {
-      console.error(res);
+      console.error(res)
     }
   }
 
   async hasAnswer(): Promise<boolean> {
     const data = this.fetchAnswer()
-    return "answer" in data
+    return 'answer' in data
   }
-
 
   /**
    * use in subclass to specify the answer type.
    * Usage: just call fetchAnswer inside it.
    */
-  async answer(): Promise<NullAnswerType> {
-    throw new Error("'answer' method must be implemented by all subclasses of BaseFormInput")
+  async answer(): Promise<any> {
+    throw new Error(
+      "'answer' method must be implemented by all subclasses of BaseFormInput"
+    )
   }
-
-  
 
   async isFilled(): Promise<boolean> {
     const answer = await this.answer()
@@ -193,6 +186,6 @@ currentValue(): AnswerType  {
   }
 
   async fill() {
-    console.log("in base fill method");
+    console.log('in base fill method')
   }
 }
