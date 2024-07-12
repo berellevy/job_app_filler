@@ -52,14 +52,15 @@ export const getAnswers = async () => {
  * 
  * If a full path match is not found, return an empty object.
  */
-export type AnswerResponse<AnswerType> = {answer: AnswerType} | Record<string, never>
+// export type AnswerResponse<AnswerType> = {answer: AnswerType} | Record<string, never>
 
-export const getAnswer = async <AnswerType>(path: FieldPath): Promise<AnswerResponse<AnswerType>> => {
+export const getAnswer = async (path: FieldPath) => {
+  const {page, section, fieldType, fieldName} = path
   const {answers} = await chrome.storage.local.get("answers")
 
-  const hasAnswer = path.fieldName in (answers?.[path.page]?.[path.section]?.[path.fieldType] || {})
+  const hasAnswer = fieldName in (answers?.[page]?.[section]?.[fieldType] || {})
   if (hasAnswer) {
-    return {answer: answers?.[path.page]?.[path.section]?.[path.fieldType]?.[path.fieldName]}
+    return {answer: answers?.[page]?.[section]?.[fieldType]?.[fieldName]}
   } else {
     return {}
   }
