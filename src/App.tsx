@@ -4,26 +4,22 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { Box, createTheme, Grid, IconButton, Paper } from '@mui/material'
 import { BaseFormInput, SaveStatus } from './workday/baseFormInput'
-import RefreshIcon from '@mui/icons-material/Refresh';
+import RefreshIcon from '@mui/icons-material/Refresh'
 import { ThemeProvider } from '@emotion/react'
-
-
-
 
 const theme = createTheme({
   typography: {
-    fontSize: 12  
-  }
+    fontSize: 12,
+  },
 })
-
 
 export const SaveButton: React.FC<{
   onClick?: () => Promise<void>
-}> = ({ onClick}) => {
+}> = ({ onClick }) => {
   return (
     <Box>
-      <Paper >
-        <Button size='small' onClick={onClick}>
+      <Paper>
+        <Button size="small" onClick={onClick}>
           <Typography>Save</Typography>
         </Button>
       </Paper>
@@ -51,27 +47,26 @@ export const FillButton: React.FC<{
   )
 }
 
-
 // TODO: render seperate react app in each subclass and pass the answer type as a generic
 // but for now use any.
-type AnswerType = any
 export const App: React.FC<{
-  inputClass: BaseFormInput<AnswerType>
+  inputClass: BaseFormInput
 }> = ({ inputClass }) => {
-  const [answer, setAnswer] = useState<AnswerType>(null)
-  const [currentValue, setCurrentValue] = useState<AnswerType>(null)
+  const [answer, setAnswer] = useState<any>(null)
+  const [currentValue, setCurrentValue] = useState<any>(null)
   const isFilled: boolean = answer === currentValue
-
+  
   const refresh = () => {
     inputClass.answer().then((res) => {
       setAnswer(res)
-      setCurrentValue(inputClass.currentValue)
+      setCurrentValue(inputClass.currentValue())
     })
-  }
 
-  useEffect(() => {
-    refresh()
+  }
+  useEffect(() => {;
+    inputClass.fill().then(() => setTimeout(refresh, 0))
     inputClass.element.addEventListener(inputClass.reactMessageEventId, refresh)
+
     return () => {
       inputClass.element.removeEventListener(
         inputClass.reactMessageEventId,
@@ -81,7 +76,6 @@ export const App: React.FC<{
   }, [])
 
   const handleSave = async () => {
-    // setSaveStatus("loading")
     const result: boolean = await inputClass.save()
     if (result) {
       refresh()
@@ -90,7 +84,6 @@ export const App: React.FC<{
 
   const handleFill = async () => {
     await inputClass.fill()
-
     refresh()
   }
 
@@ -125,8 +118,10 @@ export const App: React.FC<{
   )
 }
 
-
-export const attachReactApp = (app: React.ReactNode, inputContainer: HTMLElement) => {
+export const attachReactApp = (
+  app: React.ReactNode,
+  inputContainer: HTMLElement
+) => {
   // cant just append the react app to the root element...
   // it makes the element disappear
   const rootElement = document.createElement('div')
