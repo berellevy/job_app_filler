@@ -2,7 +2,6 @@ import { getElement } from '../utils/getElements'
 import { BaseFormInput, getReactProps } from './baseFormInput'
 import * as xpaths from './xpaths'
 
-
 export class TextInput extends BaseFormInput<string | null> {
   static XPATH = xpaths.TEXT_INPUT
   fieldType = 'TextInput'
@@ -46,12 +45,10 @@ export class PasswordInput extends BaseFormInput<string | null> {
     })
   }
 
-  async fill() {
-    if (await this.hasAnswer()){
-      const answer = await this.answer()
-      const reactProps = getReactProps(this.inputElement())
-      reactProps.onChange({ target: { value: answer } })
-    }
+  async fillField() {
+    const answer = await this.answer()
+    const reactProps = getReactProps(this.inputElement())
+    reactProps.onChange({ target: { value: answer } })
   }
 }
 

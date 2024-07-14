@@ -186,7 +186,19 @@ export abstract class BaseFormInput<AnswerType> {
   }
 
   /**
-   * Fill logic is unique for each type of field.
+   * general logic that applies to all fields.
+   * 
+   * for most fields it's enough to put the actual filling logic in the `fillField` method.
    */
-  abstract fill(): Promise<void>
+  async fill(): Promise<void> {
+    if (!(await this.hasAnswer())) {
+      return
+    }
+    await this.fillField()
+  }
+
+  /**
+   * Field specific fill logic required to interact successfully goes in this method.
+   */
+  abstract fillField(): Promise<void>
 }
