@@ -1,17 +1,34 @@
-import React, { useEffect, useState } from 'react'
-import ReactDOM, { createRoot } from 'react-dom/client'
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
-import { Box, createTheme, Grid, IconButton, Paper } from '@mui/material'
+import React, { MouseEvent, useEffect, useState } from 'react'
+import { createRoot } from 'react-dom/client'
+import SaveIcon from '@mui/icons-material/Save'
+import {
+  Box,
+  ButtonGroup,
+  createTheme,
+  Grid,
+  Button,
+  Paper,
+  Typography,
+  Tooltip,
+  Popper,
+  Fade,
+  TableContainer,
+  TableCell,
+  Table,
+  TableRow,
+} from '@mui/material'
 import { BaseFormInput, SaveStatus } from './workday/baseFormInput'
-import RefreshIcon from '@mui/icons-material/Refresh'
 import { ThemeProvider } from '@emotion/react'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+
+import Logo from './components/Logo'
 
 const theme = createTheme({
   typography: {
     fontSize: 12,
-  },
+  }
 })
+
 
 export const SaveButton: React.FC<{
   onClick?: () => Promise<void>
@@ -50,20 +67,19 @@ export const FillButton: React.FC<{
 // TODO: render seperate react app in each subclass and pass the answer type as a generic
 // but for now use any.
 export const App: React.FC<{
-  inputClass: BaseFormInput
+  inputClass: BaseFormInput<any>
 }> = ({ inputClass }) => {
   const [answer, setAnswer] = useState<any>(null)
   const [currentValue, setCurrentValue] = useState<any>(null)
   const isFilled: boolean = answer === currentValue
-  
+
   const refresh = () => {
     inputClass.answer().then((res) => {
       setAnswer(res)
       setCurrentValue(inputClass.currentValue())
     })
-
   }
-  useEffect(() => {;
+  useEffect(() => {
     inputClass.fill().then(() => setTimeout(refresh, 0))
     inputClass.element.addEventListener(inputClass.reactMessageEventId, refresh)
 
@@ -87,29 +103,62 @@ export const App: React.FC<{
     refresh()
   }
 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const popperOpen = Boolean(anchorEl)
+  const popperId = popperOpen ? `menu-popper-${inputClass.uuid}` : undefined
+
+  const handleMoreInfoClick = (e: MouseEvent<HTMLElement>) => {
+    setAnchorEl(anchorEl ? null : e.currentTarget)
+  }
+
   return (
     <ThemeProvider theme={theme}>
-      <Box my={'2px'}>
-        <Grid container spacing={1} alignItems={'stretch'}>
+      <Box my={'4px'}>
+        <Grid container spacing={1} alignItems="center">
           <Grid item>
-            <SaveButton onClick={handleSave} />
+            <Logo />
           </Grid>
           <Grid item>
-            <FillButton onClick={handleFill} isFilled={isFilled} />
-          </Grid>
-          <Grid item>
-            <Paper>
-              <IconButton size="small" onClick={refresh}>
-                <RefreshIcon fontSize="inherit" />
-              </IconButton>
-            </Paper>
-          </Grid>
-          <Grid item textAlign={'center'}>
-            <Paper>
-              <Typography variant="body2">
-                current value: {currentValue}
-              </Typography>
-              <Typography variant="body2">answer: {answer}</Typography>
+            <Paper elevation={4}>
+              <ButtonGroup variant="contained" size="small">
+                <Button onClick={handleFill}>Fill</Button>
+                <Tooltip title="Save current value as answer.">
+                  <Button onClick={handleSave}>
+                    <SaveIcon fontSize="small" />
+                  </Button>
+                </Tooltip>
+                <Button type="button" onClick={handleMoreInfoClick}>
+                  <MoreVertIcon fontSize="small" />
+                  <Popper
+                    id={popperId}
+                    open={popperOpen}
+                    anchorEl={anchorEl}
+                    placement="right-start"
+                    transition
+                  >
+                    {({ TransitionProps }) => (
+                      <Fade {...TransitionProps} timeout={350}>
+                        <Box mx={1}>
+                          <TableContainer component={Paper} elevation={4}>
+                            <Table size="small">
+                              <TableRow>
+                                <TableCell align="right" variant="head">
+                                  Answer
+                                </TableCell>
+                                <TableCell align="left">{answer}</TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell variant="head">Current</TableCell>
+                                <TableCell>{currentValue}</TableCell>
+                              </TableRow>
+                            </Table>
+                          </TableContainer>
+                        </Box>
+                      </Fade>
+                    )}
+                  </Popper>
+                </Button>
+              </ButtonGroup>
             </Paper>
           </Grid>
         </Grid>
