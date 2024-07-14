@@ -3,30 +3,22 @@ import { BaseFormInput, getReactProps } from './baseFormInput'
 import * as xpaths from './xpaths'
 
 
-
-
-
-export class TextInput extends BaseFormInput {
+export class TextInput extends BaseFormInput<string | null> {
   static XPATH = xpaths.TEXT_INPUT
-  fieldType = "TextInput"
-  
+  fieldType = 'TextInput'
+
   inputElement(): HTMLInputElement {
     return getElement(this.element, './/input') as HTMLInputElement
   }
 
   listenForChanges() {
-    this.inputElement().addEventListener("input", (e) => {
+    this.inputElement().addEventListener('input', (e) => {
       this.triggerReactUpdate()
     })
   }
 
-  currentValue(): any {
+  currentValue(): string | null {
     return this.inputElement().value
-  }
-
-  async answer(): Promise<any> {
-    const res =  await this.fetchAnswer()
-    return res.answer
   }
 
   async fill() {
@@ -36,10 +28,9 @@ export class TextInput extends BaseFormInput {
   }
 }
 
-
-export class PasswordInput extends BaseFormInput{
+export class PasswordInput extends BaseFormInput<string | null> {
   static XPATH = xpaths.PASSWORD_INPUT
-  fieldType = "PasswordInput"
+  fieldType = 'PasswordInput'
 
   inputElement(): HTMLInputElement {
     return getElement(this.element, './/input') as HTMLInputElement
@@ -50,26 +41,20 @@ export class PasswordInput extends BaseFormInput{
   }
 
   listenForChanges() {
-    this.inputElement().addEventListener("input", (e) => {
+    this.inputElement().addEventListener('input', (e) => {
       this.triggerReactUpdate()
     })
   }
 
-  async answer(): Promise<any> {
-    const res = await this.fetchAnswer()
-    return res.answer!
-  }
-
   async fill() {
-    const answer = await this.answer()
-    const reactProps = getReactProps(this.inputElement())
-    reactProps.onChange({ target: { value: answer } })
+    if (await this.hasAnswer()){
+      const answer = await this.answer()
+      const reactProps = getReactProps(this.inputElement())
+      reactProps.onChange({ target: { value: answer } })
+    }
   }
 }
-
-
 
 export const RegisterInputs = async (node: Node = document) => {
   Promise.all([TextInput.autoDiscover(node), PasswordInput.autoDiscover(node)])
 }
-
