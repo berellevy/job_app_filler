@@ -1,30 +1,46 @@
 import { v4 as uuid4 } from 'uuid'
 
-export type RequestBody = {
+
+/**
+ * @param requestId The client sets up a temporary event listener 
+ * for an event by this name. The server dispatches an event by 
+ * this name as a response.
+ * @param methodName Used by the client to specify which server method to call.
+ * @param data the arguments to pass to the server method.
+ */
+export type RequestBody<Data=any> = {
   requestId: string
   methodName: string
-  data?: any
+  data?: Data
 }
 
 export type RequestParams = {
   target: string
 } & RequestBody
 
-export type ResponseBody<T> = {
-  ok: boolean
-  data?: T
+interface RequestEvent<T=any> extends CustomEvent {
+  detail: RequestBody<T>
 }
 
+
+/**
+ * Fields needed to send a response from the server
+ */
 export type ResponseParams = {
   requestId: string
-} & ResponseBody<any>
+} & ResponseBody
 
-interface RequestEvent extends CustomEvent {
-  detail: RequestBody
+/**
+ * fields to expect when recieving a response in the client
+ */
+export type ResponseBody<ResponseData=null> = {
+  ok: boolean
+  data?: ResponseData
 }
 
-
 class NotFoundError extends Error {}
+
+
 
 type ServerCallback = (params?: any) => Promise<any>
 
@@ -34,10 +50,13 @@ export const sendEvent = (eventName: string, detail: any) => {
 }
 
 /**
+ * Communicate reliably between a contentScript and a script injected
+ * into the webpage (web_accessible_resources).
+ * 
  * Create a server in a content script and a client in a web accessible 
  * resource script or vice versa.
  * 
- * define 'routes' on the server to handle requests sent by the client.
+ * Define 'routes' on the server to handle requests sent by the client.
  * 
  * ### Example
  * Create a server and client with the same url.
@@ -92,6 +111,10 @@ export class Server {
     this.sendResponse(requestId, ok, result)
   }
 
+
+  /**
+   * obtain the method by name and call it with data.
+   */
   dispatch(methodName: string, data?: any) {
     if (!(methodName in this.methods)) {
       throw new NotFoundError()
@@ -99,10 +122,21 @@ export class Server {
     return this.methods[methodName](data)
   }
 
-  sendResponse(requestId: string, ok: boolean, data?: any): void {
+
+  private sendResponse(requestId: string, ok: boolean, data?: any): void {
     sendEvent(requestId, { ok, data })
   }
 
+
+  /**
+   * Usage: 
+   * ```
+   * server.register("getResource", async (optional, params) => {
+   *  // any view logic
+   *  return await getSomeResource(optional, params)
+   * })
+   * ```
+   */
   register(methodName: string, callback: ServerCallback) {
     if (methodName in this.methods) {
       throw new Error(`A method named ${methodName} already exists.`)
@@ -119,20 +153,20 @@ export class Client {
     this.url = url
   }
 
-  send<AnswerType>(
+  send<ResponseData = any>(
     methodName: string,
     data?: any,
     timeout: number = 5000
-  ): Promise<ResponseBody<AnswerType>> {
+  ): Promise<ResponseBody<ResponseData>> {
     const requestId = uuid4()
-    return new Promise<ResponseBody<AnswerType>>((resolve, reject) => {
+    return new Promise<ResponseBody<ResponseData>>((resolve, reject) => {
       // setup ResponseEvent listener and
       function eventHandler(event: CustomEvent) {
         document.removeEventListener(requestId, eventHandler)
         resolve(event.detail)
       }
       document.addEventListener(requestId, eventHandler)
-      
+
       // send RequestEvent
       this.sendRequest(requestId, methodName, data)
 
