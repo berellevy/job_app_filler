@@ -19,7 +19,7 @@ export interface LocalStorage {
 /**
  * Checks for each level in the path and creates it if needed.
  */
-export const saveAnswer = async (fieldSnapshot: FieldSnapshot) => {
+export const saveAnswer = async (fieldSnapshot: FieldSnapshot<any>) => {
   const { page, section, fieldType, fieldName, answer } = fieldSnapshot
   const existingAnswers =
     (await chrome.storage.local.get(['answers'])).answers || {}
@@ -52,7 +52,7 @@ export const getAnswers = async () => {
  * 
  * If a full path match is not found, return an empty object.
  */
-// export type AnswerResponse<AnswerType> = {answer: AnswerType} | Record<string, never>
+export type AnswerResponse<AnswerType=any> = {answer: AnswerType} | Record<string, never>
 
 export const getAnswer = async (path: FieldPath) => {
   const {page, section, fieldType, fieldName} = path
