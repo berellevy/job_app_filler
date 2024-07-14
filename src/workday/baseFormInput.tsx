@@ -5,6 +5,8 @@ import '@fontsource/roboto'
 import {v4 as uuid4} from 'uuid'
 import { client } from '../inject/inject'
 import { App, attachReactApp } from '../App'
+import { ResponseBody } from '../utils/crossContextCommunication'
+import { AnswerResponse } from '../utils/storage'
 // import { AnswerResponse } from '../utils/storage'
 
 export type SaveStatus = "ok" | "loading" | "error"
@@ -16,8 +18,8 @@ export type FieldPath = {
   fieldName: string
 }
 
-export type FieldSnapshot = FieldPath & {
-  answer: any | null
+export type FieldSnapshot<AnswerType=any> = FieldPath & {
+  answer: AnswerType | null
 }
 
 
@@ -40,7 +42,7 @@ export const getReactProps = (element: HTMLElement): any => {
 //   answer: () =>  Promise<AnswerType | null>
 // }
 
-export class BaseFormInput {
+export abstract class BaseFormInput<AnswerType> {
   /**
    * The xpath used to identify the element.
    * Ususally an enclosing div since the label is contained within.
@@ -78,6 +80,7 @@ export class BaseFormInput {
     const elements = getElements(node, this.XPATH)
     elements.forEach((el) => {
       if (!el.hasAttribute('job-app-filler')) {
+        // @ts-ignore
         const input = new this(el)
       }
     })
@@ -88,11 +91,12 @@ export class BaseFormInput {
    * Logic depends on field structure
    * call `triggerReactUpdate` on each change.
    */
-  listenForChanges(): void {
-    throw new Error(
-      "'listenForChanges' method must be implemented by all subclasses of BaseFormInput"
-    )
-  }
+  abstract listenForChanges(): void 
+  // {
+  //   throw new Error(
+  //     "'listenForChanges' method must be implemented by all subclasses of BaseFormInput"
+  //   )
+  // }
 
   /**
    * communicate with the react display element by dispatching
@@ -133,14 +137,15 @@ export class BaseFormInput {
     }
   }
 
-  currentValue(): any {
-    throw new Error(
-      "Getter 'currentValue' must be implemented by all subclasses of BaseFormInput"
-    )
-    return ''
-  }
+  abstract currentValue(): AnswerType
+  // {
+  //   throw new Error(
+  //     "Getter 'currentValue' must be implemented by all subclasses of BaseFormInput"
+  //   )
+  //   return ''
+  // }
 
-  public get fieldSnapshot(): FieldSnapshot {
+  public get fieldSnapshot(): FieldSnapshot<AnswerType> {
     return {
       ...this.path,
       answer: this.currentValue(),
@@ -154,9 +159,9 @@ export class BaseFormInput {
 
   /**
    * base method.
-   * specify the answers type in this method.
+   * used by hasAnswer and answer
    */
-  async fetchAnswer(): Promise<any> {
+  async fetchAnswer(): Promise<AnswerResponse<AnswerType>> {
     const res = await client.send('getAnswer', this.path)
     if (res.ok) {
       return res.data
@@ -170,14 +175,9 @@ export class BaseFormInput {
     return 'answer' in data
   }
 
-  /**
-   * use in subclass to specify the answer type.
-   * Usage: just call fetchAnswer inside it.
-   */
-  async answer(): Promise<any> {
-    throw new Error(
-      "'answer' method must be implemented by all subclasses of BaseFormInput"
-    )
+  async answer(): Promise<AnswerType> {
+    const res = await this.fetchAnswer()
+    return res.answer
   }
 
   async isFilled(): Promise<boolean> {
@@ -185,7 +185,8 @@ export class BaseFormInput {
     return answer === this.currentValue
   }
 
-  async fill() {
-    console.log('in base fill method')
-  }
+  /**
+   * Fill logic is unique for each type of field.
+   */
+  abstract fill(): Promise<void>
 }
