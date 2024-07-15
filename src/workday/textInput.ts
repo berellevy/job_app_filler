@@ -21,11 +21,15 @@ export class TextInput extends BaseFormInput<string | null> {
   }
 
   async fill() {
-    const answer = await this.answer()
-    const reactProps = getReactProps(this.inputElement())
-    reactProps.onChange({ target: { value: answer } })
+    if (await this.hasAnswer()) {
+      const answer = await this.answer()
+      const reactProps = getReactProps(this.inputElement())
+      reactProps.onChange({ target: { value: answer } })
+    }
   }
 }
+
+
 
 export class PasswordInput extends BaseFormInput<string | null> {
   static XPATH = xpaths.PASSWORD_INPUT
@@ -45,10 +49,13 @@ export class PasswordInput extends BaseFormInput<string | null> {
     })
   }
 
-  async fillField() {
-    const answer = await this.answer()
-    const reactProps = getReactProps(this.inputElement())
-    reactProps.onChange({ target: { value: answer } })
+  async fill() {
+
+    if (await this.hasAnswer()) {
+      const answer = await this.answer()
+      const reactProps = getReactProps(this.inputElement())
+      reactProps.onChange({ target: { value: answer } })
+    }
   }
 }
 
