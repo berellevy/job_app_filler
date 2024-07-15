@@ -171,7 +171,7 @@ export abstract class BaseFormInput<AnswerType> {
   }
 
   async hasAnswer(): Promise<boolean> {
-    const data = this.fetchAnswer()
+    const data = await  this.fetchAnswer()
     return 'answer' in data
   }
 
@@ -190,15 +190,7 @@ export abstract class BaseFormInput<AnswerType> {
    * 
    * for most fields it's enough to put the actual filling logic in the `fillField` method.
    */
-  async fill(): Promise<void> {
-    if (!(await this.hasAnswer())) {
-      return
-    }
-    await this.fillField()
-  }
+abstract fill(): Promise<void> 
 
-  /**
-   * Field specific fill logic required to interact successfully goes in this method.
-   */
-  abstract fillField(): Promise<void>
+
 }
