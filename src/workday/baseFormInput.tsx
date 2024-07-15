@@ -157,6 +157,11 @@ export abstract class BaseFormInput<AnswerType> {
     return response.ok
   }
 
+  async deleteAnswer(): Promise<boolean> {
+    const res = await client.send('deleteAnswer', this.path)
+    return res.ok
+  }
+
   /**
    * base method.
    * used by hasAnswer and answer
