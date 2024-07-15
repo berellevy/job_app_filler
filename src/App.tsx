@@ -16,6 +16,7 @@ import {
   TableCell,
   Table,
   TableRow,
+  TableBody,
 } from '@mui/material'
 import { BaseFormInput, SaveStatus } from './workday/baseFormInput'
 import { ThemeProvider } from '@emotion/react'
@@ -141,16 +142,18 @@ export const App: React.FC<{
                         <Box mx={1}>
                           <TableContainer component={Paper} elevation={4}>
                             <Table size="small">
-                              <TableRow>
-                                <TableCell align="right" variant="head">
-                                  Answer
-                                </TableCell>
-                                <TableCell align="left">{answer}</TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell variant="head">Current</TableCell>
-                                <TableCell>{currentValue}</TableCell>
-                              </TableRow>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell align="right" variant="head">
+                                    Answer
+                                  </TableCell>
+                                  <TableCell align="left">{answer}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                  <TableCell variant="head">Current</TableCell>
+                                  <TableCell>{currentValue}</TableCell>
+                                </TableRow>
+                              </TableBody>
                             </Table>
                           </TableContainer>
                         </Box>
