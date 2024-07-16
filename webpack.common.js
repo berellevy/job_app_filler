@@ -2,6 +2,12 @@ const path = require('path')
 const CopyPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const webpack = require('webpack')
+const uuid = require('uuid')
+
+const envKeys = {
+  'process.env.CONTENT_SCRIPT_URL': `"${uuid.v4()}"`,
+}
 
 module.exports = {
   entry: {
@@ -38,6 +44,7 @@ module.exports = {
         },
       ],
     }),
+    new webpack.DefinePlugin(envKeys),
     // ...getHtmlPlugins(['inject']),
   ],
   resolve: {
