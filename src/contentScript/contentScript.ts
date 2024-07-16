@@ -1,6 +1,7 @@
+import { FieldPath, FieldSnapshot } from "../formFields/types";
 import { Server } from "../utils/crossContextCommunication";
 import { deleteAnswer, getAnswer, saveAnswer } from "../utils/storage";
-import { FieldSnapshot, FieldPath} from "../workday/baseFormInput";
+
 
 // Regiser server and methods accessible to injected script.
 const server = new Server(process.env.CONTENT_SCRIPT_URL)
