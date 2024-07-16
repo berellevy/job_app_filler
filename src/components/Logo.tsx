@@ -7,10 +7,10 @@ const Logo: React.FC = () => {
     <Box>
       <Paper elevation={6} sx={{ borderRadius: '50%' }}>
         <Avatar
-          sx={{ bgcolor: blueGrey['300'], width: '1.5rem', height: '1.5rem' }}
+          sx={{ bgcolor: blueGrey['300'], width: '1.75rem', height: '1.75rem' }}
         >
           <Typography
-            sx={{ fontWeight: '100' }}
+            sx={{ fontWeight: '100', fontSize: 12}}
             color={'black'}
             variant={variant}
           >
@@ -19,14 +19,14 @@ const Logo: React.FC = () => {
           <Typography
             color={'black'}
             variant={variant}
-            sx={{ fontWeight: '500' }}
+            sx={{ fontWeight: '500', fontSize: 14}}
           >
             a
           </Typography>
           <Typography
             color={'black'}
             variant={variant}
-            sx={{ fontWeight: '900' }}
+            sx={{ fontWeight: '900', fontSize: 14}}
           >
             f
           </Typography>
