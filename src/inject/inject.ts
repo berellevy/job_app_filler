@@ -1,9 +1,10 @@
 
 import { Client } from '../utils/crossContextCommunication'
-import { CONTENT_SCRIPT_URL } from '../utils/urls'
 import { RegisterInputs } from '../workday/textInput'
 
-export const client = new Client(CONTENT_SCRIPT_URL)
+export const client = new Client(process.env.CONTENT_SCRIPT_URL)
+
+
 
 const observer = new MutationObserver(async (_) => {
   RegisterInputs(document)
