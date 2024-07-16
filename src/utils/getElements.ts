@@ -1,3 +1,6 @@
+/**
+ * Find the first HTMLElemetn by a given xpath
+ */
 export const getElement = (parent: Node, path: string): HTMLElement => {
   const node = document.evaluate(
     path,
@@ -9,6 +12,10 @@ export const getElement = (parent: Node, path: string): HTMLElement => {
   return node as HTMLElement
 }
 
+
+/**
+ * Find multiple HTMLElements by a given xpath.
+ */
 export const getElements = (parent: Node, path: string): HTMLElement[] => {
   const iterator = document.evaluate(
     path,
