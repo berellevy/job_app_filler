@@ -1,6 +1,13 @@
+/**
+ * A server and client for communicating between sandboxed contexts 
+ * Works by send `CustomEvents` to the DOM.
+ */
+
 import { v4 as uuid4 } from 'uuid'
 
-
+/** 
+ * TYPES
+ */
 /**
  * @param requestId The client sets up a temporary event listener 
  * for an event by this name. The server dispatches an event by 
@@ -22,7 +29,6 @@ interface RequestEvent<T=any> extends CustomEvent {
   detail: RequestBody<T>
 }
 
-
 /**
  * Fields needed to send a response from the server
  */
@@ -38,13 +44,17 @@ export type ResponseBody<ResponseData=null> = {
   data?: ResponseData
 }
 
+/**
+ * Always be async for uniformity
+ */
+type ServerCallback = (params?: any) => Promise<any>
+
+
 class NotFoundError extends Error {}
 
 
-
-type ServerCallback = (params?: any) => Promise<any>
-
-export const sendEvent = (eventName: string, detail: any) => {
+/** Util func. */
+const sendEvent = (eventName: string, detail: any) => {
   const event = new CustomEvent(eventName, { detail })
   document.dispatchEvent(event)
 }
@@ -82,7 +92,7 @@ export const sendEvent = (eventName: string, detail: any) => {
  */
 export class Server {
   url: string
-  methods: { [methodName: string]: ServerCallback } = {}
+  private methods: { [methodName: string]: ServerCallback } = {}
 
   constructor(url: string) {
     this.url = url
@@ -92,7 +102,7 @@ export class Server {
     )
   }
 
-  async handleRequest(e: RequestEvent) {
+  private async handleRequest(e: RequestEvent) {
     const { requestId, methodName, data } = e.detail
     let result: any,
       ok: boolean = true
@@ -111,22 +121,19 @@ export class Server {
     this.sendResponse(requestId, ok, result)
   }
 
-
   /**
    * obtain the method by name and call it with data.
    */
-  dispatch(methodName: string, data?: any) {
+  private dispatch(methodName: string, data?: any) {
     if (!(methodName in this.methods)) {
       throw new NotFoundError()
     }
     return this.methods[methodName](data)
   }
 
-
   private sendResponse(requestId: string, ok: boolean, data?: any): void {
     sendEvent(requestId, { ok, data })
   }
-
 
   /**
    * Usage: 
@@ -137,7 +144,7 @@ export class Server {
    * })
    * ```
    */
-  register(methodName: string, callback: ServerCallback) {
+  public register(methodName: string, callback: ServerCallback) {
     if (methodName in this.methods) {
       throw new Error(`A method named ${methodName} already exists.`)
     }
@@ -153,7 +160,8 @@ export class Client {
     this.url = url
   }
 
-  send<ResponseData = any>(
+
+  public send<ResponseData = any>(
     methodName: string,
     data?: any,
     timeout: number = 5000
@@ -178,7 +186,7 @@ export class Client {
     })
   }
 
-  sendRequest(requestId: string, methodName: string, data?: any) {
+  private sendRequest(requestId: string, methodName: string, data?: any) {
     sendEvent(this.url, { requestId, methodName, data })
   }
 }
