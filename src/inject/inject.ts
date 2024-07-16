@@ -1,6 +1,7 @@
 
+import { RegisterInputs } from '../formFields/workday'
 import { Client } from '../utils/crossContextCommunication'
-import { RegisterInputs } from '../workday/textInput'
+
 
 export const client = new Client(process.env.CONTENT_SCRIPT_URL)
 
