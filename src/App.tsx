@@ -1,9 +1,9 @@
 import React, { MouseEvent, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import SaveIcon from '@mui/icons-material/Save'
-import InfoIcon from '@mui/icons-material/Info';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CloseIcon from '@mui/icons-material/Close';
+import InfoIcon from '@mui/icons-material/Info'
+import DeleteIcon from '@mui/icons-material/Delete'
+
 import {
   Card,
   CardHeader,
@@ -27,16 +27,16 @@ import {
 } from '@mui/material'
 import { BaseFormInput, SaveStatus } from './workday/baseFormInput'
 import { ThemeProvider } from '@emotion/react'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
 
 import Logo from './components/Logo'
+import { MoreInfoPopper } from './components/MoreInfoPopper'
+import { ConfirmButton } from './components/ConfirmButton'
 
 const theme = createTheme({
   typography: {
-    fontSize: 12,
-  }
+    // fontSize: 12,
+  },
 })
-
 
 export const SaveButton: React.FC<{
   onClick?: () => Promise<void>
@@ -81,9 +81,8 @@ export const App: React.FC<{
   const [currentValue, setCurrentValue] = useState<any>(null)
   const [hasAnswer, setHasAnswer] = useState<boolean>(false)
 
-
   const refresh = () => {
-    inputClass.hasAnswer().then(res => setHasAnswer(res))
+    inputClass.hasAnswer().then((res) => setHasAnswer(res))
     inputClass.answer().then((res) => {
       setAnswer(res)
       setCurrentValue(inputClass.currentValue())
@@ -116,29 +115,6 @@ export const App: React.FC<{
   const handleDeleteAnswer = async () => {
     await inputClass.deleteAnswer()
     refresh()
-    
-  }
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const popperOpen = Boolean(anchorEl)
-  const popperId = popperOpen ? `menu-popper-${inputClass.uuid}` : undefined
-
-  const openMoreInfo = (e: MouseEvent<HTMLElement>) => {
-    setAnchorEl(e.currentTarget)
-  }
-  const closeMoreInfo = () => {
-    setAnchorEl(null)
-  }
-
-  /**
-   * only close the popper when the more info button itself 
-   * is clicked. Not when the popper body is clicked.
-   */
-  const handleMoreInfoClick = (e: MouseEvent<HTMLElement>) => {
-    if (!popperOpen) {
-      openMoreInfo(e)
-    } else if (e.currentTarget.contains(e.target as Node)) {
-      closeMoreInfo()
-    }
   }
 
   return (
@@ -154,95 +130,65 @@ export const App: React.FC<{
                 <Button onClick={handleFill}>Fill</Button>
                 <Tooltip title="Save current value as answer.">
                   <Button onClick={handleSave}>
-                    <SaveIcon fontSize="small" />
+                    <SaveIcon sx={{fontSize: 14}} />
                   </Button>
                 </Tooltip>
-                <Button type="button" onClick={handleMoreInfoClick}>
-                  <MoreVertIcon fontSize="small" />
-                  <Popper
-                    id={popperId}
-                    open={popperOpen}
-                    anchorEl={anchorEl}
-                    placement="right-start"
-                    transition
-                  >
-                    {({ TransitionProps }) => (
-                      <Fade {...TransitionProps} timeout={350}>
-                        <Box mx={1}>
-                          <Paper elevation={8}>
-                            <Card>
-                              <CardHeader
-                                sx={{padding: 1}}
-                                title="More Info"
-                                action={
-                                  <IconButton
-                                    aria-label="close"
-                                    onClick={closeMoreInfo}
-                                    sx={{ marginLeft: 'auto' }}
-                                  >
-                                    <CloseIcon />
-                                  </IconButton>
-                                }
-                              />
-                              <CardContent sx={{padding: 0, paddingBottom: "0px!important"}}>
-                                <TableContainer>
-                                  <Table size="small">
-                                    <TableBody>
-                                      <TableRow>
-                                        <TableCell align="right" variant="head">
-                                          Answer
-                                        </TableCell>
-                                        <TableCell align="left">
-                                          {hasAnswer ? (
-                                            <Typography
-                                              component="div"
-                                              sx={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                              }}
-                                            >
-                                              {answer}
-                                              <IconButton onClick={handleDeleteAnswer}>
-                                                <DeleteIcon fontSize="inherit" />
-                                              </IconButton>
-                                            </Typography>
-                                          ) : (
-                                            <Typography
-                                              component={'div'}
-                                              sx={{
-                                                fontStyle: 'italic',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                              }}
-                                            >
-                                              No answer
-                                              <Tooltip title="Fill in the field and click save to save an answer">
-                                                <InfoIcon
-                                                  sx={{ marginLeft: '4px' }}
-                                                  fontSize="inherit"
-                                                />
-                                              </Tooltip>
-                                            </Typography>
-                                          )}
-                                        </TableCell>
-                                      </TableRow>
-                                      <TableRow>
-                                        <TableCell variant="head">
-                                          Current
-                                        </TableCell>
-                                        <TableCell>{currentValue}</TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-                                </TableContainer>
-                              </CardContent>
-                            </Card>
-                          </Paper>
-                        </Box>
-                      </Fade>
-                    )}
-                  </Popper>
-                </Button>
+                <MoreInfoPopper title="More Info">
+                  <TableContainer>
+                    <Table size="small">
+                      <TableBody>
+                        <TableRow>
+                          <TableCell align="right" variant="head">
+                            Answer
+                          </TableCell>
+                          <TableCell align="left">
+                            {hasAnswer ? (
+                              <Typography
+                                component="div"
+                                sx={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                }}
+                              >
+                                {answer}
+                                <ConfirmButton
+                                  component='IconButton'
+                                  action={handleDeleteAnswer}
+                                  dialogTitle="Are You Sure?"
+                                  buttonContent={<DeleteIcon />}
+                                >
+                                  Are you Sure you want to delete this answer? 
+                                  This action is not reversible.
+                                </ConfirmButton>
+                              </Typography>
+                            ) : (
+                              <Typography
+                                component={'div'}
+                                sx={{
+                                  fontStyle: 'italic',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                }}
+                              >
+                                No answer
+                                <Tooltip title="Fill in the field and click save to save an answer">
+                                  <InfoIcon
+                                    sx={{ marginLeft: '4px' }}
+                                    fontSize="inherit"
+                                  />
+                                </Tooltip>
+                              </Typography>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell variant="head">Current</TableCell>
+                          <TableCell>{currentValue}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </MoreInfoPopper>
               </ButtonGroup>
             </Paper>
           </Grid>
