@@ -1,6 +1,6 @@
-import { FieldPath, FieldSnapshot } from '../workday/baseFormInput'
+import { FieldPath, FieldSnapshot } from "../formFields/types"
 
-export interface AnswerData {
+interface AnswerData {
   [pageName: string]: {
     [sectionName: string]: {
       [fieldType: string]: {
@@ -10,7 +10,7 @@ export interface AnswerData {
   }
 }
 
-export interface LocalStorage {
+interface LocalStorage {
   answers?: AnswerData
 }
 
