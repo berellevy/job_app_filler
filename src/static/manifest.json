@@ -1,10 +1,12 @@
 {
   "manifest_version": 3,
   "name": "Job App Filler",
-  "description": "Smart Autofill for Annoying Job Sites",
-  "version": "1.0",
+  "description": "Elevated Autofill for Annoying Job Sites",
+  "version": "1.0.2",
   "action": {
-    "default_icon": "logo.png"
+    "default_icon": "logo.png",
+    "default_title": "Job App Filler",
+    "default_popup": "popup.html"
   },
   "background": {
     "service_worker": "background.js"
