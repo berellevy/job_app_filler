@@ -18,17 +18,10 @@ import Logo from './components/Logo'
 import { MoreInfoPopper } from './components/MoreInfoPopper'
 import { MoreInfoContent } from './components/MoreInfoContent'
 import { teal } from '@mui/material/colors'
+import { theme } from './utils/react'
 
 
-const theme = createTheme({
-  typography: {
 
-  },
-  palette: {
-    primary: teal,
-    // secondary: 50,
-  },
-})
 
 // TODO: render seperate react app in each subclass and pass the answer type as a generic
 // but for now use any.
