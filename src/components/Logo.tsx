@@ -1,29 +1,36 @@
 import { Avatar, Box, Paper, Typography } from '@mui/material'
-import { lime, blueGrey, cyan, green, red, pink, teal } from '@mui/material/colors'
 import React from 'react'
-const variant = "body2"
+import { theme } from '../utils/react'
+const variant = 'body2'
 const Logo: React.FC = () => {
   return (
-    <Box >
+    <Box>
       <Paper elevation={6} sx={{ borderRadius: '50%' }}>
         <Avatar
-          sx={{ bgcolor: teal[500], width: '1.7em', height: '1.7em' }}
+          sx={{
+            bgcolor: theme.palette.primary.main,
+            width: '1.7em',
+            height: '1.7em',
+          }}
         >
           <Typography
-            sx={{ fontWeight: '100', fontSize: ".65em"}}
+            color={'white'}
             variant={variant}
+            sx={{ fontWeight: '100', fontSize: '.65em' }}
           >
             j
           </Typography>
           <Typography
+            color={'white'}
             variant={variant}
-            sx={{ fontWeight: '500', fontSize: ".75em"}}
+            sx={{ fontWeight: '500', fontSize: '.75em' }}
           >
             a
           </Typography>
           <Typography
+            color={'white'}
             variant={variant}
-            sx={{ fontWeight: '900', fontSize: '.8em'}}
+            sx={{ fontWeight: '900', fontSize: '.8em' }}
           >
             f
           </Typography>
