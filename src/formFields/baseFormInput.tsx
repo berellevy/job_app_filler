@@ -76,6 +76,7 @@ export abstract class BaseFormInput<AnswerType> {
    * Listen for changes on the form field of the job site.
    * Logic depends on field structure
    * call `triggerReactUpdate` on each change.
+   * This method is ususally field specific.
    */
   abstract listenForChanges(): void 
   // {
