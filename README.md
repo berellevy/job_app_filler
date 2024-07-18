@@ -24,6 +24,8 @@ Install the extension locally by going to <chrome://extensions/> in your browswe
 and clicking the **Load unpacked** button on the top right hand of the page, choosing the **dist** 
 folder in package and hitting ok.
 
+[how to load unpacked](/docs/load_unpacked.gif)
+
 ## Project layout
 
 Because autofilling fields isn't always simple, the project structure is a bit complicated. 
