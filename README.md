@@ -22,7 +22,7 @@ npm start
 
 This will create a **dist** folder in the project root.
 
-Install the extension locally by going to (chrome://extensions/) in your browswer
+Install the extension locally by going to [chrome://extensions/](chrome://extensions/) in your browswer
 and clicking the **Load unpacked** button on the top right hand of the page, choosing the **dist**
 folder in package and hitting ok.
 
