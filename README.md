@@ -14,9 +14,9 @@ on tedious job sites such as workday, icims, etc.
 To get started, clone the repo, install the packages and run webpack.
 
 ```bash
-$ git clone https://github.com/berellevy/job_app_filler.git
-$ npm i
-$ npm start
+git clone https://github.com/berellevy/job_app_filler.git
+npm i
+npm start
 ```
 This will create a **dist** folder in the project root.
 
