@@ -95,10 +95,6 @@ The context script has access to extension APIs that the injected script doesn't
 script imports something from the content script directly it can break. Shared resources need to be
 broken out into a separate file which can be imported by both the content script and the injected script.
 
-### Reloading
-
-Changes reflect in the browser in different ways. making changes to the react app
-
 ## Versioning
 
 major.site.field.fix
