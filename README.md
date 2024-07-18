@@ -28,7 +28,7 @@ folder in package and hitting ok.
 
 Because autofilling fields isn't always simple, the project structure is a bit complicated. 
 
-**Note:** Because I want to release this project already, I will post a video explaining the more complex topics.
+**Note:** Because I want to release this project already, I've posted a [video](https://youtu.be/mXEDv9PpdGs) explaining the more complex topics.
 
 ### Sandboxing
 
@@ -57,21 +57,21 @@ This structure is ported from a python/selenium project [site_applier](https://g
 This includes form field discovery, answer lookup, answer filling and saving current values as an answer.
 
 #### Form Field Discovery
-See video
+See [video](https://youtu.be/mXEDv9PpdGs)
 
 #### Answer Lookup
 Answers are correlated with fields by a path containing, in this order, page, section, field type and field name.
 Answers are then stored in the extension's localstorage in an object nested in that structure.
 
-Path: see video 
+Path: see [video](https://youtu.be/mXEDv9PpdGs) 
 
 #### Answer Filling
 
-See video
+See [video](https://youtu.be/mXEDv9PpdGs)
 
 #### Saving Current Values as an answer.
 
-See Video
+See [video](https://youtu.be/mXEDv9PpdGs)
 
 #### React App
 A small `React` app is attached to each fillable filed on the job app site to provide a ui.
