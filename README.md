@@ -8,7 +8,7 @@ on tedious job sites such as workday, icims, etc.
 ### Features:
 
 - Open source.
-- User's data isn't sent _anywhere_
+- User's data isn't sent _anywhere_.
 
 ## Quickstart
 
@@ -22,9 +22,9 @@ npm start
 
 This will create a **dist** folder in the project root.
 
-Install the extension locally by going to the <a href="chrome://extensions">chrome extensions page</a> [chrome extensions page](chrome://chrome/extensions) in your browswer
-and clicking the **Load unpacked** button on the top right hand of the page, choosing the **dist**
-folder in package and hitting ok.
+Install the extension locally by going to your chrome extensions page by pasting the following link in your browser: **chrome://extensions/** 
+and clicking the **Load unpacked** button on the top left of the page, choosing the **dist**
+folder in the package and hitting ok.
 
 ![how to load unpacked](https://github.com/berellevy/job_app_filler/blob/main/docs/load_unpacked.gif)
 
