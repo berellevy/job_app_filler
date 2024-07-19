@@ -5,18 +5,21 @@ import * as xpaths from './xpaths'
 export class TextInput extends BaseFormInput<string | null> {
   static XPATH = xpaths.TEXT_INPUT
   fieldType = 'TextInput'
-  realValue: string | null
+  private internalValue: string | null
 
   inputElement(): HTMLInputElement {
     return getElement(this.element, './/input') as HTMLInputElement
   }
 
+  /**
+   * TODO: explain
+   */
   listenForChanges() {
     const callback = (e) => {
       this.triggerReactUpdate()
       this.element.removeEventListener('input', callback)
       this.inputElement().removeEventListener('blur', callback)
-      this.realValue = e.target.value
+      this.internalValue = e.target.value
       setTimeout(() => this.listenForChanges(), 0)
     }
 
@@ -25,9 +28,12 @@ export class TextInput extends BaseFormInput<string | null> {
   }
 
   currentValue(): string | null {
-    return this.realValue
+    return this.internalValue
   }
 
+  /**
+   * TODO: explain
+   */
   async fill() {
     if (await this.hasAnswer()) {
       const answer = await this.answer()
@@ -37,7 +43,7 @@ export class TextInput extends BaseFormInput<string | null> {
       } else if (reactProps.onBlur) {
         reactProps.onBlur({ target: { value: answer } })
       }
-      this.realValue = answer
+      this.internalValue = answer
     }
 
     setTimeout(() => {
