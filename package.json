@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack --watch --progress --config webpack.dev.js",
-    "build": "webpack --watch --progress --config webpack.prod.js"
+    "build": "webpack --watch --progress --config webpack.prod.js",
+    "release": "node release.js"
   },
   "author": "Berel Levy",
   "license": "ISC",
@@ -13,6 +14,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.13",
+    "@inquirer/prompts": "^5.2.1",
     "@mui/icons-material": "^5.15.21",
     "@mui/material": "^5.15.21",
     "@types/chrome": "^0.0.268",
