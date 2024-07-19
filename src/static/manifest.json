@@ -8,9 +8,7 @@
     "default_title": "Job App Filler",
     "default_popup": "popup.html"
   },
-  "background": {
-    "service_worker": "background.js"
-  },
+
   "content_scripts": [
     {
       "js": [
@@ -34,9 +32,6 @@
     }
   ],
   "permissions": [
-    "scripting",
-    "storage",
-    "tabs",
-    "activeTab"
+    "storage"
   ]
 }
