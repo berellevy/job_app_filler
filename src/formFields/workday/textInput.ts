@@ -5,31 +5,46 @@ import * as xpaths from './xpaths'
 export class TextInput extends BaseFormInput<string | null> {
   static XPATH = xpaths.TEXT_INPUT
   fieldType = 'TextInput'
+  realValue: string | null
 
   inputElement(): HTMLInputElement {
     return getElement(this.element, './/input') as HTMLInputElement
   }
 
   listenForChanges() {
-    this.inputElement().addEventListener('input', (e) => {
+    const callback = (e) => {
       this.triggerReactUpdate()
-    })
+      this.element.removeEventListener('input', callback)
+      this.inputElement().removeEventListener('blur', callback)
+      this.realValue = e.target.value
+      setTimeout(() => this.listenForChanges(), 0)
+    }
+
+    this.element.addEventListener('input', callback)
+    this.inputElement().addEventListener('blur', callback)
   }
 
   currentValue(): string | null {
-    return this.inputElement().value
+    return this.realValue
   }
 
   async fill() {
     if (await this.hasAnswer()) {
       const answer = await this.answer()
       const reactProps = getReactProps(this.inputElement())
-      reactProps.onChange({ target: { value: answer } })
+      if (reactProps.onChange) {
+        reactProps.onChange({ target: { value: answer } })
+      } else if (reactProps.onBlur) {
+        reactProps.onBlur({ target: { value: answer } })
+      }
+      this.realValue = answer
     }
+
+    setTimeout(() => {
+      this.triggerReactUpdate()
+    }, 0)
   }
 }
-
-
 
 export class PasswordInput extends BaseFormInput<string | null> {
   static XPATH = xpaths.PASSWORD_INPUT
@@ -50,7 +65,6 @@ export class PasswordInput extends BaseFormInput<string | null> {
   }
 
   async fill() {
-
     if (await this.hasAnswer()) {
       const answer = await this.answer()
       const reactProps = getReactProps(this.inputElement())
