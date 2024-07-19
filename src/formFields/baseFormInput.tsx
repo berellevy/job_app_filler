@@ -174,7 +174,7 @@ export abstract class BaseFormInput<AnswerType> {
 
   async isFilled(): Promise<boolean> {
     const answer = await this.answer()
-    return answer === this.currentValue
+    return answer === this.currentValue()
   }
 
   /**
