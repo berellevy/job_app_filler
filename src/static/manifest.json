@@ -17,7 +17,8 @@
         "contentScript.js"
       ],
       "matches": [
-        "https://*.wd1.myworkdayjobs.com/*"
+        "https://*.wd1.myworkdayjobs.com/*",
+        "https://*.wd5.myworkdayjobs.com/*"
       ]
     }
   ],
@@ -27,7 +28,8 @@
         "inject.js"
       ],
       "matches": [
-        "https://*.wd1.myworkdayjobs.com/*"
+        "https://*.wd1.myworkdayjobs.com/*",
+        "https://*.wd5.myworkdayjobs.com/*"
       ]
     }
   ],
