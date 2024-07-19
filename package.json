@@ -1,6 +1,6 @@
 {
   "name": "job_app_filler",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Elevated Autofill for those pesky job application sites.",
   "main": "index.js",
   "scripts": {
