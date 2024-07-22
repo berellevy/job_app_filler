@@ -16,7 +16,8 @@
       ],
       "matches": [
         "https://*.wd1.myworkdayjobs.com/*",
-        "https://*.wd5.myworkdayjobs.com/*"
+        "https://*.wd5.myworkdayjobs.com/*",
+        "https://*.wd1.myworkdaysite.com/*"
       ]
     }
   ],
@@ -27,7 +28,9 @@
       ],
       "matches": [
         "https://*.wd1.myworkdayjobs.com/*",
-        "https://*.wd5.myworkdayjobs.com/*"
+        "https://*.wd5.myworkdayjobs.com/*",
+        "https://*.wd1.myworkdaysite.com/*"
+
       ]
     }
   ],
