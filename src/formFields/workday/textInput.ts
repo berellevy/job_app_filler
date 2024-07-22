@@ -1,8 +1,9 @@
 import { getElement } from '../../utils/getElements'
 import { BaseFormInput, getReactProps } from '../baseFormInput'
+import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
 
-export class TextInput extends BaseFormInput<string | null> {
+export class TextInput extends WorkdayBaseInput<string | null> {
   static XPATH = xpaths.TEXT_INPUT
   fieldType = 'TextInput'
   private internalValue: string | null
@@ -52,7 +53,7 @@ export class TextInput extends BaseFormInput<string | null> {
   }
 }
 
-export class PasswordInput extends BaseFormInput<string | null> {
+export class PasswordInput extends WorkdayBaseInput<string | null> {
   static XPATH = xpaths.PASSWORD_INPUT
   fieldType = 'PasswordInput'
 
