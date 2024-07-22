@@ -11,21 +11,13 @@
  * - builds new dist folder.
  * - zips dist folder into releases folder with versioned name.
  */
-
-const pkg = require('./package.json')
 const mnfst = require('./src/static/manifest.json')
 const fs = require('fs')
 const {confirm} = require("@inquirer/prompts")
 const { setTimeout } = require('timers/promises')
 const { exec } = require('child_process')
+const {snakeCase} = require("lodash")
 
-const matchVersions = () => {
-  if (pkg.version !== mnfst.version) {
-    console.warn(
-      'package.json version is not up to date with manifest.json version'
-    )
-  }
-}
 
 /**
  * prevent accidental release bundle overwrite
@@ -33,16 +25,9 @@ const matchVersions = () => {
 const handleNameConflict = async (newReleasePath) => {
   if (fs.existsSync(newReleasePath)) {
     await setTimeout(500)
-    // const confirmation = await select({
-    //   message: `\nWARNING!!\n\n A release already exists at ${newReleasePath}. Do you want to overwrite it? \nThis cannot be undone!\n`,
-    //   choices: [
-    //     { name: 'No', value: false },
-    //     { name: 'Yes (Dangerous)', value: true },
-    //   ],
-    // })
     const answer = await confirm(
       {
-        message: 'WARNING!!\n\n A release already exists at ${newReleasePath}. Do you want to overwrite it? \nThis cannot be undone!',
+        message: `WARNING!!\n\n A release already exists at ${newReleasePath}. Do you want to overwrite it? \nThis cannot be undone!`,
         default: false,
       },
     )
@@ -81,12 +66,10 @@ const execAsync = (command) => {
   })
 }
 
+
 // MAIN
 ;(async () => {
-  const newReleasePath = `releases/${pkg.name}-${mnfst.version}.zip`
-
-  // confirm versions match
-  matchVersions()
+  const newReleasePath = `releases/${snakeCase(mnfst.name)}-${mnfst.version}.zip`
 
   // prevent accidental release file overwrite
   await handleNameConflict(newReleasePath)
