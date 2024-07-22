@@ -108,3 +108,14 @@ major.site.field.fix
 ## Contributing
 
 Contributors are welcome!
+
+
+## Roadmap
+
+This is a rough outlook of what's to come. For more specifics, see issues.
+
+### Milestones
+* Complete functionality for workday job applications.
+* Add startswith matching for answers
+* Complete functionality for icims job applications.
+* Profiles for for tailored inputs.
