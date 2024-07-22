@@ -109,6 +109,8 @@ export abstract class BaseFormInput<AnswerType> {
    * A section is a grouping of fields that can be repeating
    * e.g. work history.
    * In such cases the form field name can appear twice on a page.
+   * 
+   * Job site specific
    */
   public get section(): string {
     // must always return a string, even a blank one
@@ -140,6 +142,8 @@ export abstract class BaseFormInput<AnswerType> {
   }
 
   async save() {
+    console.log(this.path);
+    
     const response = await client.send('saveAnswer', this.fieldSnapshot)
     return response.ok
   }
