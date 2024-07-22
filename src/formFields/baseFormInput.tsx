@@ -94,6 +94,9 @@ export abstract class BaseFormInput<AnswerType> {
     this.element.dispatchEvent(new CustomEvent(this.reactMessageEventId))
   }
 
+  public get page(): string {
+    return getElement(document, './/h2').innerText
+  }
 
   /**
    * can sometimes be overriden but is mostly the same.
@@ -114,6 +117,7 @@ export abstract class BaseFormInput<AnswerType> {
 
   public get path(): FieldPath {
     return {
+      page: this.page,
       section: this.section,
       fieldType: this.fieldType,
       fieldName: this.fieldName,

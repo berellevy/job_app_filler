@@ -1,4 +1,5 @@
 export type FieldPath = {
+    page: string
     section: string
     fieldType: string
     fieldName: string

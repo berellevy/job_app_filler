@@ -1,9 +1,11 @@
 import { FieldPath, FieldSnapshot } from "../formFields/types"
 
 interface AnswerData {
-  [sectionName: string]: {
-    [fieldType: string]: {
-      [fieldName: string]: string
+  [pageName: string]: {
+    [sectionName: string]: {
+      [fieldType: string]: {
+        [fieldName: string]: string
+      }
     }
   }
 }
@@ -21,6 +23,7 @@ export const getAnswers = async (): Promise<AnswerData | {}> => {
  * Checks for each level in the path and creates it if needed.
  */
 export const saveAnswer = async ({
+  page,
   section,
   fieldType,
   fieldName,
@@ -28,13 +31,16 @@ export const saveAnswer = async ({
 }: FieldSnapshot<any>) => {
   const existingAnswers = await getAnswers()
 
-  if (!(section in existingAnswers)) {
-    existingAnswers[section] = {}
+  if (!(page in existingAnswers)) {
+    existingAnswers[page] = {}
   }
-  if (!(fieldType in existingAnswers[section])) {
-    existingAnswers[section][fieldType] = {}
+  if (!(section in existingAnswers[page])) {
+    existingAnswers[page][section] = {}
   }
-  existingAnswers[section][fieldType][fieldName] = answer
+  if (!(fieldType in existingAnswers[page][section])) {
+    existingAnswers[page][section][fieldType] = {}
+  }
+  existingAnswers[page][section][fieldType][fieldName] = answer
   const newStorage: LocalStorage = { answers: existingAnswers }
   await chrome.storage.local.set(newStorage)
 }
@@ -46,16 +52,20 @@ export const saveAnswer = async ({
  * if the containing `fieldType` is empty after deletion, delete it.
  * if the containing `section` is empty after deletion, delte it, etc.
  */
-export const deleteAnswer = async ({section, fieldType, fieldName}: FieldPath) => {
+export const deleteAnswer = async ({page, section, fieldType, fieldName}: FieldPath) => {
   const answers = await getAnswers()
-  if (fieldName in answers?.[section]?.[fieldType]) {
-    delete answers[section][fieldType][fieldName]
+  if (fieldName in answers?.[page]?.[section]?.[fieldType]) {
+    delete answers[page][section][fieldType][fieldName]
   }
-  if (Object.keys(answers[section][fieldType]).length === 0) {
-    delete answers[section][fieldType]
+  if (Object.keys(answers[page][section][fieldType]).length === 0) {
+    delete answers[page][section][fieldType]
   }
-  if (Object.keys(answers[section]).length === 0) {
-    delete answers[section]
+  if (Object.keys(answers[page][section]).length === 0) {
+    delete answers[page][section]
+  }
+
+  if (Object.keys(answers[page]).length === 0) {
+    delete answers[page]
   }
   const newStorage: LocalStorage = {answers}
   await chrome.storage.local.set(newStorage)
@@ -75,15 +85,16 @@ export type AnswerResponse<AnswerType = any> =
   | Record<string, never>
 
 export const getAnswer = async ({
+  page,
   section,
   fieldType,
   fieldName,
 }: FieldPath) => {
   const answers  = await getAnswers()
 
-  const hasAnswer = fieldName in (answers?.[section]?.[fieldType] || {})
+  const hasAnswer = fieldName in (answers?.[page]?.[section]?.[fieldType] || {})
   if (hasAnswer) {
-    return { answer: answers?.[section]?.[fieldType]?.[fieldName] }
+    return { answer: answers?.[page]?.[section]?.[fieldType]?.[fieldName] }
   } else {
     return {}
   }
