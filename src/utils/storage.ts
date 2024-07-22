@@ -14,6 +14,10 @@ interface LocalStorage {
   answers?: AnswerData
 }
 
+const clean = (fieldName: string) => {
+  return fieldName.replace(/\*$/, "")
+}
+
 export const getAnswers = async (): Promise<AnswerData | {}> => {
   return (await chrome.storage.local.get('answers')).answers || {}
 }
@@ -40,7 +44,11 @@ export const saveAnswer = async ({
   if (!(fieldType in existingAnswers[page][section])) {
     existingAnswers[page][section][fieldType] = {}
   }
-  existingAnswers[page][section][fieldType][fieldName] = answer
+  existingAnswers[page][section][fieldType][clean(fieldName)] = answer
+
+  // Backward compatibility: remove answer key if it has a star
+  delete existingAnswers[page][section][fieldType][clean(fieldName) + "*"]
+   
   const newStorage: LocalStorage = { answers: existingAnswers }
   await chrome.storage.local.set(newStorage)
 }
@@ -54,12 +62,14 @@ export const saveAnswer = async ({
  */
 export const deleteAnswer = async ({page, section, fieldType, fieldName}: FieldPath) => {
   const answers = await getAnswers()
-  if (fieldName in answers?.[page]?.[section]?.[fieldType]) {
-    delete answers[page][section][fieldType][fieldName]
+  if (clean(fieldName) in answers?.[page]?.[section]?.[fieldType]) {
+    delete answers[page][section][fieldType][clean(fieldName)]
+  } else if (clean(fieldName) + "*" in answers?.[page]?.[section]?.[fieldType + '*']) {
+    delete answers[page][section][fieldType][clean(fieldName) + "*"]
   }
-  if (Object.keys(answers[page][section][fieldType]).length === 0) {
-    delete answers[page][section][fieldType]
-  }
+    if (Object.keys(answers[page][section][fieldType]).length === 0) {
+      delete answers[page][section][fieldType]
+    }
   if (Object.keys(answers[page][section]).length === 0) {
     delete answers[page][section]
   }
@@ -91,10 +101,13 @@ export const getAnswer = async ({
   fieldName,
 }: FieldPath) => {
   const answers  = await getAnswers()
-
-  const hasAnswer = fieldName in (answers?.[page]?.[section]?.[fieldType] || {})
-  if (hasAnswer) {
-    return { answer: answers?.[page]?.[section]?.[fieldType]?.[fieldName] }
+  if (clean(fieldName) in (answers?.[page]?.[section]?.[fieldType] || {})) {
+    return { answer: answers?.[page]?.[section]?.[fieldType]?.[clean(fieldName)] }
+  } else if (clean(fieldName) + "*" in (answers?.[page]?.[section]?.[fieldType] || {})) {
+    const answer =
+      answers?.[page]?.[section]?.[fieldType]?.[clean(fieldName) + '*']
+    await saveAnswer({page, section, fieldType, fieldName: clean(fieldName), answer})
+    return { answer }
   } else {
     return {}
   }
