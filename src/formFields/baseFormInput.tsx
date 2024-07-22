@@ -95,7 +95,7 @@ export abstract class BaseFormInput<AnswerType> {
   }
 
   public get page(): string {
-    return getElement(document, './/h2').innerText
+    return getElement(document, './/h2')?.innerText || "" 
   }
 
   /**
