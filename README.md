@@ -117,6 +117,7 @@ This is a rough outlook of what's to come. For more specifics, see issues.
 ### Milestones
 * Complete functionality for workday job applications.
 * Add startswith matching for answers
+* add UI for advanced answer saving
 * Complete functionality for icims job applications.
 * Profiles for for tailored inputs.
 
