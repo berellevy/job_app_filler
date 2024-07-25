@@ -1,5 +1,5 @@
 import { getElement } from '../../utils/getElements'
-import { BaseFormInput, getReactProps } from '../baseFormInput'
+import { getReactProps } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
 
