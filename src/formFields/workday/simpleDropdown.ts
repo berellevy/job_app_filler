@@ -1,7 +1,7 @@
 import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
-import { scrollBack, isElementInView, scrollIntoView } from '../../utils/scroll'
+import { scrollBack } from '../../utils/scroll'
 import { getReactProps } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
 
