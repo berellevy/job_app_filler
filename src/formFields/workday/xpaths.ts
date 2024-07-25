@@ -11,3 +11,9 @@ export const PASSWORD_INPUT = `
   [.//input[@type='password']]
   [not(.//*[@aria-haspopup])]
 `
+
+export const SIMPLE_DROPDOWN = `
+  .//div
+  [starts-with(@data-automation-id, 'formField-')]
+  [.//button[@aria-haspopup='listbox']] 
+`
