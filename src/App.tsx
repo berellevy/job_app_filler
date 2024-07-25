@@ -108,6 +108,7 @@ export const attachReactApp = (
   // cant just append the react app to the root element...
   // it makes the element disappear
   const rootElement = document.createElement('div')
-  inputContainer.appendChild(rootElement)
+  inputContainer.insertBefore(rootElement, inputContainer.lastChild)
+  // inputContainer.appendChild(rootElement)
   createRoot(rootElement).render(app)
 }
