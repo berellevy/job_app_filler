@@ -1,3 +1,4 @@
+import { SearchableSingleDropdown } from './searchableSingleDropdown'
 import { SimpleDropdown } from './simpleDropdown'
 import { PasswordInput, TextInput } from './textInput'
 
@@ -6,5 +7,6 @@ export const RegisterInputs = async (node: Node = document) => {
     TextInput.autoDiscover(node),
     PasswordInput.autoDiscover(node),
     SimpleDropdown.autoDiscover(node),
+    SearchableSingleDropdown.autoDiscover(node),
   ])
 }
