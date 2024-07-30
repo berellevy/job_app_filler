@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import SaveIcon from '@mui/icons-material/Save'
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
 import {
   Box,
@@ -81,7 +82,11 @@ export const App: React.FC<{
           <Grid item>
             <Paper elevation={4}>
               <ButtonGroup size="small">
-                <Button onClick={handleFill}>Fill</Button>
+                <Tooltip title="Autofill">
+                  <Button onClick={handleFill}>
+                    <AutoFixHighIcon />
+                  </Button>
+                </Tooltip>
                 <Tooltip title="Save current value as answer.">
                   <Button onClick={handleSave}>
                     <SaveIcon />
