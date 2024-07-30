@@ -1,7 +1,9 @@
-import { getElement } from "../../utils/getElements";
-import { BaseFormInput } from "../baseFormInput";
+import { getElement } from '../../utils/getElements'
+import { BaseFormInput } from '../baseFormInput'
 
-export abstract class WorkdayBaseInput<AnswerType> extends BaseFormInput<AnswerType> {
+export abstract class WorkdayBaseInput<
+  AnswerType
+> extends BaseFormInput<AnswerType> {
   public get section(): string {
     // must always return a string, even a blank one
     const XPATH = [
@@ -11,7 +13,6 @@ export abstract class WorkdayBaseInput<AnswerType> extends BaseFormInput<AnswerT
       '//h4', // get the h4 child of the above div
     ].join('')
     const element = getElement(this.element, XPATH)
-    return  element?.innerText || ""
+    return element?.innerText || ''
   }
-
 }
