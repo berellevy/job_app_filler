@@ -52,6 +52,12 @@ export abstract class BaseFormInput<AnswerType> {
    */
   fieldType: string
 
+
+  /**
+   * for fill errors.
+   */
+  public error: string | null
+
   constructor(element: HTMLElement) {
     this.element = element
     this.uuid = uuid4()
@@ -126,7 +132,7 @@ export abstract class BaseFormInput<AnswerType> {
     }
   }
 
-  abstract currentValue(): AnswerType
+  abstract currentValue(): any
   // {
   //   throw new Error(
   //     "Getter 'currentValue' must be implemented by all subclasses of BaseFormInput"
@@ -141,9 +147,7 @@ export abstract class BaseFormInput<AnswerType> {
     }
   }
 
-  async save() {
-    console.log(this.path);
-    
+  async save(): Promise<boolean> {
     const response = await client.send('saveAnswer', this.fieldSnapshot)
     return response.ok
   }
@@ -162,7 +166,9 @@ export abstract class BaseFormInput<AnswerType> {
     if (res.ok) {
       return res.data
     } else {
-      console.error(res)
+      this.error = "check the console"
+      console.log(this.error);
+      
     }
   }
 
