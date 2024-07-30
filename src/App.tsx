@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import SaveIcon from '@mui/icons-material/Save'
 
@@ -9,19 +9,17 @@ import {
   Button,
   Paper,
   Tooltip,
-  createTheme,
   ThemeProvider,
+  Zoom,
+  Fade,
 } from '@mui/material'
-import { BaseFormInput} from './formFields/baseFormInput'
+import { BaseFormInput } from './formFields/baseFormInput'
 
 import Logo from './components/Logo'
 import { MoreInfoPopper } from './components/MoreInfoPopper'
 import { MoreInfoContent } from './components/MoreInfoContent'
-import { teal } from '@mui/material/colors'
 import { theme } from './utils/react'
-
-
-
+import ErrorIcon from '@mui/icons-material/Error'
 
 // TODO: render seperate react app in each subclass and pass the answer type as a generic
 // but for now use any.
@@ -31,14 +29,19 @@ export const App: React.FC<{
   const [answer, setAnswer] = useState<any>(null)
   const [currentValue, setCurrentValue] = useState<any>(null)
   const [hasAnswer, setHasAnswer] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
   const refresh = () => {
-    inputClass.hasAnswer().then((res) => setHasAnswer(res))
+    inputClass.hasAnswer().then((res) => {
+      setHasAnswer(res)
+    })
     inputClass.answer().then((res) => {
       setAnswer(res)
       setCurrentValue(inputClass.currentValue())
     })
+    setError(inputClass.error)
   }
+
   useEffect(() => {
     inputClass.fill().then(() => setTimeout(refresh, 0))
     inputClass.element.addEventListener(inputClass.reactMessageEventId, refresh)
@@ -95,6 +98,13 @@ export const App: React.FC<{
               </ButtonGroup>
             </Paper>
           </Grid>
+          <Fade in={Boolean(error)}>
+            <Grid item>
+              <Tooltip title={error} TransitionComponent={Zoom}>
+                <ErrorIcon color="error" />
+              </Tooltip>
+            </Grid>
+          </Fade>
         </Grid>
       </Box>
     </ThemeProvider>
