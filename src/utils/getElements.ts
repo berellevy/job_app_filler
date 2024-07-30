@@ -32,12 +32,21 @@ export const getElements = (parent: Node, path: string): HTMLElement[] => {
   return result
 }
 
+
+/**
+ * if target exists before this function is called, return it.
+ * Otherwise, create an observer.
+ */
 export const waitForElement = (
   parent: Node,
   path: string,
   timeout: number = 3000
 ): Promise<HTMLElement | null> => {
   return new Promise((resolve, reject) => {
+    const target = getElement(parent, path)
+    if (target) {
+      return resolve(target)
+    }
     const observer = new MutationObserver((mutations, observer) => {
       const target = getElement(parent, path)
       if (target) {
