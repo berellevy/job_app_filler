@@ -32,19 +32,29 @@ export const getElements = (parent: Node, path: string): HTMLElement[] => {
   return result
 }
 
+type WaitForElementOptions = {
+  /**
+   * only return if a new element shows up,
+   * but not if a matching element was already there when the function was called
+   */
+  onlyNew?: boolean
+  timeout?: number
+}
 
 /**
  * if target exists before this function is called, return it.
  * Otherwise, create an observer.
+ * @param onlyNew: only return if a new element shows up,
+ * but not if a matching element was already there when the function was called
  */
 export const waitForElement = (
   parent: Node,
   path: string,
-  timeout: number = 3000
+  { onlyNew = false, timeout = 3000 }: WaitForElementOptions = {}
 ): Promise<HTMLElement | null> => {
   return new Promise((resolve, reject) => {
     const target = getElement(parent, path)
-    if (target) {
+    if (!onlyNew && target) {
       return resolve(target)
     }
     const observer = new MutationObserver((mutations, observer) => {
@@ -62,4 +72,3 @@ export const waitForElement = (
     observer.observe(parent, { childList: true, subtree: true })
   })
 }
-
