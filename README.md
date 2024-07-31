@@ -63,6 +63,13 @@ This includes form field discovery, answer lookup, answer filling and saving cur
 
 #### Form Field Discovery
 
+The `BaseFormInput` has a static method called `autoDiscover` which references a static property called `XPATH`. Each subclass needs to override `XPATH` and then call `autoDiscover` to automatically register any fields that match that `XPATH`.
+Since fields are grouped by site, the formFields directory will have a separate subdirectory for each website, which will have an index.js with an autoDiscover 
+method that collects all the fields.
+
+When is autoDiscover called? Upon loading the extension, a MutationObserver starts watching for any time elements are added or removed from the dom. Every time, we scan the dom for new fields and register them.
+This way, we can register fields that are added to the dom in response to a user action.
+
 See [video](https://youtu.be/mXEDv9PpdGs)
 
 #### Answer Lookup
@@ -74,11 +81,14 @@ Path: see [video](https://youtu.be/mXEDv9PpdGs)
 
 #### Answer Filling
 
-See [video](https://youtu.be/mXEDv9PpdGs)
+Each field usually requuires it's own field filling logic. Workday, for example, 
+is a React site with controlled form fields. To fill a field, you have to find the 
+correct method which updates the fields state. For example, for text fields it's onChange, but for text fields that have frontend validation, it's onBlur.
 
 #### Saving Current Values as an answer.
 
-See [video](https://youtu.be/mXEDv9PpdGs)
+When you want to save or update an answer, the simple way is to take the current value and save it. this works well for text fields, because the current answer can be the exact same format as stored answer. For single dropdowns, however, you need to store more that one answer, in case the current dropdown doesn't have your stored 
+answer. Then you need a different method which has not yet been implemented.
 
 #### React App
 
