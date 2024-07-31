@@ -27,7 +27,6 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
             if (
               getElement(node, ".//ul[@data-automation-id='selectedItemList']")
             ) {
-              this.error = null
               this.triggerReactUpdate()
             }
           })
@@ -48,11 +47,11 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
   }
 
   // CURRENT VALUE AND IS FILLED
+  get selectedItemElementXpath(): string {
+    return [".//ul[@data-automation-id='selectedItemList']", '//li'].join('')
+  }
   get selectedItemElement(): HTMLElement {
-    const XPATH = [
-      ".//ul[@data-automation-id='selectedItemList']",
-      '//li',
-    ].join('')
+    const XPATH = this.selectedItemElementXpath
     return getElement(this.element, XPATH)
   }
 
@@ -68,7 +67,6 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
     const answer = (await this.answer()) || []
     return answer.includes(this.currentValue()[0])
   }
-
 
   // CLOSE DROPDOWN AFTER FILL.
   /**
@@ -91,7 +89,7 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
       "/div[@data-automation-widget='wd-popup']",
       `[//div[@data-associated-widget='${dropdownId}']]`,
     ].join('')
-    return await waitForElement(document, XPATH)
+    return await waitForElement(document, XPATH, {timeout: 1000})
   }
 
   /**
@@ -112,16 +110,25 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
   }
 
   /**
-   * This field can be filled by typing a query into the `inputElement` 
+   * FILL PROCESS
+   * This field can be filled by typing a query into the `inputElement`
    * and hitting tab or enter. The dropdown doesn't need to be opened.
    * on tab down, a the value of e.target is used to search for
    * and select the correct answer, if available.
-   * Filling is as simple as calling the onKeyDown method of the react input el.
-   * Doing this opens the dropdown, so it needs to be closed.
+   * Therefore, filling is as simple as calling the onKeyDown method of the react input el.
+   * 
+   * FILL CONFIRMATION
+   * after filling, we wait for the appearance an asnswer element that contains 
+   * the correct answer
+   * 
+   * Doing this may open the dropdown, so it needs to be closed.
+   * if awaiting for the the fill method, the dropdown is closed asynchronously
+   * 
+   * 
    */
   async fill(): Promise<void> {
     if ((await this.hasAnswer()) && !(await this.isFilled())) {
-      fieldFillerQueue.enqueue(async () => {
+      await fieldFillerQueue.enqueue(async () => {
         await scrollBack(async () => {
           const answerList = (await this.answer()) || []
           if (answerList.length > 0) {
@@ -132,16 +139,17 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
                 key: 'Tab',
                 target: { value: answer },
               })
-              await sleep(100)
-              if (await this.isFilled()) {
-                this.closeDropdown()
+              const el = await waitForElement(
+                this.element,
+                `${this.selectedItemElementXpath}[(descendant::text()='${answer}')]`,
+                { timeout: 1000 }
+              )
+              if (el) {
                 break
               }
             }
+            this.closeDropdown() // asynchronously
           }
-          await sleep(400) // if we don't wait, the react app doesn't reflect changes
-          // when the answer replaces an existing value.
-          this.triggerReactUpdate()
         })
       })
     }
