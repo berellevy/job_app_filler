@@ -21,6 +21,7 @@ import { MoreInfoPopper } from './components/MoreInfoPopper'
 import { MoreInfoContent } from './components/MoreInfoContent'
 import { theme } from './utils/react'
 import ErrorIcon from '@mui/icons-material/Error'
+import { sleep } from './utils/async';
 
 // TODO: render seperate react app in each subclass and pass the answer type as a generic
 // but for now use any.
@@ -31,6 +32,8 @@ export const App: React.FC<{
   const [currentValue, setCurrentValue] = useState<any>(null)
   const [hasAnswer, setHasAnswer] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
+  const [fillButtonDisabled, setFillButtonDisabled] = useState<boolean>(false)
+
 
   const refresh = () => {
     inputClass.hasAnswer().then((res) => {
@@ -63,8 +66,10 @@ export const App: React.FC<{
   }
 
   const handleFill = async () => {
+    setFillButtonDisabled(true)
     await inputClass.fill()
     refresh()
+    setFillButtonDisabled(false)
   }
 
   const handleDeleteAnswer = async () => {
@@ -83,9 +88,11 @@ export const App: React.FC<{
             <Paper elevation={4}>
               <ButtonGroup size="small">
                 <Tooltip title="Autofill">
-                  <Button onClick={handleFill}>
-                    <AutoFixHighIcon />
-                  </Button>
+                  <span>
+                    <Button onClick={handleFill} disabled={fillButtonDisabled}>
+                      <AutoFixHighIcon />
+                    </Button>
+                  </span>
                 </Tooltip>
                 <Tooltip title="Save current value as answer.">
                   <Button onClick={handleSave}>
