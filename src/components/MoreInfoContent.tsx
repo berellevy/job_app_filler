@@ -35,7 +35,7 @@ export const MoreInfoContent: FC<{
                     alignItems: 'center',
                   }}
                 >
-                  {answer}
+                  {String(answer)}
                   <ConfirmButton
                     component="IconButton"
                     action={handleDeleteAnswer}
@@ -65,7 +65,7 @@ export const MoreInfoContent: FC<{
           </TableRow>
           <TableRow>
             <TableCell variant="head">Current</TableCell>
-            <TableCell>{currentValue}</TableCell>
+            <TableCell>{String(currentValue)}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
