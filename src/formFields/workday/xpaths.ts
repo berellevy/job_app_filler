@@ -28,3 +28,10 @@ export const SEARCHABLE_SINGLE_DROPDOWN = [
   "[(@data-automation-id='formField-sourcePrompt') or (@data-automation-id='formField-country-phone-code')]",
   "[.//div[@data-automation-id='multiSelectContainer']]",
 ].join('')
+
+
+export const SINGLE_CHECKBOX = [
+  './/div',
+  "[starts-with(@data-automation-id, 'formField-')]",
+  "[count(.//input[@type='checkbox']) = 1]"
+].join('')
