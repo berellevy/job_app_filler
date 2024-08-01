@@ -1,10 +1,9 @@
-import { client } from '../../inject/inject'
+
 import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
 import { scrollBack } from '../../utils/scroll'
 import { getReactProps } from '../baseFormInput'
-import { FieldSnapshot } from '../types'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
 
