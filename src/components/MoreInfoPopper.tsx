@@ -44,7 +44,7 @@ export const MoreInfoPopper: React.FC<{
         id={id}
         open={isOpen}
         anchorEl={anchorEl}
-        placement="right-start"
+        placement="right-end"
         transition
       >
         {({ TransitionProps }) => (
