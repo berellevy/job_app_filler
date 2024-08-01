@@ -1,15 +1,35 @@
 # Change Log
 All significant changes to this project will be documented in this file.
 
+## [1.0.5] - unreleased
+
+### Added
+
+- [workday] single checkbox
+- Has answer badge and is filled badge
+
+### Changed
+ - change tootltip placement to top.
+ - more info menu now goes upward.
+
+### Fixed
+
+- [workday] simple dropdown hasAnswer 
+- [fieldFillerQueue] make the result of enqueue awaitable.
+
+
 ## [1.0.4] - 2024-07-31
 
 ### Added
+
 - [Workday] Added support for searchable single dropdown.
 
 ### Changed
+
 - Change fill button from 'fill' to magic wand icon.
 
 ### Fixed
+
 - issues with the ui not syncing
 
 ## [1.0.3] - 2024-07-25
