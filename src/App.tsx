@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import SaveIcon from '@mui/icons-material/Save'
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh'
 
 import {
   Box,
@@ -21,7 +21,7 @@ import { MoreInfoPopper } from './components/MoreInfoPopper'
 import { MoreInfoContent } from './components/MoreInfoContent'
 import { theme } from './utils/react'
 import ErrorIcon from '@mui/icons-material/Error'
-import { sleep } from './utils/async';
+import { ButtonSuccessBadge } from './components/ButtonSuccessBadge'
 
 // TODO: render seperate react app in each subclass and pass the answer type as a generic
 // but for now use any.
@@ -32,22 +32,22 @@ export const App: React.FC<{
   const [currentValue, setCurrentValue] = useState<any>(null)
   const [hasAnswer, setHasAnswer] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
+  const [isFilled, setIsFilled] = useState<boolean>(false)
   const [fillButtonDisabled, setFillButtonDisabled] = useState<boolean>(false)
 
-
   const refresh = () => {
-    inputClass.hasAnswer().then((res) => {
-      setHasAnswer(res)
-    })
+    inputClass.hasAnswer().then(setHasAnswer)
     inputClass.answer().then((res) => {
       setAnswer(res)
       setCurrentValue(inputClass.currentValue())
+      inputClass.isFilled().then(setIsFilled)
     })
+
     setError(inputClass.error)
   }
 
   useEffect(() => {
-    inputClass.fill().then(() => setTimeout(refresh, 0))
+    handleFill()
     inputClass.element.addEventListener(inputClass.reactMessageEventId, refresh)
 
     return () => {
@@ -87,18 +87,29 @@ export const App: React.FC<{
           <Grid item>
             <Paper elevation={4}>
               <ButtonGroup size="small">
-                <Tooltip title="Autofill">
+                <Tooltip title="Autofill" placement="top" arrow>
                   <span>
-                    <Button onClick={handleFill} disabled={fillButtonDisabled}>
-                      <AutoFixHighIcon />
-                    </Button>
+                    <ButtonSuccessBadge show={hasAnswer && isFilled}>
+                      <Button
+                        onClick={handleFill}
+                        disabled={fillButtonDisabled}
+                      >
+                        <AutoFixHighIcon />
+                      </Button>
+                    </ButtonSuccessBadge>
                   </span>
                 </Tooltip>
-                <Tooltip title="Save current value as answer.">
-                  <Button onClick={handleSave}>
-                    <SaveIcon />
-                  </Button>
-                </Tooltip>
+                <ButtonSuccessBadge show={hasAnswer}>
+                  <Tooltip
+                    title="Save current value as answer."
+                    placement="top"
+                    arrow
+                  >
+                    <Button onClick={handleSave}>
+                      <SaveIcon />
+                    </Button>
+                  </Tooltip>
+                </ButtonSuccessBadge>
                 <MoreInfoPopper title="More Info">
                   <MoreInfoContent
                     answer={answer}
