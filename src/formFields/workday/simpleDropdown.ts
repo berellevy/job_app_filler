@@ -32,6 +32,11 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
     return [this.buttonElement.innerText]
   }
 
+  async isFilled(): Promise<boolean> {
+    const answer = (await this.answer()) || []
+    return answer.includes(this.currentValue()[0])
+  }
+
   private get buttonElement(): HTMLElement {
     return getElement(this.element, './/button[@data-automation-id]')
   }
@@ -74,7 +79,7 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
    * 
    */
   async fill(): Promise<void> {
-    fieldFillerQueue.enqueue(async () => {
+    await fieldFillerQueue.enqueue(async () => {
       await scrollBack(async () => {
         const answerList = (await this.answer()) || []
         if (answerList.length > 0) {
@@ -95,7 +100,6 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
             }
           }
           this.closeDropdown()
-          this.triggerReactUpdate()
         }
       })
     })
