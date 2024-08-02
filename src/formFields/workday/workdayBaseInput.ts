@@ -9,6 +9,7 @@ export abstract class WorkdayBaseInput<
     const XPATH = [
       'ancestor::div', // ancestor div
       `[//div[@job-app-filler='${this.uuid}']]`, // that contains this element (i.e. this form field's containing div.)
+      "[.//h4]", // and contains an h4.
       '[1]', // first div to match this criteria
       '//h4', // get the h4 child of the above div
     ].join('')
