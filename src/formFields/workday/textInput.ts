@@ -1,3 +1,5 @@
+import { sleep } from '../../utils/async'
+import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
 import { getReactProps } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
@@ -21,7 +23,7 @@ export class TextInput extends WorkdayBaseInput<string | null> {
       this.element.removeEventListener('input', callback)
       this.inputElement().removeEventListener('blur', callback)
       this.internalValue = e.target.value
-      setTimeout(() => this.listenForChanges(), 0)
+      sleep(10).then(() => this.listenForChanges())
     }
 
     this.element.addEventListener('input', callback)
@@ -36,20 +38,19 @@ export class TextInput extends WorkdayBaseInput<string | null> {
    * TODO: explain
    */
   async fill() {
-    if (await this.hasAnswer()) {
-      const answer = await this.answer()
-      const reactProps = getReactProps(this.inputElement())
-      if (reactProps.onChange) {
-        reactProps.onChange({ target: { value: answer } })
-      } else if (reactProps.onBlur) {
-        reactProps.onBlur({ target: { value: answer } })
-      }
-      this.internalValue = answer
+    if (!(await this.isFilled()) && (await this.hasAnswer())) {
+      await fieldFillerQueue.enqueue(async () => {
+        const answer = await this.answer()
+        const reactProps = getReactProps(this.inputElement())
+        if (reactProps.onChange) {
+          reactProps.onChange({ target: { value: answer } })
+        } else if (reactProps.onBlur) {
+          reactProps.onBlur({ target: { value: answer } })
+        }
+        this.internalValue = answer
+        await sleep(100)
+      })
     }
-
-    setTimeout(() => {
-      this.triggerReactUpdate()
-    }, 0)
   }
 }
 
