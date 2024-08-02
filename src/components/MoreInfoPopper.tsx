@@ -51,26 +51,28 @@ export const MoreInfoPopper: React.FC<{
           <Fade {...TransitionProps} timeout={350}>
             <Box mx={1}>
               <Paper elevation={8}>
-                <Card>
-                  <CardHeader
-                    sx={{ padding: 1 }}
-                    title={title}
-                    action={
-                      <IconButton
-                        aria-label="close"
-                        onClick={closePopper}
-                        sx={{ marginLeft: 'auto' }}
-                      >
-                        <CloseIcon />
-                      </IconButton>
-                    }
-                  />
-                  <CardContent
-                    sx={{ padding: 0, paddingBottom: '0px!important' }}
-                  >
-                    {children}
-                  </CardContent>
-                </Card>
+                <Box sx={{ maxWidth: 'calc(50vw)', maxHeight: 500, overflow: 'scroll' }}>
+                  <Card>
+                    <CardHeader
+                      sx={{ padding: 1 }}
+                      title={title}
+                      action={
+                        <IconButton
+                          aria-label="close"
+                          onClick={closePopper}
+                          sx={{ marginLeft: 'auto' }}
+                        >
+                          <CloseIcon />
+                        </IconButton>
+                      }
+                    />
+                    <CardContent
+                      sx={{ padding: 0, paddingBottom: '0px!important' }}
+                    >
+                      {children}
+                    </CardContent>
+                  </Card>
+                </Box>
               </Paper>
             </Box>
           </Fade>
