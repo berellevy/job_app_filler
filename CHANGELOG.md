@@ -5,16 +5,20 @@ All significant changes to this project will be documented in this file.
 
 ### Added
 
-- [workday] single checkbox
-- Has answer badge and is filled badge
+- [workday] single checkbox, montYear & textarea.
+- Has answer badge and is filled badge.
+- question path info to popup.
 
 ### Changed
  - change tootltip placement to top.
  - more info menu now goes upward.
+ - add all field fill methods to queue.
+ - make react app refresh function async.
 
 ### Fixed
 
 - [workday] simple dropdown hasAnswer 
+- [workday] text input bugs
 - [fieldFillerQueue] make the result of enqueue awaitable.
 
 
