@@ -1,6 +1,8 @@
+import { MonthYear } from './MonthYear'
 import { SearchableSingleDropdown } from './searchableSingleDropdown'
 import { SimpleDropdown } from './simpleDropdown'
 import { SingleCheckbox } from './SingleCheckbox'
+import { TextArea } from './TextArea'
 import { PasswordInput, TextInput } from './textInput'
 
 export const RegisterInputs = async (node: Node = document) => {
@@ -9,6 +11,8 @@ export const RegisterInputs = async (node: Node = document) => {
     PasswordInput.autoDiscover(node),
     SimpleDropdown.autoDiscover(node),
     SearchableSingleDropdown.autoDiscover(node),
-    SingleCheckbox.autoDiscover(node)
+    SingleCheckbox.autoDiscover(node),
+    MonthYear.autoDiscover(node),
+    TextArea.autoDiscover(node)
   ])
 }

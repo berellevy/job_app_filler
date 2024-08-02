@@ -35,3 +35,16 @@ export const SINGLE_CHECKBOX = [
   "[starts-with(@data-automation-id, 'formField-')]",
   "[count(.//input[@type='checkbox']) = 1]"
 ].join('')
+
+export const MONTH_YEAR = [
+  './/div',
+  "[starts-with(@data-automation-id, 'formField-')]",
+  "[.//input[@aria-label='Month']]",
+  "[.//input[@aria-label='Year']]"
+].join("")
+
+export const TEXT_AREA = [
+  './/div',
+  "[starts-with(@data-automation-id, 'formField-')]",
+  "[.//textarea]"
+].join("")
