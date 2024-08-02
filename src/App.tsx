@@ -35,19 +35,19 @@ export const App: React.FC<{
   const [isFilled, setIsFilled] = useState<boolean>(false)
   const [fillButtonDisabled, setFillButtonDisabled] = useState<boolean>(false)
 
-  const refresh = () => {
-    inputClass.hasAnswer().then(setHasAnswer)
-    inputClass.answer().then((res) => {
-      setAnswer(res)
-      setCurrentValue(inputClass.currentValue())
-      inputClass.isFilled().then(setIsFilled)
-    })
-
+  const refresh = async () => {
+    setHasAnswer(await inputClass.hasAnswer())
+    setAnswer(await inputClass.answer())
+    setCurrentValue(inputClass.currentValue())
+    setIsFilled(await inputClass.isFilled())
     setError(inputClass.error)
   }
 
   useEffect(() => {
-    handleFill()
+    ;(async () => {
+
+      await handleFill()
+    })()
     inputClass.element.addEventListener(inputClass.reactMessageEventId, refresh)
 
     return () => {
@@ -61,20 +61,20 @@ export const App: React.FC<{
   const handleSave = async () => {
     const result: boolean = await inputClass.save()
     if (result) {
-      refresh()
+      await refresh()
     }
   }
 
   const handleFill = async () => {
     setFillButtonDisabled(true)
     await inputClass.fill()
-    refresh()
+    await refresh()
     setFillButtonDisabled(false)
   }
 
   const handleDeleteAnswer = async () => {
     await inputClass.deleteAnswer()
-    refresh()
+    await refresh()
   }
 
   return (
@@ -116,6 +116,7 @@ export const App: React.FC<{
                     currentValue={currentValue}
                     handleDeleteAnswer={handleDeleteAnswer}
                     hasAnswer={hasAnswer}
+                    path={inputClass.path}
                   />
                 </MoreInfoPopper>
               </ButtonGroup>
