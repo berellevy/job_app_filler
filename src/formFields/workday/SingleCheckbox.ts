@@ -1,4 +1,4 @@
-import { sleep } from '../../utils/async'
+import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
@@ -48,13 +48,15 @@ export class SingleCheckbox extends WorkdayBaseInput<boolean> {
    * before ending the function and allowing the react app to update.
    */
   async fill(): Promise<void> {
-    if (await this.hasAnswer()) {
-      const initialValue = this.currentValue()
-      this.checkboxElement().click()
-      await waitForElement(
-        this.element,
-        this.currentStateXpath(!initialValue)
-      )
+    if (await this.hasAnswer() && !(await this.isFilled())) {
+      await fieldFillerQueue.enqueue(async () => {
+        const initialValue = this.currentValue()
+        this.checkboxElement().click()
+        await waitForElement(
+          this.element,
+          this.currentStateXpath(!initialValue)
+        )
+      })
     }
   }
 }
