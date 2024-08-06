@@ -1,7 +1,21 @@
 # Change Log
 All significant changes to this project will be documented in this file.
 
-## [1.0.5] - unreleased
+## [1.0.6] - unreleased
+
+### Added
+
+- [workday] year input field. boolean radio field.
+
+### Changed
+
+- remove 'wd1' prefix for workday sites
+
+### Fixed
+
+
+
+## [1.0.5] - 2024-08-02
 
 ### Added
 
