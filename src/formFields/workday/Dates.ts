@@ -103,3 +103,73 @@ export class MonthYear extends WorkdayBaseInput<[string, string]> {
     }
   }
 }
+
+
+export class Year extends WorkdayBaseInput<string> {
+  static XPATH = xpaths.YEAR
+  fieldType = 'Year'
+  listenForChanges(): void {
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'characterData') {
+          this.triggerReactUpdate()
+        }
+      }
+    })
+    observer.observe(this.wrapperElement, {
+      characterData: true,
+      childList: true,
+      subtree: true,
+    })
+  }
+
+  get yearInputElement(): HTMLInputElement {
+    return getElement(
+      this.element,
+      ".//input[@aria-label='Year']"
+    ) as HTMLInputElement
+  }
+  currentValue() {
+    return this.yearInputElement.value
+  }
+
+  get wrapperElement(): HTMLElement {
+    return getElement(
+      this.element,
+      ".//div[@data-automation-id='dateInputWrapper']"
+    )
+  }
+
+  /**
+   * After calling the onKeyDown of the month and year inputs
+   * we need to wait until the change is reflected. This usually happens very quickly
+   * so the while loop doesn't get called too much.
+   * When I tested it, the while loop was called once. (berel)
+   *
+   * In order to update react state properly, the input elements need to be clicked after calling the onkeydown
+   * Also, sometimes, we have to send the onKeyDown event more than once for it to work
+   *
+   */
+  async fill(): Promise<void> {
+    if ((await this.hasAnswer()) && !(await this.isFilled())) {
+      await fieldFillerQueue.enqueue(async () => {
+        const year = await this.answer()
+        this.yearInputElement.click()
+        let retries = 20
+        while (!(this.yearInputElement.value === year) && retries > 0) {
+          await sleep(50)
+          getReactProps(this.yearInputElement).onKeyDown({
+            nativeEvent: { key: 'Up', setSelectionRange: () => {} },
+            preventDefault: () => {},
+            currentTarget: {
+              value: parseInt(year) - 1,
+              setSelectionRange: () => {},
+            },
+          })
+          retries--
+        }
+        this.yearInputElement.click()
+      })
+    }
+  }
+}

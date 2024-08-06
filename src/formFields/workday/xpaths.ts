@@ -25,7 +25,11 @@ export const SIMPLE_DROPDOWN = `
  */
 export const SEARCHABLE_SINGLE_DROPDOWN = [
   './/div',
-  "[(@data-automation-id='formField-sourcePrompt') or (@data-automation-id='formField-country-phone-code')]",
+  "[",
+  "(@data-automation-id='formField-sourcePrompt') or ",
+  "(@data-automation-id='formField-country-phone-code') or ",
+  "(@data-automation-id='formField-field-of-study')",
+  "]",
   "[.//div[@data-automation-id='multiSelectContainer']]",
 ].join('')
 
@@ -41,10 +45,25 @@ export const MONTH_YEAR = [
   "[starts-with(@data-automation-id, 'formField-')]",
   "[.//input[@aria-label='Month']]",
   "[.//input[@aria-label='Year']]"
+  
+].join("")
+
+export const YEAR = [
+  './/div',
+  "[starts-with(@data-automation-id, 'formField-')]",
+  "[.//input[@aria-label='Year']]",
+  "[not(.//input[@aria-label='Month'])]",
+  
 ].join("")
 
 export const TEXT_AREA = [
   './/div',
   "[starts-with(@data-automation-id, 'formField-')]",
   "[.//textarea]"
+].join("")
+
+export const BOOLEAN_RADIO = [
+  './/div',
+  "[starts-with(@data-automation-id, 'formField-')]",
+  "[count(.//input[@type='radio']) = 2]"
 ].join("")
