@@ -9,7 +9,11 @@ All significant changes to this project will be documented in this file.
 
 ### Changed
 
-- remove 'wd1' prefix for workday sites
+- Change answer storage format from nested to flat.
+- update ui a little.
+- switch to universal answer type.
+- remove 'wd1' prefix for workday sites.
+- change path display to use breadcrumbs.
 
 ### Fixed
 
