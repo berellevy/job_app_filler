@@ -2,6 +2,7 @@ import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
 import { scrollBack } from '../../utils/scroll'
+import { Answer, AnswerDisplayType } from '../../utils/types'
 import { getReactProps } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
 
@@ -10,6 +11,7 @@ import * as xpaths from './xpaths'
 export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
   static XPATH: string = xpaths.SIMPLE_DROPDOWN
   fieldType: string = 'SimpleDropdown'
+  answerDisplayType: AnswerDisplayType = "BackupAnswerDisplay"
 
   /**
    * fires whenever the buttonElement's innerText changes
@@ -32,9 +34,9 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
     return [this.buttonElement.innerText]
   }
 
-  async isFilled(): Promise<boolean> {
-    const answer = (await this.answer()) || []
-    return answer.includes(this.currentValue()[0])
+  async isFilled(answer?: Answer): Promise<boolean> {
+    answer = answer || (await this.answer())
+    return (answer.answer || []).includes(this.currentValue()[0])
   }
 
   private get buttonElement(): HTMLElement {
@@ -76,13 +78,14 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
    * Therefore, the code cycles through the stored answers, trying each one. The first
    * match that found is selected.
    * For now the ui only supports one answer.
-   * 
+   *
    */
   async fill(): Promise<void> {
-    await fieldFillerQueue.enqueue(async () => {
-      await scrollBack(async () => {
-        const answerList = (await this.answer()) || []
-        if (answerList.length > 0) {
+    const { answer, hasAnswer } = await this.answer()
+    if (hasAnswer && (answer || []).length > 0)
+      await fieldFillerQueue.enqueue(async () => {
+        await scrollBack(async () => {
+          const answerList = answer
           this.openDropdown()
           await sleep(50)
           const dropdownElement = await this.dropdownElement()
@@ -100,8 +103,7 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
             }
           }
           this.closeDropdown()
-        }
+        })
       })
-    })
   }
 }

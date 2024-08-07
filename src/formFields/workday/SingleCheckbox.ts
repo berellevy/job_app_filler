@@ -1,11 +1,13 @@
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
+import { AnswerDisplayType } from '../../utils/types'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
 
 export class SingleCheckbox extends WorkdayBaseInput<boolean> {
   static XPATH = xpaths.SINGLE_CHECKBOX
   fieldType: string = 'SingleCheckbox'
+  answerDisplayType: AnswerDisplayType = "SingleAnswerDisplay"
 
   /**
    * When the change event is intercepted, the value is still the old value.
@@ -48,7 +50,8 @@ export class SingleCheckbox extends WorkdayBaseInput<boolean> {
    * before ending the function and allowing the react app to update.
    */
   async fill(): Promise<void> {
-    if (await this.hasAnswer() && !(await this.isFilled())) {
+    const answer = await this.answer()
+    if (answer.hasAnswer && !(await this.isFilled(answer))) {
       await fieldFillerQueue.enqueue(async () => {
         const initialValue = this.currentValue()
         this.checkboxElement().click()

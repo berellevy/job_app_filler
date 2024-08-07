@@ -1,17 +1,14 @@
-import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
-import {
-  getElement,
-  getElements,
-  waitForElement,
-} from '../../utils/getElements'
-import { getReactProps } from '../baseFormInput'
+import { getElement } from '../../utils/getElements'
+import { AnswerDisplayType } from '../../utils/types'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
 
 export class BooleanRadio extends WorkdayBaseInput<string> {
   static XPATH = xpaths.BOOLEAN_RADIO
   fieldType = 'BooleanRadio'
+
+  answerDisplayType: AnswerDisplayType = 'SingleAnswerDisplay'
   listenForChanges(): void {
     const radioGroupElement = getElement(
       this.element,
@@ -51,15 +48,18 @@ export class BooleanRadio extends WorkdayBaseInput<string> {
   }
 
   async fill(): Promise<void> {
-    await fieldFillerQueue.enqueue(async () => {
-      const answer = await this.answer()
-      const XPATH = [
-        '//div',
-        `[label[text()='${answer}']]`,
-        "//input[@type='radio']",
-      ].join('')
-      const checkElement = getElement(this.element, XPATH)
-      checkElement.click()
-    })
+    const answer = await this.answer()
+    if (answer.hasAnswer) {
+      await fieldFillerQueue.enqueue(async () => {
+        const XPATH = [
+          '//div',
+          `[label[text()='${answer.answer}']]`,
+          "//input[@type='radio']",
+        ].join('')
+        const checkElement = getElement(this.element, XPATH)
+        checkElement.click()
+      })
+    }
   }
+  
 }

@@ -1,6 +1,7 @@
 import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
+import { Answer, AnswerDisplayType } from '../../utils/types'
 import { getReactProps } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
@@ -8,6 +9,7 @@ import * as xpaths from './xpaths'
 export class MonthYear extends WorkdayBaseInput<[string, string]> {
   static XPATH = xpaths.MONTH_YEAR
   fieldType = 'MonthYear'
+  answerDisplayType: AnswerDisplayType = 'SingleAnswerDisplay'
   listenForChanges(): void {
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
@@ -48,8 +50,12 @@ export class MonthYear extends WorkdayBaseInput<[string, string]> {
   }
 
   /**can't compare arrays in js :/ */
-  async isFilled(): Promise<boolean> {
-    const [answerMonth, answerYear] = (await this.answer()) || ['', '']
+  async isFilled(answer?: Answer): Promise<boolean> {
+    answer = answer || (await this.answer())
+    if (!answer.hasAnswer) {
+      return false
+    }
+    const [answerMonth, answerYear] = answer.answer || ['', '']
     const [currentValueMonth, currentValueYear] = this.currentValue()
     return answerMonth === currentValueMonth && answerYear === currentValueYear
   }
@@ -65,10 +71,10 @@ export class MonthYear extends WorkdayBaseInput<[string, string]> {
    *
    */
   async fill(): Promise<void> {
-    if ((await this.hasAnswer()) && !(await this.isFilled())) {
-      // await sleep(1000)
+    const answer = await this.answer()
+    if (answer.hasAnswer && !(await this.isFilled(answer))) {
       await fieldFillerQueue.enqueue(async () => {
-        const [month, year] = await this.answer()
+        const [month, year] = answer.answer
         this.monthInputElement.click()
         let retries = 20
         while (!(this.monthInputElement.value === month) && retries >= 0) {
@@ -104,10 +110,10 @@ export class MonthYear extends WorkdayBaseInput<[string, string]> {
   }
 }
 
-
 export class Year extends WorkdayBaseInput<string> {
   static XPATH = xpaths.YEAR
   fieldType = 'Year'
+  answerDisplayType: AnswerDisplayType = 'SingleAnswerDisplay'
   listenForChanges(): void {
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
@@ -151,9 +157,10 @@ export class Year extends WorkdayBaseInput<string> {
    *
    */
   async fill(): Promise<void> {
-    if ((await this.hasAnswer()) && !(await this.isFilled())) {
+    const answer = await this.answer()
+    if (answer.hasAnswer && !(await this.isFilled(answer))) {
       await fieldFillerQueue.enqueue(async () => {
-        const year = await this.answer()
+        const year = answer.answer
         this.yearInputElement.click()
         let retries = 20
         while (!(this.yearInputElement.value === year) && retries > 0) {

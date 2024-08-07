@@ -1,8 +1,8 @@
-
 import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
 import { scrollBack } from '../../utils/scroll'
+import { Answer, AnswerDisplayType } from '../../utils/types'
 import { getReactProps } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
@@ -12,6 +12,7 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
 > {
   static XPATH = xpaths.SEARCHABLE_SINGLE_DROPDOWN
   fieldType = 'SimpleDropdown'
+  answerDisplayType: AnswerDisplayType = 'BackupAnswerDisplay'
 
   /**
    * A cached property is only necessary if `listenForChanges`
@@ -62,9 +63,11 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
     }
   }
 
-  async isFilled(): Promise<boolean> {
-    const answer = (await this.answer()) || []
-    return answer.includes(this.currentValue()[0])
+  async isFilled(answer?: Answer): Promise<boolean> {
+    answer = answer || (await this.answer())
+    return (
+      answer.hasAnswer && (answer.answer || []).includes(this.currentValue()[0])
+    )
   }
 
   // CLOSE DROPDOWN AFTER FILL.
@@ -88,7 +91,7 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
       "/div[@data-automation-widget='wd-popup']",
       `[//div[@data-associated-widget='${dropdownId}']]`,
     ].join('')
-    return await waitForElement(document, XPATH, {timeout: 1000})
+    return await waitForElement(document, XPATH, { timeout: 1000 })
   }
 
   /**
@@ -115,21 +118,22 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
    * on tab down, a the value of e.target is used to search for
    * and select the correct answer, if available.
    * Therefore, filling is as simple as calling the onKeyDown method of the react input el.
-   * 
+   *
    * FILL CONFIRMATION
-   * after filling, we wait for the appearance an asnswer element that contains 
+   * after filling, we wait for the appearance an asnswer element that contains
    * the correct answer
-   * 
+   *
    * Doing this may open the dropdown, so it needs to be closed.
    * if awaiting for the the fill method, the dropdown is closed asynchronously
-   * 
-   * 
+   *
+   *
    */
   async fill(): Promise<void> {
-    if ((await this.hasAnswer()) && !(await this.isFilled())) {
+    const answer = await this.answer()
+    if (answer.hasAnswer && !(await this.isFilled(answer))) {
       await fieldFillerQueue.enqueue(async () => {
         await scrollBack(async () => {
-          const answerList = (await this.answer()) || []
+          const answerList = answer.answer
           if (answerList.length > 0) {
             await sleep(500)
             while (answerList.length > 0) {

@@ -1,6 +1,7 @@
 import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
+import { AnswerDisplayType } from '../../utils/types'
 import { getReactProps } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
@@ -8,6 +9,7 @@ import * as xpaths from './xpaths'
 export class TextInput extends WorkdayBaseInput<string | null> {
   static XPATH = xpaths.TEXT_INPUT
   fieldType = 'TextInput'
+  answerDisplayType: AnswerDisplayType = "SingleAnswerDisplay"
   private internalValue: string | null
 
   inputElement(): HTMLInputElement {
@@ -38,16 +40,16 @@ export class TextInput extends WorkdayBaseInput<string | null> {
    * TODO: explain
    */
   async fill() {
-    if (!(await this.isFilled()) && (await this.hasAnswer())) {
+    const answer = await this.answer()
+    if (answer?.hasAnswer && !(await this.isFilled(answer))) {
       await fieldFillerQueue.enqueue(async () => {
-        const answer = await this.answer()
         const reactProps = getReactProps(this.inputElement())
         if (reactProps.onChange) {
-          reactProps.onChange({ target: { value: answer } })
+          reactProps.onChange({ target: { value: answer.answer } })
         } else if (reactProps.onBlur) {
-          reactProps.onBlur({ target: { value: answer } })
+          reactProps.onBlur({ target: { value: answer.answer } })
         }
-        this.internalValue = answer
+        this.internalValue = answer.answer
         await sleep(100)
       })
     }
@@ -73,10 +75,10 @@ export class PasswordInput extends WorkdayBaseInput<string | null> {
   }
 
   async fill() {
-    if (await this.hasAnswer()) {
-      const answer = await this.answer()
+    const answer = await this.answer()
+    if (answer.hasAnswer) {
       const reactProps = getReactProps(this.inputElement())
-      reactProps.onChange({ target: { value: answer } })
+      reactProps.onChange({ target: { value: answer.answer } })
     }
   }
 }
