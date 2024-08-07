@@ -4,8 +4,7 @@ import '@fontsource/roboto'
 import {v4 as uuid4} from 'uuid'
 import { client } from '../inject/inject'
 import { App, attachReactApp } from '../App'
-import { AnswerResponse } from '../utils/storage'
-import { FieldPath, FieldSnapshot } from './types'
+import { AnswerDisplayType, Answer, FieldPath} from '../utils/types'
 
 
 
@@ -52,6 +51,8 @@ export abstract class BaseFormInput<AnswerType> {
    */
   fieldType: string
 
+  answerDisplayType: AnswerDisplayType
+
 
   /**
    * for fill errors.
@@ -65,7 +66,7 @@ export abstract class BaseFormInput<AnswerType> {
     /** prevents the element from being registered twice */
     this.element.setAttribute('job-app-filler', this.uuid)
     this.listenForChanges()
-    attachReactApp(<App inputClass={this} />, element)
+    attachReactApp(<App backend={this} />, element)
   }
 
   static async autoDiscover(node: Node = document) {
@@ -140,9 +141,9 @@ export abstract class BaseFormInput<AnswerType> {
   //   return ''
   // }
 
-  public get fieldSnapshot(): FieldSnapshot<AnswerType> {
+  public get fieldSnapshot(): Answer {
     return {
-      ...this.path,
+      path: this.path,
       answer: this.currentValue(),
     }
   }
@@ -161,30 +162,24 @@ export abstract class BaseFormInput<AnswerType> {
    * base method.
    * used by hasAnswer and answer
    */
-  async fetchAnswer(): Promise<AnswerResponse<AnswerType>> {
+  async answer(): Promise<Answer> {
     const res = await client.send('getAnswer', this.path)
     if (res.ok) {
       return res.data
     } else {
-      this.error = "check the console"
-      console.log(this.error);
-      
+      console.log(res, this.path);
+      return {
+        answer: null,
+        path: this.path,
+        hasAnswer: false
+      }
     }
   }
 
-  async hasAnswer(): Promise<boolean> {
-    const data = await  this.fetchAnswer()
-    return 'answer' in data
-  }
 
-  async answer(): Promise<AnswerType> {
-    const res = await this.fetchAnswer()
-    return res.answer
-  }
-
-  async isFilled(): Promise<boolean> {
-    const answer = await this.answer()
-    return answer === this.currentValue()
+  async isFilled(answer?: Answer): Promise<boolean> {
+    answer = answer || await this.answer()
+    return answer.answer === this.currentValue()
   }
 
   /**
