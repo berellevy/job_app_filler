@@ -1,6 +1,7 @@
 
 import { RegisterInputs } from '../formFields/workday'
-import { Client } from '../utils/crossContextCommunication'
+import { Client } from '../utils/crossContextCommunication/client'
+
 
 
 export const client = new Client(process.env.CONTENT_SCRIPT_URL)
@@ -14,4 +15,3 @@ observer.observe(document.body, {
   childList: true,
   subtree: true,
 })
-
