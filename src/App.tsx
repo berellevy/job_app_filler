@@ -22,44 +22,44 @@ import { MoreInfoContent } from './components/MoreInfoContent'
 import { theme } from './utils/react'
 import ErrorIcon from '@mui/icons-material/Error'
 import { ButtonSuccessBadge } from './components/ButtonSuccessBadge'
+import { Answer, FieldPath } from './utils/types'
 
 // TODO: render seperate react app in each subclass and pass the answer type as a generic
 // but for now use any.
 export const App: React.FC<{
-  inputClass: BaseFormInput<any>
-}> = ({ inputClass }) => {
-  const [answer, setAnswer] = useState<any>(null)
+  backend: BaseFormInput<any>
+}> = ({ backend }) => {
+  const [answer, setAnswer] = useState<Answer>({
+    answer: null,
+    hasAnswer: false,
+    path: { page: null, section: null, fieldName: null, fieldType: null },
+  })
   const [currentValue, setCurrentValue] = useState<any>(null)
-  const [hasAnswer, setHasAnswer] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [isFilled, setIsFilled] = useState<boolean>(false)
   const [fillButtonDisabled, setFillButtonDisabled] = useState<boolean>(false)
 
   const refresh = async () => {
-    setHasAnswer(await inputClass.hasAnswer())
-    setAnswer(await inputClass.answer())
-    setCurrentValue(inputClass.currentValue())
-    setIsFilled(await inputClass.isFilled())
-    setError(inputClass.error)
+    const answer = await backend.answer()
+    setAnswer(answer)
+    setCurrentValue(backend.currentValue())
+    setIsFilled(await backend.isFilled(answer))
+    setError(backend.error)
   }
 
   useEffect(() => {
     ;(async () => {
-
       await handleFill()
     })()
-    inputClass.element.addEventListener(inputClass.reactMessageEventId, refresh)
+    backend.element.addEventListener(backend.reactMessageEventId, refresh)
 
     return () => {
-      inputClass.element.removeEventListener(
-        inputClass.reactMessageEventId,
-        refresh
-      )
+      backend.element.removeEventListener(backend.reactMessageEventId, refresh)
     }
   }, [])
 
   const handleSave = async () => {
-    const result: boolean = await inputClass.save()
+    const result: boolean = await backend.save()
     if (result) {
       await refresh()
     }
@@ -67,13 +67,13 @@ export const App: React.FC<{
 
   const handleFill = async () => {
     setFillButtonDisabled(true)
-    await inputClass.fill()
+    await backend.fill()
     await refresh()
     setFillButtonDisabled(false)
   }
 
   const handleDeleteAnswer = async () => {
-    await inputClass.deleteAnswer()
+    await backend.deleteAnswer()
     await refresh()
   }
 
@@ -89,7 +89,7 @@ export const App: React.FC<{
               <ButtonGroup size="small">
                 <Tooltip title="Autofill" placement="top" arrow>
                   <span>
-                    <ButtonSuccessBadge show={hasAnswer && isFilled}>
+                    <ButtonSuccessBadge show={answer.hasAnswer && isFilled}>
                       <Button
                         onClick={handleFill}
                         disabled={fillButtonDisabled}
@@ -99,7 +99,7 @@ export const App: React.FC<{
                     </ButtonSuccessBadge>
                   </span>
                 </Tooltip>
-                <ButtonSuccessBadge show={hasAnswer}>
+                <ButtonSuccessBadge show={answer.hasAnswer}>
                   <Tooltip
                     title="Save current value as answer."
                     placement="top"
@@ -112,11 +112,12 @@ export const App: React.FC<{
                 </ButtonSuccessBadge>
                 <MoreInfoPopper title="More Info">
                   <MoreInfoContent
+                    backend={backend}
+                    answerDisplayType={backend.answerDisplayType}
                     answer={answer}
                     currentValue={currentValue}
                     handleDeleteAnswer={handleDeleteAnswer}
-                    hasAnswer={hasAnswer}
-                    path={inputClass.path}
+                    path={backend.path}
                   />
                 </MoreInfoPopper>
               </ButtonGroup>
