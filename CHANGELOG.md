@@ -5,7 +5,7 @@ All significant changes to this project will be documented in this file.
 
 ### Added
 
-- [workday] year input field. boolean radio field.
+- [workday] year input field. boolean radio field. education field of study
 
 ### Changed
 
@@ -16,6 +16,7 @@ All significant changes to this project will be documented in this file.
 - change path display to use breadcrumbs.
 
 ### Fixed
+
 
 
 
