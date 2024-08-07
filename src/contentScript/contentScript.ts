@@ -1,12 +1,14 @@
-import { FieldPath, FieldSnapshot } from "../formFields/types";
-import { Server } from "../utils/crossContextCommunication";
+
+
+import { Server } from "../utils/crossContextCommunication/server";
 import { deleteAnswer, getAnswer, saveAnswer } from "../utils/storage";
+import { FieldPath, Answer} from "../utils/types";
 
 
 // Regiser server and methods accessible to injected script.
 const server = new Server(process.env.CONTENT_SCRIPT_URL)
-server.register('saveAnswer', async (fieldSnapshot: FieldSnapshot) => {
-  return await saveAnswer(fieldSnapshot)
+server.register('saveAnswer', async (answer: Answer) => {
+  return await saveAnswer(answer)
 })
 
 server.register("getAnswer", async (fieldPath: FieldPath) => {
