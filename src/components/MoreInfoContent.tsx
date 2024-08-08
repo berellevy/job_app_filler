@@ -1,19 +1,21 @@
 import {
   Breadcrumbs,
   Chip,
+  Fade,
   Paper,
   Stack,
   styled,
   Tooltip,
   Typography,
 } from '@mui/material'
-import React, { FC} from 'react'
+import React, { FC } from 'react'
 import InfoIcon from '@mui/icons-material/Info'
 
 import { SingleAnswerDisplay } from './SingleAnswerDisplay'
 import { BaseFormInput } from '../formFields/baseFormInput'
 import { BackupAnswerDisplay } from './BackupAnswerDisplay'
-import { AnswerDisplayType, FieldPath } from '../utils/types'
+import { Answer, AnswerDisplayType, FieldPath } from '../utils/types'
+import { LocalAnswerState } from '../App'
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -36,14 +38,18 @@ export const MoreInfoContent: FC<{
   answer: any
   answerDisplayType?: AnswerDisplayType
   handleDeleteAnswer: () => Promise<void>
+  handleSaveAnswer: (answer?: Answer) => Promise<any>
   currentValue: any
   path: FieldPath
+  localAnswerState: LocalAnswerState
 }> = ({
   answer,
   handleDeleteAnswer,
   currentValue,
   path,
   answerDisplayType,
+  handleSaveAnswer,
+  localAnswerState,
 }) => {
   const AnswerDisplay = getAnswerDisplay(answerDisplayType)
   return (
@@ -71,13 +77,19 @@ export const MoreInfoContent: FC<{
       </Item>
       <Item>
         <Typography variant="h6">Answers</Typography>
-
-        {answer.hasAnswer ? (
-          <AnswerDisplay
-            answer={answer}
-            handleDeleteAnswer={handleDeleteAnswer}
-          />
-        ) : (
+        {answer.hasAnswer && (
+          <Fade in={answer.hasAnswer} timeout={{exit: 450}} unmountOnExit>
+            <div>
+              <AnswerDisplay
+                answer={answer}
+                handleDeleteAnswer={handleDeleteAnswer}
+                handleSaveAnswer={handleSaveAnswer}
+                localAnswerState={localAnswerState}
+              />
+            </div>
+          </Fade>
+        )}
+        <Fade in={!answer.hasAnswer} timeout={{enter: 350}} unmountOnExit>
           <Typography
             component={'div'}
             sx={{
@@ -91,7 +103,7 @@ export const MoreInfoContent: FC<{
               <InfoIcon sx={{ marginLeft: '4px' }} fontSize="inherit" />
             </Tooltip>
           </Typography>
-        )}
+        </Fade>
       </Item>
     </Stack>
   )
