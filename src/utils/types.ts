@@ -26,7 +26,11 @@ export type FieldPath = {
   fieldType: string
   fieldName: string
 }
-export type Answer<T = any> = { answer: T; path: FieldPath; hasAnswer?: boolean }
+export type Answer<T = any> = {
+  answer: T
+  path: FieldPath | null
+  hasAnswer?: boolean
+}
 
 export type AnswerDisplayType = 'SingleAnswerDisplay' | 'BackupAnswerDisplay'
 
