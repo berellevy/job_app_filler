@@ -148,8 +148,9 @@ export abstract class BaseFormInput<AnswerType> {
     }
   }
 
-  async save(): Promise<boolean> {
-    const response = await client.send('saveAnswer', this.fieldSnapshot)
+  async save(answer?: Answer): Promise<boolean> {
+    answer = answer || this.fieldSnapshot
+    const response = await client.send('saveAnswer', answer)
     return response.ok
   }
 
