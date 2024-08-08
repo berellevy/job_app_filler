@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import SaveIcon from '@mui/icons-material/Save'
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh'
@@ -24,6 +24,9 @@ import ErrorIcon from '@mui/icons-material/Error'
 import { ButtonSuccessBadge } from './components/ButtonSuccessBadge'
 import { Answer, FieldPath } from './utils/types'
 
+export type LocalAnswer = [string, Boolean]
+export type LocalAnswerState = [LocalAnswer[], React.Dispatch<React.SetStateAction<LocalAnswer[]>>]
+
 // TODO: render seperate react app in each subclass and pass the answer type as a generic
 // but for now use any.
 export const App: React.FC<{
@@ -39,6 +42,13 @@ export const App: React.FC<{
   const [isFilled, setIsFilled] = useState<boolean>(false)
   const [fillButtonDisabled, setFillButtonDisabled] = useState<boolean>(false)
 
+  const buttonGroupRef = useRef(null)
+  const moreInfoPopperState = useState<null | HTMLElement>(null)
+  const setPopperAnchorEl = moreInfoPopperState[1]
+  const localAnswerState = useState<LocalAnswer[]>([])
+  const setLocalAnswerState = localAnswerState[1]
+
+
   const refresh = async () => {
     const answer = await backend.answer()
     setAnswer(answer)
@@ -49,6 +59,7 @@ export const App: React.FC<{
 
   useEffect(() => {
     ;(async () => {
+      await refresh()
       await handleFill()
     })()
     backend.element.addEventListener(backend.reactMessageEventId, refresh)
@@ -58,10 +69,19 @@ export const App: React.FC<{
     }
   }, [])
 
-  const handleSave = async () => {
-    const result: boolean = await backend.save()
+  const saveAnswer = async (newAnswer?: Answer) => {
+    const result: boolean = await backend.save(newAnswer)
     if (result) {
       await refresh()
+    }
+  }
+
+  const handleSave = async (newAnswer?: Answer) => {
+    if (!answer.answer) {
+      saveAnswer(newAnswer)
+    } else if (backend.answerDisplayType === 'BackupAnswerDisplay') {
+      setLocalAnswerState([...answer.answer.map((answer: string) => [answer, false]), ["", true]])
+      setPopperAnchorEl(buttonGroupRef.current)
     }
   }
 
@@ -86,7 +106,7 @@ export const App: React.FC<{
           </Grid>
           <Grid item>
             <Paper elevation={4}>
-              <ButtonGroup size="small">
+              <ButtonGroup ref={buttonGroupRef} size="small">
                 <Tooltip title="Autofill" placement="top" arrow>
                   <span>
                     <ButtonSuccessBadge show={answer.hasAnswer && isFilled}>
@@ -105,19 +125,25 @@ export const App: React.FC<{
                     placement="top"
                     arrow
                   >
-                    <Button onClick={handleSave}>
+                    <Button onClick={() => handleSave()}>
                       <SaveIcon />
                     </Button>
                   </Tooltip>
                 </ButtonSuccessBadge>
-                <MoreInfoPopper title="More Info">
+                <MoreInfoPopper
+                  anchor={buttonGroupRef.current}
+                  popperState={moreInfoPopperState}
+                  title="More Info"
+                >
                   <MoreInfoContent
+                    localAnswerState={localAnswerState}
                     backend={backend}
                     answerDisplayType={backend.answerDisplayType}
                     answer={answer}
                     currentValue={currentValue}
                     handleDeleteAnswer={handleDeleteAnswer}
                     path={backend.path}
+                    handleSaveAnswer={saveAnswer}
                   />
                 </MoreInfoPopper>
               </ButtonGroup>
