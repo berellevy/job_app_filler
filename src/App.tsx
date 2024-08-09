@@ -77,11 +77,11 @@ export const App: React.FC<{
   }
 
   const handleSave = async (newAnswer?: Answer) => {
-    if (!answer.answer) {
-      saveAnswer(newAnswer)
-    } else if (backend.answerDisplayType === 'BackupAnswerDisplay') {
+    if (backend.answerDisplayType === 'BackupAnswerDisplay' && answer.answer) {
       setLocalAnswerState([...answer.answer.map((answer: string) => [answer, false]), ["", true]])
       setPopperAnchorEl(buttonGroupRef.current)
+    } else {
+      saveAnswer(newAnswer)
     }
   }
 
