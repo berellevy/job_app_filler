@@ -19,7 +19,10 @@ All significant changes to this project will be documented in this file.
 
 ### Fixed
 
+### Bugs
 
+- desired total comp, a number only input doesn't fill.
+- field more info popup (in extension) is blocked by post application login popup (from workday, see grubhub for example ) 
 
 
 ## [1.0.5] - 2024-08-02
