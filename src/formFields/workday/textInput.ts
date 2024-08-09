@@ -37,20 +37,29 @@ export class TextInput extends WorkdayBaseInput<string | null> {
   }
 
   /**
-   * TODO: explain
+   * first set the value of the input element (this alone is NOT enough ).
+   * then fire onChange event for elements that update state that way or 
+   * onBlur event (usually elements that have client side validation)
+   * 
+   * The reason we set the value of the input element first is in some cases the 
+   * the blur event fires before react is able to update the value attr of the 
+   * input element. What ends up happening is the fill method fills the field but 
+   * the listenForChanges method gets the blur event with the target.value still blank
+   * and goes ahead calls onBlur again (i think) which sets react state to be a bland string.
+   * 
    */
   async fill() {
     const answer = await this.answer()
     if (answer?.hasAnswer && !(await this.isFilled(answer))) {
       await fieldFillerQueue.enqueue(async () => {
         const reactProps = getReactProps(this.inputElement())
+        this.inputElement().value = answer.answer
         if (reactProps.onChange) {
           reactProps.onChange({ target: { value: answer.answer } })
         } else if (reactProps.onBlur) {
           reactProps.onBlur({ target: { value: answer.answer } })
         }
         this.internalValue = answer.answer
-        await sleep(100)
       })
     }
   }
