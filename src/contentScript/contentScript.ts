@@ -3,6 +3,7 @@
 import { Server } from "../utils/crossContextCommunication/server";
 import { deleteAnswer, getAnswer, saveAnswer } from "../utils/storage";
 import { FieldPath, Answer} from "../utils/types";
+import { EVENT_LISTENER_ID, loadApp } from "./ContentApp";
 
 
 // Regiser server and methods accessible to injected script.
@@ -33,3 +34,12 @@ function injectScript(filePath: string) {
 }
 
 injectScript('inject.js')
+
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === "SHOW_WHATS_NEW") {
+    document.dispatchEvent(new CustomEvent(EVENT_LISTENER_ID))
+  }
+})
+
+loadApp()
