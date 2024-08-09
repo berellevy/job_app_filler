@@ -9,12 +9,13 @@ export class BooleanRadio extends WorkdayBaseInput<string> {
   fieldType = 'BooleanRadio'
 
   answerDisplayType: AnswerDisplayType = 'SingleAnswerDisplay'
+
   listenForChanges(): void {
     const radioGroupElement = getElement(
       this.element,
       ".//div[@data-uxi-widget-type='radioGroup']"
     )
-    radioGroupElement.addEventListener('change', () => {
+    radioGroupElement.addEventListener('change', (e) => {
       this.triggerReactUpdate()
     })
   }
@@ -35,16 +36,18 @@ export class BooleanRadio extends WorkdayBaseInput<string> {
   }
 
   get checkedRadioElement(): HTMLElement {
+
     const XPATH = [
       ".//input[@type='radio'][@aria-checked='true']",
       '/ancestor::div',
       '[label]',
     ].join('')
-    return getElement(this.element, XPATH)
+    const el = getElement(this.element, XPATH)
+    return el
   }
 
   currentValue() {
-    return this.checkedRadioElement.textContent
+    return this.checkedRadioElement?.textContent
   }
 
   async fill(): Promise<void> {
