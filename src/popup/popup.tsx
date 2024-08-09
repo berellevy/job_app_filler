@@ -64,7 +64,7 @@ const App: FC<{}> = () => {
           <Typography variant="body1">
             Elevated autofill for annoying job sites.
           </Typography>
-          <Button
+          <Button variant='outlined'
             onClick={() => {
               chrome.tabs.query(
                 { active: true, currentWindow: true },

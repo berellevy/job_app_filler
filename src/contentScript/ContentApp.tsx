@@ -80,9 +80,22 @@ const ContentApp: FC = () => {
             tabIndex={-1}
             component={Box}
           >
-            <Typography variant="h6">1.0.5 - 8/4/24:</Typography>
+            <Typography variant="h6">1.0.6 - 8/9/24</Typography>
             <Typography>
-              Fields: single checkbox, month & year. Try it out on Work
+              Workday Fields: Year input and field of study (in education), yes/no radio.
+            </Typography>
+            <Typography>
+              Autofill: Ability to add backup answers to single dropdowns (searchable as well).
+            </Typography>
+            <Typography>
+
+              Popup: Contact button. 'What's New' dialog (that's me!).
+            </Typography>
+
+            <Divider sx={{ my: 1 }} />
+            <Typography variant="h6">1.0.5 - 8/4/24</Typography>
+            <Typography>
+              Workday Fields: single checkbox, month & year. Try it out on Work
               Experience!
               <br />
               UI: Added badges for saved and filled.

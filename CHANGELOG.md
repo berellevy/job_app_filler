@@ -1,11 +1,13 @@
 # Change Log
 All significant changes to this project will be documented in this file.
 
-## [1.0.6] - unreleased
+## [1.0.6] - 2024-08-09
 
 ### Added
 
 - [workday] year input field. boolean radio field. education field of study
+- ability to add backup answers for single dropdowns
+- [popup] contact me button, 'what's new' dialog
 
 ### Changed
 
