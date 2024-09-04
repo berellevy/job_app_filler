@@ -1,6 +1,5 @@
 import React, { MouseEvent, ReactElement, ReactNode, useState } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
 
 export const ConfirmButton: React.FC<{
   action: () => void | Promise<void>
