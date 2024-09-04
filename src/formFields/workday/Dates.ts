@@ -1,15 +1,36 @@
+import { FC } from 'react'
 import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
-import { Answer, AnswerDisplayType } from '../../utils/types'
+import { Answer} from '../../utils/types'
 import { getReactProps } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
+import { AnswerValueSingleDate } from '../../components/AnswerValueDisplayComponents/AnswerValueSingleDate'
+
+
+function dateCompare(date1: string[], date2: string[]): boolean {
+  if (date1.length !== date2.length) {
+    return false
+  }
+  for (let i = 0; i < date1.length; i++) {
+    if (date1[i] !== date2[i]) {
+      return false;
+    }
+  }
+  return true
+}
 
 export class MonthYear extends WorkdayBaseInput<[string, string]> {
   static XPATH = xpaths.MONTH_YEAR
   fieldType = 'MonthYear'
-  answerDisplayType: AnswerDisplayType = 'SingleAnswerDisplay'
+  public answerValueDisplayComponent = AnswerValueSingleDate
+  get answerValue() {
+    return {
+      ...super.answerValue,
+      displayComponent: AnswerValueSingleDate
+    }
+  }
   listenForChanges(): void {
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
@@ -49,15 +70,14 @@ export class MonthYear extends WorkdayBaseInput<[string, string]> {
     )
   }
 
-  /**can't compare arrays in js :/ */
-  async isFilled(answer?: Answer): Promise<boolean> {
-    answer = answer || (await this.answer())
-    if (!answer.hasAnswer) {
+  /**
+   * Compare only the first stored date.
+   */
+  isFilled(current: any, stored: any): boolean {
+    if (stored.length <= 0) {
       return false
     }
-    const [answerMonth, answerYear] = answer.answer || ['', '']
-    const [currentValueMonth, currentValueYear] = this.currentValue()
-    return answerMonth === currentValueMonth && answerYear === currentValueYear
+    return dateCompare(stored[0], current)
   }
 
   /**
@@ -70,11 +90,11 @@ export class MonthYear extends WorkdayBaseInput<[string, string]> {
    * Also, sometimes, we have to send the onKeyDown event more than once for it to work
    *
    */
-  async fill(): Promise<void> {
-    const answer = await this.answer()
-    if (answer.hasAnswer && !(await this.isFilled(answer))) {
+  async fill(answers?: any): Promise<void> {
+    answers = answers || await this.answer()
+    if (answers.length > 0) {
       await fieldFillerQueue.enqueue(async () => {
-        const [month, year] = answer.answer
+        const [month, year] = answers[0].answer
         this.monthInputElement.click()
         let retries = 20
         while (!(this.monthInputElement.value === month) && retries >= 0) {
@@ -110,10 +130,11 @@ export class MonthYear extends WorkdayBaseInput<[string, string]> {
   }
 }
 
+
+
 export class Year extends WorkdayBaseInput<string> {
   static XPATH = xpaths.YEAR
   fieldType = 'Year'
-  answerDisplayType: AnswerDisplayType = 'SingleAnswerDisplay'
   listenForChanges(): void {
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
@@ -146,6 +167,10 @@ export class Year extends WorkdayBaseInput<string> {
     )
   }
 
+  public isFilled(current: any, stored: any[]): boolean {
+    return stored[0] === current
+  }
+
   /**
    * After calling the onKeyDown of the month and year inputs
    * we need to wait until the change is reflected. This usually happens very quickly
@@ -157,10 +182,11 @@ export class Year extends WorkdayBaseInput<string> {
    *
    */
   async fill(): Promise<void> {
-    const answer = await this.answer()
-    if (answer.hasAnswer && !(await this.isFilled(answer))) {
+    const answers = await this.answer()
+    const isFilled = this.isFilled(this.currentValue(), answers.map(a=>a.answer))
+    if (answers.length > 0 && !isFilled) {
       await fieldFillerQueue.enqueue(async () => {
-        const year = answer.answer
+        const year = answers[0]?.answer
         this.yearInputElement.click()
         let retries = 20
         while (!(this.yearInputElement.value === year) && retries > 0) {
