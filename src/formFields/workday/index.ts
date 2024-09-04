@@ -1,5 +1,6 @@
 import { BooleanRadio } from './BooleanRadio'
 import { MonthYear, Year } from './Dates'
+import { MultiCheckbox } from './MultiCheckbox'
 import { SearchableSingleDropdown } from './searchableSingleDropdown'
 import { SimpleDropdown } from './simpleDropdown'
 import { SingleCheckbox } from './SingleCheckbox'
@@ -16,6 +17,7 @@ export const RegisterInputs = async (node: Node = document) => {
     MonthYear.autoDiscover(node),
     Year.autoDiscover(node),
     TextArea.autoDiscover(node),
-    BooleanRadio.autoDiscover(node)
+    BooleanRadio.autoDiscover(node),
+    MultiCheckbox.autoDiscover(node)
   ])
 }

@@ -42,6 +42,14 @@ export const SINGLE_CHECKBOX = [
   "[count(.//input[@type='checkbox']) = 1]"
 ].join('')
 
+export const MULTI_CHECKBOX = [
+  './/div',
+  "[starts-with(@data-automation-id, 'formField-')]",
+  "[count(.//input[@type='checkbox']) > 1]"
+].join('')
+
+
+
 export const MONTH_YEAR = [
   './/div',
   "[starts-with(@data-automation-id, 'formField-')]",
