@@ -4,16 +4,21 @@ import { BaseFormInput } from '../baseFormInput'
 export abstract class WorkdayBaseInput<
   AnswerType
 > extends BaseFormInput<AnswerType> {
-  public get section(): string {
-    // must always return a string, even a blank one
-    const XPATH = [
-      'ancestor::div', // ancestor div
-      `[//div[@job-app-filler='${this.uuid}']]`, // that contains this element (i.e. this form field's containing div.)
-      "[.//h4]", // and contains an h4.
-      '[1]', // first div to match this criteria
-      '//h4', // get the h4 child of the above div
+  get sectionLabelXpath(): string {
+    return [
+      'ancestor::fieldset', // get the nearest ancestor fieldset element
+      '/parent::div', // get parent div element of above fieldset element
+      `[.//div[@job-app-filler='${this.uuid}']]`, // the above div/fieldset element must contain this forminput's main element.
+      '[1]', // first (nearest) div/fieldset to match this criteria
+      '//h4', // get the h4 child of the above div/fieldset. 
+      // repeating field sections are the only ones that have an h4 afaik.
     ].join('')
-    const element = getElement(this.element, XPATH)
-    return element?.innerText || ''
+  }
+  get sectionLabelElement(): HTMLElement {
+    return getElement(this.element, this.sectionLabelXpath)
+  }
+  public get section(): string {
+    // must always return a string, even a blank one.
+    return this.sectionLabelElement?.innerText || ''
   }
 }
