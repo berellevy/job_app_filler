@@ -1,7 +1,8 @@
+import { useEditableAnswerState } from '../../hooks/useEditableAnswerState'
 import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
-import { AnswerDisplayType } from '../../utils/types'
+import { FieldPath } from '../../utils/types'
 import { getReactProps } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
@@ -9,22 +10,20 @@ import * as xpaths from './xpaths'
 export class TextInput extends WorkdayBaseInput<string | null> {
   static XPATH = xpaths.TEXT_INPUT
   fieldType = 'TextInput'
-  answerDisplayType: AnswerDisplayType = "SingleAnswerDisplay"
   private internalValue: string | null
 
   inputElement(): HTMLInputElement {
     return getElement(this.element, './/input') as HTMLInputElement
   }
-
   /**
    * TODO: explain
    */
   listenForChanges() {
     const callback = (e) => {
+      this.internalValue = e.target.value
       this.triggerReactUpdate()
       this.element.removeEventListener('input', callback)
       this.inputElement().removeEventListener('blur', callback)
-      this.internalValue = e.target.value
       sleep(10).then(() => this.listenForChanges())
     }
 
@@ -32,8 +31,12 @@ export class TextInput extends WorkdayBaseInput<string | null> {
     this.inputElement().addEventListener('blur', callback)
   }
 
-  currentValue(): string | null {
+  public currentValue(): string | null {
     return this.internalValue
+  }
+
+  public isFilled(current: any, stored: any[]): boolean {
+    return current===stored[0]
   }
 
   /**
@@ -49,17 +52,18 @@ export class TextInput extends WorkdayBaseInput<string | null> {
    * 
    */
   async fill() {
-    const answer = await this.answer()
-    if (answer?.hasAnswer && !(await this.isFilled(answer))) {
+    const answers = await this.answer()
+    if (answers.length > 0 && !(this.isFilled(this.currentValue(), answers.map(a=>a.answer)))) {
+      const firstAnswer = answers[0]
       await fieldFillerQueue.enqueue(async () => {
         const reactProps = getReactProps(this.inputElement())
-        this.inputElement().value = answer.answer
+        this.inputElement().value = firstAnswer.answer
         if (reactProps.onChange) {
-          reactProps.onChange({ target: { value: answer.answer } })
+          reactProps.onChange({ target: { value: firstAnswer.answer } })
         } else if (reactProps.onBlur) {
-          reactProps.onBlur({ target: { value: answer.answer } })
+          reactProps.onBlur({ target: { value: firstAnswer.answer } })
         }
-        this.internalValue = answer.answer
+        this.internalValue = firstAnswer.answer
       })
     }
   }
@@ -83,11 +87,16 @@ export class PasswordInput extends WorkdayBaseInput<string | null> {
     })
   }
 
+
+  public isFilled(current: any, stored: any[]): boolean {
+    return current===stored[0]
+  }
+
   async fill() {
     const answer = await this.answer()
-    if (answer.hasAnswer) {
+    if (answer.length > 0) {
       const reactProps = getReactProps(this.inputElement())
-      reactProps.onChange({ target: { value: answer.answer } })
+      reactProps.onChange({ target: { value: answer[0].answer } })
     }
   }
 }
