@@ -1,6 +1,21 @@
 # Change Log
 All significant changes to this project will be documented in this file.
 
+## [1.0.7] - unreleased
+
+### Added
+
+### Changed
+
+### Fixed
+
+- If a question had a colon in it, parse key was leaving out any part after the last colon.
+
+### Bugs
+
+
+
+
 ## [1.0.6] - 2024-08-09
 
 ### Added
