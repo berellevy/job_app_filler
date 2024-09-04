@@ -28,7 +28,9 @@ export const SEARCHABLE_SINGLE_DROPDOWN = [
   "[",
   "(@data-automation-id='formField-sourcePrompt') or ",
   "(@data-automation-id='formField-country-phone-code') or ",
-  "(@data-automation-id='formField-field-of-study')",
+  "(@data-automation-id='formField-field-of-study') or ",
+  "(@data-automation-id='formField-certification') or ",
+  "(@data-automation-id='formField-schoolItem')",
   "]",
   "[.//div[@data-automation-id='multiSelectContainer']]",
 ].join('')
