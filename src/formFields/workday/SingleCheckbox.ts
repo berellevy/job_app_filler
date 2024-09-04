@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
 import { WorkdayBaseInput } from './workdayBaseInput'
