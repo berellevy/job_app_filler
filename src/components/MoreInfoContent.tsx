@@ -1,7 +1,10 @@
 import {
+  Avatar,
+  Box,
   Breadcrumbs,
   Chip,
   Fade,
+  IconButton,
   Paper,
   Stack,
   styled,
@@ -9,102 +12,126 @@ import {
   Typography,
 } from '@mui/material'
 import React, { FC } from 'react'
-import InfoIcon from '@mui/icons-material/Info'
 
-import { SingleAnswerDisplay } from './SingleAnswerDisplay'
-import { BaseFormInput } from '../formFields/baseFormInput'
-import { BackupAnswerDisplay } from './BackupAnswerDisplay'
-import { Answer, AnswerDisplayType, FieldPath } from '../utils/types'
-import { LocalAnswerState } from '../App'
+import { useAppContext } from '../AppContext'
+import { AddIcon, InfoIcon } from '../utils/icons'
+import { AnswerDisplayComponent } from './AnswerDisplayComponent'
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   color: theme.palette.text.secondary,
-  elevation: 4,
+  elevation: 6,
 }))
 
-const answerDisplays = {
-  SingleAnswerDisplay,
-  BackupAnswerDisplay,
-}
-const getAnswerDisplay = (type?: AnswerDisplayType | null): FC<any> => {
-  return answerDisplays[type] || SingleAnswerDisplay
-}
+export const MoreInfoContent: FC = () => {
+  const { currentValue, backend, editableAnswerState } = useAppContext()
+  const { answers, addNewAnswer } = editableAnswerState
+  const { path } = backend
 
-export const MoreInfoContent: FC<{
-  backend: BaseFormInput<any>
-  answer: any
-  answerDisplayType?: AnswerDisplayType
-  handleDeleteAnswer: () => Promise<void>
-  handleSaveAnswer: (answer?: Answer) => Promise<any>
-  currentValue: any
-  path: FieldPath
-  localAnswerState: LocalAnswerState
-}> = ({
-  answer,
-  handleDeleteAnswer,
-  currentValue,
-  path,
-  answerDisplayType,
-  handleSaveAnswer,
-  localAnswerState,
-}) => {
-  const AnswerDisplay = getAnswerDisplay(answerDisplayType)
   return (
-    <Stack>
-      <Item>
-        <Typography variant="h6">Question Path:</Typography>
-        <Breadcrumbs separator=">">
-          <Tooltip title="Page">
-            <Chip variant="outlined" label={path.page} />
-          </Tooltip>
-          <Tooltip title="Section">
-            <Chip variant="outlined" label={path.section} />
-          </Tooltip>
-          <Tooltip title="Question Type">
-            <Chip variant="outlined" label={path.fieldType} />
-          </Tooltip>
-          <Tooltip title="Question">
-            <Chip variant="outlined" label={path.fieldName} />
-          </Tooltip>
-        </Breadcrumbs>
-      </Item>
-      <Item>
-        <Typography variant="h6">Current Value</Typography>
-        <Typography>{String(currentValue)}</Typography>
-      </Item>
-      <Item>
-        <Typography variant="h6">Answers</Typography>
-        {answer.hasAnswer && (
-          <Fade in={answer.hasAnswer} timeout={{exit: 450}} unmountOnExit>
-            <div>
-              <AnswerDisplay
-                answer={answer}
-                handleDeleteAnswer={handleDeleteAnswer}
-                handleSaveAnswer={handleSaveAnswer}
-                localAnswerState={localAnswerState}
-              />
-            </div>
-          </Fade>
-        )}
-        <Fade in={!answer.hasAnswer} timeout={{enter: 350}} unmountOnExit>
-          <Typography
-            component={'div'}
+    <Box padding={1}>
+      <Stack spacing={2}>
+        <Item>
+          <Typography variant="h6">Question Path:</Typography>
+          <Breadcrumbs separator=">">
+            <Chip
+              variant="outlined"
+              avatar={
+                <Tooltip title="Page">
+                  <Avatar>P</Avatar>
+                </Tooltip>
+              }
+              label={path.page}
+            />
+            <Chip
+              variant="outlined"
+              avatar={
+                <Tooltip title="Section">
+                  <Avatar>S</Avatar>
+                </Tooltip>
+              }
+              label={path.section}
+            />
+            <Chip
+              variant="outlined"
+              avatar={
+                <Tooltip title="Field Type">
+                  <Avatar>T</Avatar>
+                </Tooltip>
+              }
+              label={path.fieldType}
+            />
+            <Chip
             sx={{
-              fontStyle: 'italic',
-              display: 'flex',
-              alignItems: 'center',
+              height: 'auto',
+              minHeight: '32px',
+              textWrap: 'inherit',
+              '& .MuiChip-label': {
+                display: 'block',
+                whiteSpace: 'normal',
+              },
             }}
-          >
-            No answer
-            <Tooltip title="Fill in the field and click save to save an answer">
-              <InfoIcon sx={{ marginLeft: '4px' }} fontSize="inherit" />
-            </Tooltip>
+              variant="outlined"
+              avatar={
+                <Tooltip title="Question">
+                  <Avatar>Q</Avatar>
+                </Tooltip>
+              }
+              label={path.fieldName}
+            />
+          </Breadcrumbs>
+        </Item>
+        <Item>
+          <Typography variant="h6">Current Value</Typography>
+          <Typography>{String(currentValue)}</Typography>
+        </Item>
+        <Item>
+          <Typography variant="h6" mb={2}>
+            Answers
           </Typography>
-        </Fade>
-      </Item>
-    </Stack>
+          <Stack spacing={1}>
+            {answers.length > 0 ? (
+              answers.map((a, index) => (
+                <Fade key={index} in timeout={{ exit: 450 }} unmountOnExit>
+                  <div>
+                    <AnswerDisplayComponent id={index} />
+                  </div>
+                </Fade>
+              ))
+            ) : (
+              <Fade in timeout={{ enter: 350 }} unmountOnExit>
+                <Item>
+                  <Typography
+                    component={'div'}
+                    sx={{
+                      fontStyle: 'italic',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    No answer
+                    <Tooltip title="Fill in the field and click save to save an answer">
+                      <InfoIcon sx={{ marginLeft: '4px' }} fontSize="inherit" />
+                    </Tooltip>
+                  </Typography>
+                </Item>
+              </Fade>
+            )}
+            <Box>
+              <IconButton
+                onClick={() => {
+                  const { path, answer } = backend.fieldSnapshot
+                  addNewAnswer(path, answer)
+                }}
+              >
+                <AddIcon />
+              </IconButton>
+            </Box>
+          </Stack>
+        </Item>
+      </Stack>
+    </Box>
   )
 }
