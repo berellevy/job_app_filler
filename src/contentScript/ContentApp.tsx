@@ -80,6 +80,16 @@ const ContentApp: FC = () => {
             tabIndex={-1}
             component={Box}
           >
+            <Typography variant="h6">1.0.7 - 9/4/24</Typography>
+            <Typography>
+              Autofill: Vastly improved answer management UI. Edit stored questions and answers.
+              Advanced answer matching.
+            </Typography>
+              Bug fixes.
+            <Typography>
+
+            </Typography>
+            <Divider sx={{ my: 1 }} />
             <Typography variant="h6">1.0.6 - 8/9/24</Typography>
             <Typography>
               Workday Fields: Year input and field of study (in education), yes/no radio.
