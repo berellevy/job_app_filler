@@ -1,6 +1,6 @@
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
-import { AnswerDisplayType } from '../../utils/types'
+
 import { getReactProps } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
@@ -9,7 +9,6 @@ export class TextArea extends WorkdayBaseInput<string | null> {
   static XPATH = xpaths.TEXT_AREA
   fieldType = 'TextInput'
   private internalValue: string | null
-  answerDisplayType: AnswerDisplayType = "SingleAnswerDisplay"
 
   inputElement(): HTMLInputElement {
     return getElement(this.element, './/textarea') as HTMLInputElement
@@ -34,18 +33,20 @@ export class TextArea extends WorkdayBaseInput<string | null> {
     return this.internalValue
   }
 
+  public isFilled(current: any, stored: any[]): boolean {
+    return current===stored[0]
+  }
+
   /**
    * TODO: explain
    */
   async fill(): Promise<void> {
     const answer = await this.answer()
-    if (answer.hasAnswer) {
+    if (answer.length > 0) {
       await fieldFillerQueue.enqueue(async () => {
-        
-        const answer = await this.answer()
         const reactProps = getReactProps(this.inputElement())
-        reactProps.onBlur({ target: { value: answer.answer } })
-        this.internalValue = answer.answer
+        reactProps.onBlur({ target: { value: answer[0].answer } })
+        this.internalValue = answer[0].answer
       })
     }
     setTimeout(() => {
