@@ -7,26 +7,19 @@ import {
   Container,
   Divider,
   IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  ListSubheader,
   Snackbar,
   SnackbarCloseReason,
   Toolbar,
   Tooltip,
   Typography,
 } from '@mui/material'
-import GitHubIcon from '@mui/icons-material/GitHub'
-import ArrowRightIcon from '@mui/icons-material/ArrowRight'
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 
 import { createRoot } from 'react-dom/client'
 import { ThemeProvider } from '@emotion/react'
 import { theme } from '../utils/react'
 import Logo from '../components/Logo'
 import { teal } from '@mui/material/colors'
+import { ContentCopyIcon, GitHubIcon } from '../utils/icons'
 
 const EMAIL_ADDRESS = 'berellevy+chromeextensions@gmail.com'
 
