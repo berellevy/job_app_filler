@@ -16,7 +16,7 @@
     "@fontsource/roboto": "^5.0.13",
     "@inquirer/prompts": "^5.2.1",
     "@mui/icons-material": "^5.15.21",
-    "@mui/material": "^5.15.21",
+    "@mui/material": "^5.16.7",
     "@types/chrome": "^0.0.268",
     "@types/lodash": "^4.17.7",
     "@types/react": "^18.3.3",
