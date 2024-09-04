@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import { CloseIcon } from '../utils/icons';
 
 export default function SimpleSnackbar() {
   const [open, setOpen] = React.useState(false);
@@ -18,7 +18,6 @@ export default function SimpleSnackbar() {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
   };
 
