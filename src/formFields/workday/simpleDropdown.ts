@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import { answerValueInitList } from '../../hooks/answerValueInit'
 import {
-  SaveButtonClickHndler,
   saveButtonClickHandlers,
 } from '../../hooks/saveButtonClickHandlers'
 import { sleep } from '../../utils/async'
@@ -22,7 +21,6 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
   static XPATH: string = xpaths.SIMPLE_DROPDOWN
   fieldType: string = 'SimpleDropdown'
   public saveButtonClickHandler = saveButtonClickHandlers.backupAnswerList
-  public answerValueInit = answerValueInitList
   public get answerValue() {
     return {
       ...super.answerValue,
