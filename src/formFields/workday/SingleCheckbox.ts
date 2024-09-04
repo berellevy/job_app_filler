@@ -1,13 +1,21 @@
+import { FC } from 'react'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
-import { AnswerDisplayType } from '../../utils/types'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
+import { AnswerValueSingleBool } from '../../components/AnswerValueDisplayComponents/AnswerValueSingleBool'
+import { AnswerValueMethods } from '../baseFormInput'
 
 export class SingleCheckbox extends WorkdayBaseInput<boolean> {
   static XPATH = xpaths.SINGLE_CHECKBOX
   fieldType: string = 'SingleCheckbox'
-  answerDisplayType: AnswerDisplayType = "SingleAnswerDisplay"
+  public answerValueDisplayComponent = AnswerValueSingleBool
+  public get answerValue() {
+    return {
+      ...super.answerValue,
+      displayComponent: AnswerValueSingleBool
+    } as AnswerValueMethods
+  }
 
   /**
    * When the change event is intercepted, the value is still the old value.
@@ -44,6 +52,10 @@ export class SingleCheckbox extends WorkdayBaseInput<boolean> {
     return this.checkboxElement().checked
   }
 
+  public isFilled(current: any, stored: any[]): boolean {
+    return current===stored[0]
+  }
+
   /**
    * the checked value of the input element takes some time to change
    * after it's clicked. Therefore we have to wait for the value to update
@@ -51,7 +63,8 @@ export class SingleCheckbox extends WorkdayBaseInput<boolean> {
    */
   async fill(): Promise<void> {
     const answer = await this.answer()
-    if (answer.hasAnswer && !(await this.isFilled(answer))) {
+    const isFilled = this.isFilled(this.currentValue(), answer.map(a=> a.answer))
+    if (answer.length > 0 && !isFilled) {
       await fieldFillerQueue.enqueue(async () => {
         const initialValue = this.currentValue()
         this.checkboxElement().click()
