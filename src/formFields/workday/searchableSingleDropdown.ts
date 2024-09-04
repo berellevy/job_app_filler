@@ -1,18 +1,40 @@
+import { AnswerValueBackupStrings } from '../../components/AnswerValueDisplayComponents/AnswerValueBackupStrings'
+import { answerValueInitList } from '../../hooks/answerValueInit'
+import { saveButtonClickHandlers } from '../../hooks/saveButtonClickHandlers'
+import {
+  EditableAnswer,
+  useEditableAnswerState,
+} from '../../hooks/useEditableAnswerState'
+
 import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
 import { scrollBack } from '../../utils/scroll'
-import { Answer, AnswerDisplayType } from '../../utils/types'
-import { getReactProps } from '../baseFormInput'
+import { Answer } from '../../utils/types'
+import { AnswerValueMethods, getReactProps } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
+import * as stringMatch from '../../utils/stringMatch'
 
 export class SearchableSingleDropdown extends WorkdayBaseInput<
   string[] | null
 > {
+  editableAnswerHook = useEditableAnswerState
   static XPATH = xpaths.SEARCHABLE_SINGLE_DROPDOWN
   fieldType = 'SimpleDropdown'
-  answerDisplayType: AnswerDisplayType = 'BackupAnswerDisplay'
+  public saveButtonClickHandler = saveButtonClickHandlers.backupAnswerList
+  public get answerValue() {
+    return {
+      ...super.answerValue,
+      displayComponent: AnswerValueBackupStrings,
+      init: answerValueInitList,
+      prepForSave: (values: [string, boolean][]) =>
+        values.map(([value, editable]) => value),
+      prepForFill: (answers: EditableAnswer[]): string[] => {
+        return super.answerValue.prepForFill(answers).flat()
+      },
+    } as AnswerValueMethods
+  }
 
   /**
    * A cached property is only necessary if `listenForChanges`
@@ -55,19 +77,17 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
     return getElement(this.element, XPATH)
   }
 
-  currentValue(): string[] {
+  currentValue(): string {
     if (this.selectedItemElement) {
-      return [this.selectedItemElement.textContent]
-    } else {
-      return []
+      return this.selectedItemElement.textContent
     }
   }
 
-  async isFilled(answer?: Answer): Promise<boolean> {
-    answer = answer || (await this.answer())
-    return (
-      answer.hasAnswer && (answer.answer || []).includes(this.currentValue()[0])
-    )
+  public get fieldSnapshot(): Answer {
+    return {
+      path: this.path,
+      answer: [this.currentValue()],
+    }
   }
 
   // CLOSE DROPDOWN AFTER FILL.
@@ -111,6 +131,15 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
     return getElement(this.element, './/input')
   }
 
+  isFilled(current: string, stored: string[]) {
+    return stored.some((answer) => {
+      return (
+        stringMatch.contains(current, answer) ||
+        stringMatch.keywordCount(current, answer)
+      )
+    })
+  }
+
   /**
    * FILL PROCESS
    * This field can be filled by typing a query into the `inputElement`
@@ -125,36 +154,35 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
    *
    * Doing this may open the dropdown, so it needs to be closed.
    * if awaiting for the the fill method, the dropdown is closed asynchronously
-   *
-   *
    */
   async fill(): Promise<void> {
-    const answer = await this.answer()
-    if (answer.hasAnswer && !(await this.isFilled(answer))) {
-      await fieldFillerQueue.enqueue(async () => {
-        await scrollBack(async () => {
-          const answerList = answer.answer
-          if (answerList.length > 0) {
-            await sleep(500)
-            while (answerList.length > 0) {
-              const answer = answerList.shift()
-              getReactProps(this.inputElement).onKeyDown({
-                key: 'Tab',
-                target: { value: answer },
-              })
-              const el = await waitForElement(
-                this.element,
-                `${this.selectedItemElementXpath}[(descendant::text()='${answer}')]`,
-                { timeout: 1000 }
-              )
-              if (el) {
-                break
-              }
+    await fieldFillerQueue.enqueue(async () => {
+      await scrollBack(async () => {
+        const answers = await this.answer()
+        const answerValues = answers
+          .map((answer: Answer) => answer.answer)
+          .flat()
+        if (answerValues.length > 0) {
+          const answerList = structuredClone(answerValues)
+          await sleep(500)
+          while (answerList.length > 0) {
+            const answer = answerList.shift()
+            getReactProps(this.inputElement).onKeyDown({
+              key: 'Tab',
+              target: { value: answer },
+            })
+            const el = await waitForElement(
+              this.element,
+              this.selectedItemElementXpath,
+              { timeout: 1000 }
+            )
+            if (el && this.isFilled(el.innerText, answerValues)) {
+              break
             }
-            this.closeDropdown() // asynchronously
           }
-        })
+          this.closeDropdown() // asynchronously
+        }
       })
-    }
+    })
   }
 }
