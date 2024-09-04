@@ -1,10 +1,9 @@
+import { Server } from '../utils/crossContextCommunication/server'
+import { saveAnswer, getAnswer, deleteAnswer } from '../utils/storage'
+import { parseKey } from '../utils/storage/utils'
 
-
-import { Server } from "../utils/crossContextCommunication/server";
-import { deleteAnswer, getAnswer, saveAnswer } from "../utils/storage";
-import { FieldPath, Answer} from "../utils/types";
-import { EVENT_LISTENER_ID, loadApp } from "./ContentApp";
-
+import { FieldPath, Answer } from '../utils/types'
+import { EVENT_LISTENER_ID, loadApp } from './ContentApp'
 
 // Regiser server and methods accessible to injected script.
 const server = new Server(process.env.CONTENT_SCRIPT_URL)
@@ -12,15 +11,14 @@ server.register('saveAnswer', async (answer: Answer) => {
   return await saveAnswer(answer)
 })
 
-server.register("getAnswer", async (fieldPath: FieldPath) => {
-  const answer =  await getAnswer(fieldPath);
+server.register('getAnswer', async (fieldPath: FieldPath) => {
+  const answer = await getAnswer(fieldPath)
   return answer
 })
 
-server.register("deleteAnswer", async (fieldPath: FieldPath) => {
+server.register('deleteAnswer', async (fieldPath: FieldPath) => {
   return await deleteAnswer(fieldPath)
 })
-
 
 // inject script
 function injectScript(filePath: string) {
@@ -35,9 +33,8 @@ function injectScript(filePath: string) {
 
 injectScript('inject.js')
 
-
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === "SHOW_WHATS_NEW") {
+  if (message.type === 'SHOW_WHATS_NEW') {
     document.dispatchEvent(new CustomEvent(EVENT_LISTENER_ID))
   }
 })
