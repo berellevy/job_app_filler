@@ -30,9 +30,8 @@ export type Answer<T = any> = {
   answer: T
   path: FieldPath | null
   hasAnswer?: boolean
+  matchType?: string
 }
-
-export type AnswerDisplayType = 'SingleAnswerDisplay' | 'BackupAnswerDisplay'
 
 /**
  * @param requestId The client sets up a temporary event listener
