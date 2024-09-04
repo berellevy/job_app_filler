@@ -1,7 +1,18 @@
 # Change Log
 All significant changes to this project will be documented in this file.
 
-## [1.0.7] - unreleased
+## [1.0.8] - unreleased
+
+### Added
+
+### Changed
+
+### Fixed
+
+### Bugs
+
+
+## [1.0.7] - 2024-09-04
 
 ### Added
 - Advanced answer matching.
