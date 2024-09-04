@@ -1,14 +1,16 @@
+import { saveButtonClickHandlers } from '../../hooks/saveButtonClickHandlers'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
-import { AnswerDisplayType } from '../../utils/types'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
+import * as stringMatch from "../../utils/stringMatch"
+import { lowerText } from '../../utils/xpath'
 
 export class BooleanRadio extends WorkdayBaseInput<string> {
   static XPATH = xpaths.BOOLEAN_RADIO
   fieldType = 'BooleanRadio'
+  public saveButtonClickHandler = saveButtonClickHandlers.simpleText
 
-  answerDisplayType: AnswerDisplayType = 'SingleAnswerDisplay'
 
   listenForChanges(): void {
     const radioGroupElement = getElement(
@@ -46,21 +48,28 @@ export class BooleanRadio extends WorkdayBaseInput<string> {
     return el
   }
 
+  /**
+   * exact match (case insensetive)
+   */
+  public isFilled(current: any, stored: any[]): boolean {
+    return stored.some(answer => stringMatch.exact(current, answer));
+  }
+
   currentValue() {
     return this.checkedRadioElement?.textContent
   }
 
   async fill(): Promise<void> {
     const answer = await this.answer()
-    if (answer.hasAnswer) {
+    if (answer.length > 0) {
       await fieldFillerQueue.enqueue(async () => {
         const XPATH = [
           '//div',
-          `[label[text()='${answer.answer}']]`,
+          `[label[${lowerText()}='${answer[0].answer.toLowerCase()}']]`,
           "//input[@type='radio']",
         ].join('')
         const checkElement = getElement(this.element, XPATH)
-        checkElement.click()
+        checkElement?.click()
       })
     }
   }
