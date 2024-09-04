@@ -4,8 +4,13 @@ All significant changes to this project will be documented in this file.
 ## [1.0.7] - unreleased
 
 ### Added
+- Advanced answer matching.
+- Custom answer editing.
+- React context.
+- Refresh button.
 
 ### Changed
+- Improved isFilled implementation.
 
 ### Fixed
 
