@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { getElement, getElements } from '../utils/getElements'
 import '@fontsource/roboto'
 import {v4 as uuid4} from 'uuid'
 import { client } from '../inject/inject'
 import { App, attachReactApp } from '../App'
-import { AnswerDisplayType, Answer, FieldPath} from '../utils/types'
+import { Answer, FieldPath} from '../utils/types'
+import { saveButtonClickHandlers, SaveButtonClickHndler } from '../hooks/saveButtonClickHandlers'
+import { EditableAnswer, useEditableAnswerState } from '../hooks/useEditableAnswerState'
+import { AnswerValueSingleString } from '../components/AnswerValueDisplayComponents/AnswerValueSingleString'
+import * as stringMatch from "../utils/stringMatch"
+
+
 
 
 
@@ -20,14 +26,30 @@ export const getReactProps = (element: HTMLElement): any => {
   }
 }
 
+export type AnswerValueMethods = {
+  displayComponent: FC<{ id: number }>
+  init: (_: any) => any
+  prepForSave: (_: any) => any
+  prepForFill: (answers: EditableAnswer[]) => any[]
+}
 
-// export interface FormInputSubclass<AnswerType> {
-//   listenForChanges:  () => never
-//   currentValue: () => AnswerType | null
-//   answer: () =>  Promise<AnswerType | null>
-// }
+
 
 export abstract class BaseFormInput<AnswerType> {
+  public editableAnswerHook = useEditableAnswerState
+  public saveButtonClickHandler: SaveButtonClickHndler = saveButtonClickHandlers.simpleText
+  public get answerValue(): AnswerValueMethods {
+    return {
+      displayComponent: AnswerValueSingleString, 
+      init: structuredClone,
+      prepForSave: _=>_,
+      prepForFill: (answers)=> answers.map(a => a.originalAnswer.answer)
+    }
+  }
+  // public answerValueDisplayComponent: FC<{ id: number }> = AnswerValueSingleString
+  // public answerValueInit: (value: any) => any = structuredClone
+  // public prepAnswerValueForSave: (value: any) => any = (value) => value
+
   /**
    * The xpath used to identify the element.
    * Ususally an enclosing div since the label is contained within.
@@ -50,8 +72,6 @@ export abstract class BaseFormInput<AnswerType> {
    * is used as part of the path to the answer.
    */
   fieldType: string
-
-  answerDisplayType: AnswerDisplayType
 
 
   /**
@@ -109,7 +129,8 @@ export abstract class BaseFormInput<AnswerType> {
    * can sometimes be overriden but is mostly the same.
    */
   public get fieldName(): string {
-    return getElement(this.element, './/label').innerText
+    const innerText = getElement(this.element, './/label').innerText
+    return innerText
   }
 
   /**
@@ -148,39 +169,33 @@ export abstract class BaseFormInput<AnswerType> {
     }
   }
 
-  async save(answer?: Answer): Promise<boolean> {
-    answer = answer || this.fieldSnapshot
+  async save(answer: Answer): Promise<Answer> {
+    answer
     const response = await client.send('saveAnswer', answer)
-    return response.ok
+    return response.data
   }
 
-  async deleteAnswer(): Promise<boolean> {
-    const res = await client.send('deleteAnswer', this.path)
+  async deleteAnswer(path: FieldPath): Promise<boolean> {
+    const res = await client.send('deleteAnswer', path)
     return res.ok
   }
 
-  /**
-   * base method.
-   * used by hasAnswer and answer
-   */
-  async answer(): Promise<Answer> {
-    const res = await client.send('getAnswer', this.path)
+
+  async answer(path?: FieldPath): Promise<Answer[]> {
+    path = path || this.path
+    const res = await client.send('getAnswer', path)
     if (res.ok) {
       return res.data
     } else {
       console.log(res, this.path);
-      return {
-        answer: null,
-        path: this.path,
-        hasAnswer: false
-      }
+      return []
     }
   }
 
 
-  async isFilled(answer?: Answer): Promise<boolean> {
-    answer = answer || await this.answer()
-    return answer.answer === this.currentValue()
+
+  public isFilled(current: any, stored: any[]): boolean {
+    return stored.some(answer=>stringMatch.exact(current, answer))
   }
 
   /**
