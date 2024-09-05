@@ -54,7 +54,17 @@ export const MONTH_YEAR = [
   './/div',
   "[starts-with(@data-automation-id, 'formField-')]",
   "[.//input[@aria-label='Month']]",
-  "[.//input[@aria-label='Year']]"
+  "[.//input[@aria-label='Year']]",
+  "[not(.//input[@aria-label='Day'])]",
+  
+].join("")
+
+export const MONTH_DAY_YEAR = [
+  './/div',
+  "[starts-with(@data-automation-id, 'formField-')]",
+  "[.//input[@aria-label='Month']]",
+  "[.//input[@aria-label='Day']]",
+  "[.//input[@aria-label='Year']]",
   
 ].join("")
 

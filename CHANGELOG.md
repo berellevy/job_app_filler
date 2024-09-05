@@ -4,6 +4,7 @@ All significant changes to this project will be documented in this file.
 ## [1.0.8] - unreleased
 
 ### Added
+- [workday] Multi checkbox field. Month-day-year field with relative date capabilities.
 
 ### Changed
 
