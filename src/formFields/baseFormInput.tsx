@@ -170,7 +170,6 @@ export abstract class BaseFormInput<AnswerType> {
   }
 
   async save(answer: Answer): Promise<Answer> {
-    answer
     const response = await client.send('saveAnswer', answer)
     return response.data
   }
