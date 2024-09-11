@@ -87,3 +87,9 @@ export const BOOLEAN_RADIO = [
   "[starts-with(@data-automation-id, 'formField-')]",
   "[count(.//input[@type='radio']) = 2]"
 ].join("")
+
+export const MULTI_FILE_UPLOAD = [
+  ".//div",
+  "[starts-with(@data-automation-id, 'formField-')]",
+  "[.//div[@data-automation-id='file-upload-drop-zone']]"
+].join("")
