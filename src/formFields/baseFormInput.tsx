@@ -46,9 +46,6 @@ export abstract class BaseFormInput<AnswerType> {
       prepForFill: (answers)=> answers.map(a => a.originalAnswer.answer)
     }
   }
-  // public answerValueDisplayComponent: FC<{ id: number }> = AnswerValueSingleString
-  // public answerValueInit: (value: any) => any = structuredClone
-  // public prepAnswerValueForSave: (value: any) => any = (value) => value
 
   /**
    * The xpath used to identify the element.
