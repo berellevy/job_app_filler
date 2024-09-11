@@ -110,18 +110,6 @@ export class MonthYear extends WorkdayBaseInput<[string, string]> {
   }
   listenForChanges(): void {
     setupChangeListener(this)
-    // const observer = new MutationObserver((mutations) => {
-    //   for (const mutation of mutations) {
-    //     if (mutation.type === 'characterData') {
-    //       this.triggerReactUpdate()
-    //     }
-    //   }
-    // })
-    // observer.observe(this.wrapperElement, {
-    //   characterData: true,
-    //   childList: true,
-    //   subtree: true,
-    // })
   }
 
   get monthInputElement(): HTMLInputElement {
@@ -268,18 +256,6 @@ export class Year extends WorkdayBaseInput<string> {
   fieldType = 'Year'
   listenForChanges(): void {
     setupChangeListener(this)
-    // const observer = new MutationObserver((mutations) => {
-    //   for (const mutation of mutations) {
-    //     if (mutation.type === 'characterData') {
-    //       this.triggerReactUpdate()
-    //     }
-    //   }
-    // })
-    // observer.observe(this.wrapperElement, {
-    //   characterData: true,
-    //   childList: true,
-    //   subtree: true,
-    // })
   }
 
   get yearInputElement(): HTMLInputElement {
