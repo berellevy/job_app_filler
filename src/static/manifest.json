@@ -33,6 +33,7 @@
     }
   ],
   "permissions": [
-    "storage"
+    "storage",
+    "unlimitedStorage"
   ]
 }
