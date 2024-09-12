@@ -40,7 +40,7 @@ export const noPage: PathMatcher = (lookup, path) => {
 
 export const fieldNameStart: PathMatcher = (lookup, path) => {
   return (
-    stringMatch.exact(lookup.page, path.page) &&
+    stringMatch.countMatchingStartCharacters(lookup.page, path.page) > 10 &&
     stringMatch.exact(lookup.section, path.section) &&
     stringMatch.exact(lookup.fieldType, path.fieldType) &&
     stringMatch.countMatchingStartCharacters(lookup.fieldName, path.fieldName) > 8
@@ -49,7 +49,7 @@ export const fieldNameStart: PathMatcher = (lookup, path) => {
 
 export const fieldNameEnd: PathMatcher = (lookup, path) => {
   return (
-    stringMatch.exact(lookup.page, path.page) &&
+    stringMatch.countMatchingStartCharacters(lookup.page, path.page) > 10 &&
     stringMatch.exact(lookup.section, path.section) &&
     stringMatch.exact(lookup.fieldType, path.fieldType) &&
     stringMatch.countMatchingEndCharacters(lookup.fieldName, path.fieldName) > 8
@@ -58,7 +58,7 @@ export const fieldNameEnd: PathMatcher = (lookup, path) => {
 
 export const storedFieldNameIsPrefix: PathMatcher = (lookup, path) => {
   return (
-    stringMatch.exact(lookup.page, path.page) &&
+    stringMatch.countMatchingStartCharacters(lookup.page, path.page) > 10 &&
     stringMatch.exact(lookup.section, path.section) &&
     stringMatch.exact(lookup.fieldType, path.fieldType) &&
     stringMatch.startsWith(lookup.fieldName, path.fieldName)
@@ -67,7 +67,7 @@ export const storedFieldNameIsPrefix: PathMatcher = (lookup, path) => {
 
 export const storedFieldNameIsSuffix: PathMatcher = (lookup, path) => {
   return (
-    stringMatch.exact(lookup.page, path.page) &&
+    stringMatch.countMatchingStartCharacters(lookup.page, path.page) > 10 &&
     stringMatch.exact(lookup.section, path.section) &&
     stringMatch.exact(lookup.fieldType, path.fieldType) &&
     stringMatch.endsWith(lookup.fieldName, path.fieldName)
@@ -76,7 +76,7 @@ export const storedFieldNameIsSuffix: PathMatcher = (lookup, path) => {
 
 export const storedFieldNameIsSubstring: PathMatcher = (lookup, path) => {
   return (
-    stringMatch.exact(lookup.page, path.page) &&
+    stringMatch.countMatchingStartCharacters(lookup.page, path.page) > 10 &&
     stringMatch.exact(lookup.section, path.section) &&
     stringMatch.exact(lookup.fieldType, path.fieldType) &&
     stringMatch.contains(lookup.fieldName, path.fieldName)
