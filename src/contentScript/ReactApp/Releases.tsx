@@ -34,8 +34,8 @@ const UpdateComponent: FC<{update: Update}> =  ({update}) => {
       <Bold>{title}</Bold>
       <Typography>
         <ul style={{ listStyle: 'initial', paddingLeft: '1.3em' }}>
-          {body.map((item) => {
-            return <li>{item}</li>
+          {body.map((item, index) => {
+            return <li key={index}>{item}</li>
           })}
         </ul>
       </Typography>
@@ -56,8 +56,8 @@ export const ReleaseComponent: FC<{release: Release}> = ({release}) => {
         Version {version} - {date}
       </Typography>
       <Box sx={{ pl: '.5em' }}>
-        {updates.map((update) => {
-          return <UpdateComponent update={update} />
+        {updates.map((update, index) => {
+          return <UpdateComponent key={index} update={update} />
         })}
       </Box>
     </Box>
