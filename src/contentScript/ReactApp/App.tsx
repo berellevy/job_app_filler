@@ -76,8 +76,8 @@ const ContentApp: FC = () => {
             component={Box}
           >
             {joinComponents(
-              releases.map((release) => {
-                return (<ReleaseComponent release={release} />)
+              releases.map((release, index) => {
+                return (<ReleaseComponent key={index} release={release} />)
               }), <Divider sx={{ my: 1 }} />
             )}
           </DialogContentText>
