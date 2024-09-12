@@ -124,10 +124,15 @@ export abstract class BaseFormInput<AnswerType> {
 
   /**
    * can sometimes be overriden but is mostly the same.
+   * Default is first nonblank label or legend.
    */
   public get fieldName(): string {
-    const innerText = getElement(this.element, './/label').innerText
-    return innerText
+    const XPATH = [
+      ".//*[self::label or self::legend]",
+      "[.//text()[(normalize-space() != '')]]"
+    ].join("")
+    const element = getElement(this.element, XPATH)
+    return element?.innerText
   }
 
   /**
