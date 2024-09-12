@@ -1,9 +1,8 @@
 import { Server } from '../utils/crossContextCommunication/server'
 import { saveAnswer, getAnswer, deleteAnswer } from '../utils/storage'
-import { parseKey } from '../utils/storage/utils'
 
 import { FieldPath, Answer } from '../utils/types'
-import { EVENT_LISTENER_ID, loadApp } from './ContentApp'
+import { EVENT_LISTENER_ID, loadApp } from './ReactApp/App'
 
 // Regiser server and methods accessible to injected script.
 const server = new Server(process.env.CONTENT_SCRIPT_URL)
