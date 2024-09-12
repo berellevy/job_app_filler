@@ -77,6 +77,14 @@ export const releases: Release[] = [
           'Multi file upload.',
         ],
       },
+      {
+        title: "Autofill",
+        body: "Make pages match if both share a prefix."
+      },
+      {
+        title: "Bugs",
+        body: "fix bug where number inputs appear filled but don't work at final submit."
+      }
     ],
   },
   {
