@@ -60,7 +60,8 @@ export class TextInput extends WorkdayBaseInput<string | null> {
         this.inputElement().value = firstAnswer.answer
         if (reactProps.onChange) {
           reactProps.onChange({ target: { value: firstAnswer.answer } })
-        } else if (reactProps.onBlur) {
+        } 
+        if (reactProps.onBlur) {  
           reactProps.onBlur({ target: { value: firstAnswer.answer } })
         }
         this.internalValue = firstAnswer.answer
