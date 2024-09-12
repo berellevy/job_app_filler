@@ -1,10 +1,10 @@
 # Change Log
 All significant changes to this project will be documented in this file.
 
-## [1.0.8] - unreleased
+## [1.0.8] - 2024-09-12
 
 ### Added
-- [workday] Multi checkbox field. Month-day-year field with relative date capabilities.
+- [workday] Multi checkbox field. Month-day-year field with relative date capabilities. Multi file upload.
 
 ### Changed
 
