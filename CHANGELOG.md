@@ -7,8 +7,10 @@ All significant changes to this project will be documented in this file.
 - [workday] Multi checkbox field. Month-day-year field with relative date capabilities. Multi file upload.
 
 ### Changed
+- [lookup] all matchers match on page start
 
 ### Fixed
+- [workday] fix bug where number inputs appear filled but don't work at final submit.
 
 ### Bugs
 
