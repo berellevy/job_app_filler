@@ -20,6 +20,7 @@ import { theme } from '../utils/react'
 import Logo from '../components/Logo'
 import { teal } from '@mui/material/colors'
 import { ContentCopyIcon, GitHubIcon } from '../utils/icons'
+import { LogoTitleBar } from '../components/LogoTitleBar'
 
 const EMAIL_ADDRESS = 'berellevy+chromeextensions@gmail.com'
 
@@ -36,21 +37,9 @@ const App: FC<{}> = () => {
   return (
     <ThemeProvider theme={theme}>
       <Box pb={"3em"}>
-        <AppBar color="secondary" position="static">
-          <Toolbar>
-            <Box sx={{ mr: 2 }}>
-              <Logo />
-            </Box>
-            <Typography
-              color={teal[900]}
-              variant="h5"
-              component="div"
-              sx={{ flexGrow: 1 }}
-            >
-              Job App Filler
-            </Typography>
-          </Toolbar>
-        </AppBar>
+        <LogoTitleBar>
+          Job App Filler
+        </LogoTitleBar>
       </Box>
       <Box component={'main'}>
         <Container sx={{ my: 2 }}>
