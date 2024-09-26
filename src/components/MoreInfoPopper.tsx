@@ -10,7 +10,7 @@ import {
   Popper,
   CircularProgress,
 } from '@mui/material'
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { useAppContext } from '../AppContext'
 import { MoreVertIcon, CloseIcon, RefreshIcon } from '../utils/icons'
 import { sleep } from '../utils/async'
@@ -38,10 +38,12 @@ export const MoreInfoPopper: React.FC<{
       {moreInfoPopper.isOpen ? <CloseIcon /> : <MoreVertIcon />}
       <Popper
         id={id}
+        ref={moreInfoPopper.popperRef}
         open={moreInfoPopper.isOpen}
         anchorEl={moreInfoPopper.anchorEl}
         placement="right-end"
         transition
+        sx={{ zIndex: 100 }}
       >
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
