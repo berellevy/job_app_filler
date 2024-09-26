@@ -75,11 +75,11 @@ export const releases: Release[] = [
           "Widgets don't show up on search page",
           "Clicking outside closes the popup.",
           "Pressing escape closes the popup."
-        ]
-      }
+        ],
+      },
 
     ]
-  }
+  },
   {
     version: '1.0.8',
     date: '9/12/24',
