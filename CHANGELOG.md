@@ -1,6 +1,21 @@
 # Change Log
 All significant changes to this project will be documented in this file.
 
+## [1.0.9] - 2024-09-26
+
+### Added
+
+### Changed
+- [lookup] remove page from answer matching.
+- [UI] popup closes on clickaway and escape key press.
+
+### Fixed
+- [UI] add z-index to popup.
+- [UI] prevent widgets from showing up on search pages.
+
+### Bugs
+
+
 ## [1.0.8] - 2024-09-12
 
 ### Added
