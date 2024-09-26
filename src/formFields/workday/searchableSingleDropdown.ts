@@ -58,6 +58,7 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
     return this._observer
   }
 
+
   /**
    * A change is when an answer element is added or removed.
    */
@@ -103,15 +104,30 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
     )
   }
 
-  async dropdownElement(): Promise<HTMLElement | undefined | null> {
-    await sleep(100)
-    const dropdownId = this.multiSelectContainerElement.getAttribute('id')
-    const XPATH = [
+  get dropdownId(): string {
+    return this.multiSelectContainerElement.getAttribute('id')
+  }
+
+  get dropdownElementXpath(): string {
+    return [
       './/body',
       "/div[@data-automation-widget='wd-popup']",
-      `[//div[@data-associated-widget='${dropdownId}']]`,
+      `[//div[@data-associated-widget='${this.dropdownId}']]`,
     ].join('')
-    return await waitForElement(document, XPATH, { timeout: 1000 })
+  }
+
+  async dropdownElement(): Promise<HTMLElement | undefined | null> {
+    await sleep(100)
+    return await waitForElement(document, this.dropdownElementXpath, { timeout: 1000 })
+  }
+
+
+  public clickIsInFormfield(e: PointerEvent): boolean {
+    const target = e.target as HTMLElement
+    return (
+      super.clickIsInFormfield(e) ||
+      Boolean(target.closest(`[data-associated-widget='${this.dropdownId}']`))
+    )
   }
 
   /**
@@ -167,18 +183,23 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
           await sleep(500)
           while (answerList.length > 0) {
             const answer = answerList.shift()
+            // search for answer
             getReactProps(this.inputElement).onKeyDown({
               key: 'Tab',
               target: { value: answer },
             })
+            // break if the selected item matches our answer
             const el = await waitForElement(
               this.element,
               this.selectedItemElementXpath,
-              { timeout: 1000 }
+              { timeout: 500 }
             )
             if (el && this.isFilled(el.innerText, answerValues)) {
               break
             }
+            // if there are multiple matches, click the first one.
+            const dropdownElement = await this.dropdownElement()
+            dropdownElement && getElement(dropdownElement, ".//div[@data-automation-id='promptOption']")?.click()
           }
           this.closeDropdown() // asynchronously
         }
