@@ -1,3 +1,4 @@
+import { getElement } from '../../utils/getElements'
 import { BooleanRadio } from './BooleanRadio'
 import { MonthYear, MonthDayYear, Year } from './Dates'
 import { MultiCheckbox } from './MultiCheckbox'
@@ -9,6 +10,11 @@ import { TextArea } from './TextArea'
 import { PasswordInput, TextInput } from './textInput'
 
 export const RegisterInputs = async (node: Node = document) => {
+  const searchPageXpath = ".//div[@data-automation-id='jobSearch']"
+  if (getElement(document, searchPageXpath)) {
+    return
+  }
+
   Promise.all([
     TextInput.autoDiscover(node),
     PasswordInput.autoDiscover(node),
