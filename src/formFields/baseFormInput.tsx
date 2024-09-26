@@ -87,6 +87,7 @@ export abstract class BaseFormInput<AnswerType> {
   }
 
   static async autoDiscover(node: Node = document) {
+    
     const elements = getElements(node, this.XPATH)
     elements.forEach((el) => {
       if (!el.hasAttribute('job-app-filler')) {
@@ -191,6 +192,10 @@ export abstract class BaseFormInput<AnswerType> {
       console.log(res, this.path);
       return []
     }
+  }
+
+  public clickIsInFormfield(e: PointerEvent) {
+    return e.composedPath().includes(this.element)
   }
 
 
