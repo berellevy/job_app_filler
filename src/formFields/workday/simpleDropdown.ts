@@ -34,6 +34,10 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
       },
     }
   }
+
+  private get buttonElement(): HTMLElement {
+    return getElement(this.element, './/button[@aria-haspopup="listbox"]')
+  }
   /**
    * fires whenever the buttonElement's innerText changes
    */
@@ -55,9 +59,7 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
     return this.buttonElement.innerText
   }
 
-  private get buttonElement(): HTMLElement {
-    return getElement(this.element, './/button[@data-automation-id]')
-  }
+
 
   openDropdown() {
     if (!this.dropdownIsOpen) {
@@ -83,16 +85,26 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
     return this.buttonElement.hasAttribute('aria-expanded')
   }
 
+  get dropdownId(): string {
+    return this.buttonElement.getAttribute('aria-controls')
+  }
+
   async dropdownElement(): Promise<HTMLElement | undefined | null> {
     if (this.dropdownIsOpen) {
-      const dropdownId = this.buttonElement.getAttribute('aria-controls')
       const XPATH = [
         './/body',
-        "/div[@data-automation-widget='wd-popup']",
-        `//ul[@id='${dropdownId}']`,
+        `//ul[@id='${this.dropdownId}']`,
       ].join('')
       return await waitForElement(document, XPATH)
     }
+  }
+
+  public clickIsInFormfield(e: PointerEvent): boolean {
+    const target = e.target as HTMLElement
+    return (
+      super.clickIsInFormfield(e) ||
+      Boolean(target.closest(`ul#${this.dropdownId}`))
+    )
   }
 
   isFilled(current: string, stored: string[]): boolean {
