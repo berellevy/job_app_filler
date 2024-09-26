@@ -66,6 +66,21 @@ export const ReleaseComponent: FC<{release: Release}> = ({release}) => {
 
 export const releases: Release[] = [
   {
+    version: "1.0.9",
+    date: "9/26/24",
+    updates: [
+      {
+        title:  "UI",
+        body: [
+          "Widgets don't show up on search page",
+          "Clicking outside closes the popup.",
+          "Pressing escape closes the popup."
+        ]
+      }
+
+    ]
+  }
+  {
     version: '1.0.8',
     date: '9/12/24',
     updates: [
