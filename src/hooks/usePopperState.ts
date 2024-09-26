@@ -5,11 +5,13 @@ import {
   MouseEvent,
   useRef,
   useState,
+  useEffect,
 } from 'react'
 import { BaseFormInput } from '../formFields/baseFormInput'
 
 export type PopperState = {
   anchorRef: MutableRefObject<any>
+  popperRef: MutableRefObject<any>
   anchorEl: HTMLElement
   setAnchorEl: Dispatch<SetStateAction<HTMLElement>>
   isOpen: boolean
@@ -18,10 +20,48 @@ export type PopperState = {
   handleToggleButtonClick: (e: MouseEvent<HTMLElement>) => void
 }
 
+function isInRect(
+  x: number,
+  y: number,
+  rects: DOMRect[],
+  margin: number = 0
+): boolean {
+  return rects.some((rect) => {
+    return (
+      rect &&
+      x >= rect.left - margin &&
+      x <= rect.right + margin &&
+      y >= rect.top - margin &&
+      y <= rect.bottom + margin
+    )
+  })
+}
+
+const handleEscape = (e: KeyboardEvent) => {
+  if (e.key === 'Escape') {
+    close()
+    document.removeEventListener('keyup', handleEscape)
+  }
+}
+
 export const usePopperState = (backend: BaseFormInput<any>): PopperState => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const anchorRef = useRef(null)
+  const popperRef = useRef(null)
   const isOpen = Boolean(anchorEl)
+
+  const handleClickAway = (e: PointerEvent) => {
+    const { x, y } = e
+    const rects = [,
+      popperRef.current?.getBoundingClientRect(),
+    ]
+    
+    const isInside = isInRect(x, y, rects) || backend.clickIsInFormfield(e)
+    if (!isInside) {
+      document.removeEventListener('click', handleClickAway)
+      close()
+    }
+  }
 
   const open = () => {
     setAnchorEl(anchorRef.current)
@@ -30,6 +70,17 @@ export const usePopperState = (backend: BaseFormInput<any>): PopperState => {
   const close = () => {
     setAnchorEl(null)
   }
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('keyup', handleEscape)
+      document.addEventListener('click', handleClickAway)
+    }
+    return () => {
+      document.removeEventListener('keyup', handleEscape)
+      document.removeEventListener('click', handleClickAway)
+    }
+  }, [isOpen])
 
   const handleToggleButtonClick = (e: MouseEvent<HTMLElement>) => {
     if (!isOpen) {
@@ -41,6 +92,7 @@ export const usePopperState = (backend: BaseFormInput<any>): PopperState => {
 
   return {
     anchorEl,
+    popperRef,
     setAnchorEl,
     anchorRef,
     isOpen,
