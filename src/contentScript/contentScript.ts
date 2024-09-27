@@ -1,6 +1,5 @@
 import { Server } from '../utils/crossContextCommunication/server'
 import { saveAnswer, getAnswer, deleteAnswer } from '../utils/storage'
-import { migrateToPg } from '../utils/storage/migrateToPg'
 
 import { FieldPath, Answer } from '../utils/types'
 import { EVENT_LISTENER_ID, loadApp } from './ReactApp/App'
@@ -42,4 +41,3 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 loadApp()
 
 
-migrateToPg()

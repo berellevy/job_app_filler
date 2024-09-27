@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const webpack = require('webpack')
 const uuid = require('uuid')
-const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 
 const envKeys = {
   'process.env.CONTENT_SCRIPT_URL': `"${uuid.v4()}"`,
@@ -30,7 +29,7 @@ module.exports = {
       },
       {
         type: 'asset/resource',
-        test: /\.(jpg|jpeg|png|woff|woff2|eot|ttf|svg|data|wasm)$/,
+        test: /\.(jpg|jpeg|png|woff|woff2|eot|ttf|svg)$/,
       },
     ],
   },
@@ -47,20 +46,13 @@ module.exports = {
       ],
     }),
     new webpack.DefinePlugin(envKeys),
-    new NodePolyfillPlugin({
-      onlyAliases: ["fs", "util"],
-    }),
     ...getHtmlPlugins(['popup']),
   ],
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
-    fallback: {
-      fs: false,  // explicitly ignore 'fs' for browser use
-    }
   },
   output: {
     filename: '[name].js',
-    chunkFilename: 'chunk.[name].js',  // Control chunk filenames explicitly
     path: path.resolve('dist'),
   },
   // optimization: {
