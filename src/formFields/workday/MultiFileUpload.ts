@@ -12,9 +12,16 @@ import * as xpaths from './xpaths'
 import { AnswerValueMultiFileUpload } from '../../components/AnswerValueDisplayComponents/AnswerValueMultiFileUpload'
 import { LocalStorageFile, localStorageToFile } from '../../utils/file'
 import { isEqual } from 'lodash'
+import { saveButtonClickHandlers, SaveButtonClickHndler } from '../../hooks/saveButtonClickHandlers'
 
 export class MultiFileUpload extends WorkdayBaseInput<any> {
   fieldType = 'MultiFileUpload'
+  public saveButtonClickHandler = saveButtonClickHandlers.withNotice
+  fieldNotice = "To save and autofill files, upload them in the 'Answers' section below."
+  fieldNoticeLink = {
+    display: "See How",
+    url: "https://www.youtube.com/watch?v=JYMATq9siIY&t=134s"
+  }
   static XPATH = xpaths.MULTI_FILE_UPLOAD
   get answerValue() {
     return {
