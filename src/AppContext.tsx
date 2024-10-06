@@ -2,14 +2,11 @@ import React, {
   createContext,
   Dispatch,
   FC,
-  MutableRefObject,
   ReactNode,
   SetStateAction,
   useContext,
   useEffect,
-  useRef,
   useState,
-  MouseEvent,
 } from 'react'
 import { BaseFormInput } from './formFields/baseFormInput'
 import { Answer, FieldPath } from './utils/types'
@@ -30,7 +27,7 @@ export interface AppContextType {
   refresh: () => Promise<void>
   init: () => Promise<void>
   fillButtonState: FillButtonState
-  deleteAnswer: (path: FieldPath) => Promise<void>
+  deleteAnswer: (id: number) => Promise<void>
   currentValue: any
   setCurrentValue: (_: any) => void
   isFilled: boolean
@@ -39,6 +36,7 @@ export interface AppContextType {
   editableAnswerState: EditableAnswerState
   moreInfoPopper: PopperState
   saveButtonClickHandler: SaveButtonClickHndler
+  fieldNotice: string | null
 }
 
 const AppContext = createContext<AppContextType>(null)
@@ -54,7 +52,7 @@ export const ContextProvider: FC<{
   const [editableAnswer, setEditableAnswer] = useState<LocalAnswer[]>([])
   const editableAnswerState: EditableAnswerState =
     backend.editableAnswerHook(backend)
-
+  const fieldNotice = backend.fieldNotice
   useEffect(() => {
     ;(async () => {
       await editableAnswerState.init()
@@ -83,8 +81,8 @@ export const ContextProvider: FC<{
       backend.answerValue.prepForFill(editableAnswerState.answers)
     )
 
-  const deleteAnswer: AppContextType["deleteAnswer"] = async (path) => {
-    await backend.deleteAnswer(path)
+  const deleteAnswer: AppContextType["deleteAnswer"] = async (id: number) => {
+    await backend.deleteAnswer(id)
     await refresh()
   }
 
@@ -115,6 +113,7 @@ export const ContextProvider: FC<{
     moreInfoPopper: usePopperState(backend),
     editableAnswerState,
     saveButtonClickHandler: backend.saveButtonClickHandler,
+    fieldNotice,
   }
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>
