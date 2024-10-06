@@ -39,6 +39,7 @@ function isInRect(
 
 const handleEscape = (e: KeyboardEvent) => {
   if (e.key === 'Escape') {
+    e.preventDefault()
     close()
     document.removeEventListener('keyup', handleEscape)
   }
@@ -55,8 +56,10 @@ export const usePopperState = (backend: BaseFormInput<any>): PopperState => {
     const rects = [,
       popperRef.current?.getBoundingClientRect(),
     ]
-    
-    const isInside = isInRect(x, y, rects) || backend.clickIsInFormfield(e)
+    const isInModal = () => e.composedPath().some((el: HTMLElement) => {
+      return el?.classList?.contains("MuiModal-root")
+    })
+    const isInside = isInRect(x, y, rects) || backend.clickIsInFormfield(e) || isInModal()
     if (!isInside) {
       document.removeEventListener('click', handleClickAway)
       close()
