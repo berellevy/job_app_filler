@@ -19,7 +19,7 @@ import { AbsoluteRelativeSwitch } from '../AbsoluteRelativeSwitch'
 export const AnswerValueSingleRelativeDate: FC<{ id: number }> = ({ id }) => {
   const { editableAnswerState, backend } = useAppContext()
   const { setEditable, setEditedValue, cancelEdit } = editableAnswerState
-  const { editedAnswer, editable } = editableAnswerState.answers[id]
+  const { editedAnswer, editable } = editableAnswerState.answers.find((a) => a.id === id)
   const { value } = editedAnswer
 
   const toggleRelative = ({ target }) => {

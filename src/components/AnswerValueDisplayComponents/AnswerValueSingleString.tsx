@@ -13,7 +13,7 @@ import { CloseIcon, EditIcon, InputIcon } from '../../utils/icons'
 export const AnswerValueSingleString: FC<{ id: number }> = ({ id }) => {
   const { editableAnswerState, backend } = useAppContext()
   const { setEditable, setEditedValue, cancelEdit} = editableAnswerState
-  const { editedAnswer, editable } = editableAnswerState.answers[id]
+  const { editedAnswer, editable } = editableAnswerState.answers.find((a) => a.id === id)
   return (
     <>
       <Divider sx={{ mb: 1 }} />

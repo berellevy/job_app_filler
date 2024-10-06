@@ -18,7 +18,7 @@ import { CloseIcon, EditIcon, InputIcon } from '../../utils/icons'
 export const AnswerValueSingleDate: FC<{ id: number }> = ({ id }) => {
   const { editableAnswerState, backend } = useAppContext()
   const { setEditable, setEditedValue, cancelEdit } = editableAnswerState
-  const { editedAnswer, editable } = editableAnswerState.answers[id]
+  const { editedAnswer, editable } = editableAnswerState.answers.find((a) => a.id === id)
   const { value } = editedAnswer
 
   const editFields =

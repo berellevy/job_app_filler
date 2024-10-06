@@ -34,8 +34,8 @@ import InsertDriveFile from '@mui/icons-material/InsertDriveFile'
 export const AnswerValueMultiFileUpload: FC<{ id: number }> = ({ id }) => {
   const { editableAnswerState, backend } = useAppContext()
   const { setEditable, setEditedValue, cancelEdit } = editableAnswerState
-  const { editedAnswer } = editableAnswerState.answers[id]
-
+  const { editedAnswer } = editableAnswerState.answers.find((a) => a.id === id)
+  
   const deleteAnswerValue = (answerValueId) => {
     const { value } = editedAnswer
     delete value[answerValueId]

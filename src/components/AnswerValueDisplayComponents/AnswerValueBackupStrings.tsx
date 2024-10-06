@@ -23,7 +23,7 @@ import {
 export const AnswerValueBackupStrings: FC<{ id: number }> = ({ id }) => {
   const { editableAnswerState, backend } = useAppContext()
   const { setEditable, setEditedValue, cancelEdit } = editableAnswerState
-  const { editedAnswer, isNew } = editableAnswerState.answers[id]
+  const { editedAnswer, isNew } = editableAnswerState.answers.find((a) => a.id === id)
 
   useEffect(() => {
     if (isNew) {
