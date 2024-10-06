@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Job App Filler",
-  "description": "Elevated Autofill for Annoying Job Sites",
+  "description": "The Best Autofill Since Sliced Bread.",
   "version": "1.0.10",
   "action": {
     "default_icon": "logo.png",
