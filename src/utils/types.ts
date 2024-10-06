@@ -21,7 +21,7 @@ export interface LocalStorage {
 }
 
 export type FieldPath = {
-  page: string
+  page?: string
   section: string
   fieldType: string
   fieldName: string
@@ -31,6 +31,7 @@ export type Answer<T = any> = {
   path: FieldPath | null
   hasAnswer?: boolean
   matchType?: string
+  id?: number 
 }
 
 /**
