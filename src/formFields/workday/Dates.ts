@@ -14,6 +14,7 @@ import {
   EditableAnswerValueRelativeDate,
   RelativeDateOptions,
 } from '../../hooks/answerValueInit'
+import { saveButtonClickHandlers, SaveButtonClickHndler } from '../../hooks/saveButtonClickHandlers'
 
 function formatDate(date: Date): [string, string, string] {
   return [
@@ -161,6 +162,12 @@ export class MonthYear extends WorkdayBaseInput<[string, string]> {
 export class MonthDayYear extends WorkdayBaseInput<[string, string]> {
   static XPATH = xpaths.MONTH_DAY_YEAR
   fieldType = 'MonthDayYear'
+  public saveButtonClickHandler = saveButtonClickHandlers.withNotice
+  fieldNotice: string = "Choose a relative or absolute date."
+  fieldNoticeLink = {
+    display: "See How",
+    url: "https://www.youtube.com/watch?v=JYMATq9siIY&t=207s"
+  }
   get answerValue() {
     return {
       ...super.answerValue,
