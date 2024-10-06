@@ -17,7 +17,7 @@ import { lowerText } from '../../utils/xpath'
 export class MultiCheckbox extends WorkdayBaseInput<any> {
   static XPATH: string = xpaths.MULTI_CHECKBOX
   fieldType: string = 'MultiCheckbox'
-  public saveButtonClickHandler = saveButtonClickHandlers.backupAnswerList
+  // public saveButtonClickHandler = saveButtonClickHandlers.backupAnswerList
   public get answerValue() {
     return {
       ...super.answerValue,
@@ -68,7 +68,7 @@ export class MultiCheckbox extends WorkdayBaseInput<any> {
   getCheckboxElement(answer: string): HTMLInputElement {
     const XPATH = [
       ".//div[@role='cell']",
-      `[.//label[contains(${lowerText()}, '${answer.toLocaleLowerCase()}')]]`,
+      `[.//label[normalize-space(text())='${answer}']]`,
       "//input[@type='checkbox']",
     ].join('')
     return getElement(this.element, XPATH) as HTMLInputElement
