@@ -22,7 +22,7 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
   editableAnswerHook = useEditableAnswerState
   static XPATH = xpaths.SEARCHABLE_SINGLE_DROPDOWN
   fieldType = 'SimpleDropdown'
-  public saveButtonClickHandler = saveButtonClickHandlers.backupAnswerList
+  // public saveButtonClickHandler = saveButtonClickHandlers.backupAnswerList
   public get answerValue() {
     return {
       ...super.answerValue,
@@ -150,8 +150,9 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
   isFilled(current: string, stored: string[]) {
     return stored.some((answer) => {
       return (
-        stringMatch.contains(current, answer) ||
-        stringMatch.keywordCount(current, answer)
+        answer === current
+        // stringMatch.contains(current, answer) ||
+        // stringMatch.keywordCount(current, answer)
       )
     })
   }
