@@ -9,6 +9,7 @@ import {
   IconButton,
   Snackbar,
   SnackbarCloseReason,
+  Stack,
   Toolbar,
   Tooltip,
   Typography,
@@ -19,7 +20,7 @@ import { ThemeProvider } from '@emotion/react'
 import { theme } from '../utils/react'
 import Logo from '../components/Logo'
 import { teal } from '@mui/material/colors'
-import { ContentCopyIcon, GitHubIcon } from '../utils/icons'
+import { ContentCopyIcon, GitHubIcon, OpenInNewIcon } from '../utils/icons'
 import { LogoTitleBar } from '../components/LogoTitleBar'
 
 const EMAIL_ADDRESS = 'berellevy+chromeextensions@gmail.com'
@@ -36,36 +37,45 @@ const App: FC<{}> = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box pb={"3em"}>
-        <LogoTitleBar>
-          Job App Filler
-        </LogoTitleBar>
+      <Box pb={'1em'}>
+        <LogoTitleBar>Job App Filler</LogoTitleBar>
       </Box>
       <Box component={'main'}>
         <Container sx={{ my: 2 }}>
-          <Typography variant="body1">
-            Elevated autofill for annoying job sites.
+          <Typography variant="h6" sx={{mb: 1}}>
+            The Best Autofill Since Sliced Bread.
           </Typography>
-          <Button variant='outlined'
-            onClick={() => {
-              chrome.tabs.query(
-                { active: true, currentWindow: true },
-                (tabs) => {
-                  chrome.tabs
-                    .sendMessage(tabs[0].id, {
-                      type: 'SHOW_WHATS_NEW',
-                    })
-                    .catch((err) => {
-                      setSnackbarMessage('Only works on workday sites.')
-                      setSnackbarOpen(true)
-                    }),
-                    () => {}
-                }
-              )
-            }}
-          >
-            what's new?
-          </Button>
+          <Stack direction={'row'} spacing={1}>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                chrome.tabs.query(
+                  { active: true, currentWindow: true },
+                  (tabs) => {
+                    chrome.tabs
+                      .sendMessage(tabs[0].id, {
+                        type: 'SHOW_WHATS_NEW',
+                      })
+                      .catch((err) => {
+                        setSnackbarMessage('Only works on workday sites.')
+                        setSnackbarOpen(true)
+                      }),
+                      () => {}
+                  }
+                )
+              }}
+            >
+              what's new?
+            </Button>
+            <Button
+              variant="outlined"
+              href="https://youtu.be/JYMATq9siIY"
+              target="_blank"
+              endIcon={<OpenInNewIcon />}
+            >
+              Tutorial
+            </Button>
+          </Stack>
           <Divider sx={{ my: 2 }} />
 
           <Typography variant="h5" sx={{ mt: 2, mb: 1 }}>
