@@ -66,6 +66,22 @@ export const ReleaseComponent: FC<{release: Release}> = ({release}) => {
 
 export const releases: Release[] = [
   {
+    version: "1.0.10",
+    date: "10/6/24",
+    updates: [
+      {
+        title: "UI",
+        body: [
+          "Saving Answers is now even easier. Just fill and save."
+        ],
+      },
+      {
+        title: "General",
+        body: "There's a new how-to vid on youtube."
+      }
+    ]
+  },
+  {
     version: "1.0.9",
     date: "9/26/24",
     updates: [
