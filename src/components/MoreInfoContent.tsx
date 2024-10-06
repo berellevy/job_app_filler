@@ -1,7 +1,10 @@
 import {
+  Alert,
+  AlertTitle,
   Avatar,
   Box,
   Breadcrumbs,
+  Button,
   Chip,
   Fade,
   IconButton,
@@ -14,7 +17,7 @@ import {
 import React, { FC } from 'react'
 
 import { useAppContext } from '../AppContext'
-import { AddIcon, InfoIcon } from '../utils/icons'
+import { AddIcon, InfoIcon, OpenInNewIcon } from '../utils/icons'
 import { AnswerDisplayComponent } from './AnswerDisplayComponent'
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -26,77 +29,44 @@ const Item = styled(Paper)(({ theme }) => ({
 }))
 
 export const MoreInfoContent: FC = () => {
-  const { currentValue, backend, editableAnswerState } = useAppContext()
+  const { currentValue, backend, editableAnswerState, fieldNotice } = useAppContext()
   const { answers, addNewAnswer } = editableAnswerState
   const { path } = backend
+  
+  
 
   return (
     <Box padding={1}>
       <Stack spacing={2}>
-        <Item>
-          <Typography variant="h6">Question Path:</Typography>
-          <Breadcrumbs separator=">">
-            <Chip
-              variant="outlined"
-              avatar={
-                <Tooltip title="Page">
-                  <Avatar>P</Avatar>
-                </Tooltip>
-              }
-              label={path.page}
-            />
-            <Chip
-              variant="outlined"
-              avatar={
-                <Tooltip title="Section">
-                  <Avatar>S</Avatar>
-                </Tooltip>
-              }
-              label={path.section}
-            />
-            <Chip
-              variant="outlined"
-              avatar={
-                <Tooltip title="Field Type">
-                  <Avatar>T</Avatar>
-                </Tooltip>
-              }
-              label={path.fieldType}
-            />
-            <Chip
-            sx={{
-              height: 'auto',
-              minHeight: '32px',
-              textWrap: 'inherit',
-              '& .MuiChip-label': {
-                display: 'block',
-                whiteSpace: 'normal',
-              },
-            }}
-              variant="outlined"
-              avatar={
-                <Tooltip title="Question">
-                  <Avatar>Q</Avatar>
-                </Tooltip>
-              }
-              label={path.fieldName}
-            />
-          </Breadcrumbs>
-        </Item>
-        <Item>
-          <Typography variant="h6">Current Value</Typography>
-          <Typography>{String(currentValue)}</Typography>
-        </Item>
+        {fieldNotice && (
+          <Item>
+            <Alert variant="filled" severity="info">
+              <AlertTitle>NOTE</AlertTitle>
+              <Typography>{fieldNotice}</Typography>
+              {backend.fieldNoticeLink && (
+                <Button
+                  variant='text'
+                  sx={{color: "white"}}
+                  target="_blank"
+                  href={backend.fieldNoticeLink.url}
+                  endIcon={<OpenInNewIcon />}
+                >
+                  {backend.fieldNoticeLink.display}
+                </Button>
+              )}
+            </Alert>
+          </Item>
+        )}
         <Item>
           <Typography variant="h6" mb={2}>
             Answers
           </Typography>
           <Stack spacing={1}>
             {answers.length > 0 ? (
-              answers.map((a, index) => (
-                <Fade key={index} in timeout={{ exit: 450 }} unmountOnExit>
+              answers.map((a) => (
+                <Fade key={a.id} in timeout={{ exit: 450 }} unmountOnExit>
                   <div>
-                    <AnswerDisplayComponent id={index} />
+                    <AnswerDisplayComponent id={a.id} />
                   </div>
                 </Fade>
               ))
@@ -130,6 +100,62 @@ export const MoreInfoContent: FC = () => {
               </IconButton>
             </Box>
           </Stack>
+        </Item>
+        <Item>
+          <Typography variant="h6">Current Value</Typography>
+          <Typography>{String(currentValue)}</Typography>
+        </Item>
+        <Item>
+          {' '}
+          {/* QUESTION PATH */}
+          <Typography variant="h6">Question Path:</Typography>
+          <Breadcrumbs separator=">">
+            <Chip
+              variant="outlined"
+              avatar={
+                <Tooltip title="Page">
+                  <Avatar>P</Avatar>
+                </Tooltip>
+              }
+              label={path.page}
+            />
+            <Chip
+              variant="outlined"
+              avatar={
+                <Tooltip title="Section">
+                  <Avatar>S</Avatar>
+                </Tooltip>
+              }
+              label={path.section}
+            />
+            <Chip
+              variant="outlined"
+              avatar={
+                <Tooltip title="Field Type">
+                  <Avatar>T</Avatar>
+                </Tooltip>
+              }
+              label={path.fieldType}
+            />
+            <Chip
+              sx={{
+                height: 'auto',
+                minHeight: '32px',
+                textWrap: 'inherit',
+                '& .MuiChip-label': {
+                  display: 'block',
+                  whiteSpace: 'normal',
+                },
+              }}
+              variant="outlined"
+              avatar={
+                <Tooltip title="Question">
+                  <Avatar>Q</Avatar>
+                </Tooltip>
+              }
+              label={path.fieldName}
+            />
+          </Breadcrumbs>
         </Item>
       </Stack>
     </Box>
