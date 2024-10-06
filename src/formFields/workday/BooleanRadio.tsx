@@ -9,7 +9,6 @@ import { lowerText } from '../../utils/xpath'
 export class BooleanRadio extends WorkdayBaseInput<string> {
   static XPATH = xpaths.BOOLEAN_RADIO
   fieldType = 'BooleanRadio'
-  public saveButtonClickHandler = saveButtonClickHandlers.simpleText
 
 
   listenForChanges(): void {
