@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Job App Filler",
   "description": "Elevated Autofill for Annoying Job Sites",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "action": {
     "default_icon": "logo.png",
     "default_title": "Job App Filler",
