@@ -2,17 +2,13 @@ import React, { FC } from 'react'
 import { getElement, getElements } from '../utils/getElements'
 import '@fontsource/roboto'
 import {v4 as uuid4} from 'uuid'
-import { client } from '../inject/inject'
+import { client } from '../inject/client'
 import { App, attachReactApp } from '../App'
 import { Answer, FieldPath} from '../utils/types'
 import { saveButtonClickHandlers, SaveButtonClickHndler } from '../hooks/saveButtonClickHandlers'
 import { EditableAnswer, useEditableAnswerState } from '../hooks/useEditableAnswerState'
 import { AnswerValueSingleString } from '../components/AnswerValueDisplayComponents/AnswerValueSingleString'
 import * as stringMatch from "../utils/stringMatch"
-
-
-
-
 
 
 /**
@@ -37,7 +33,14 @@ export type AnswerValueMethods = {
 
 export abstract class BaseFormInput<AnswerType> {
   public editableAnswerHook = useEditableAnswerState
-  public saveButtonClickHandler: SaveButtonClickHndler = saveButtonClickHandlers.simpleText
+  // public saveButtonClickHandler: SaveButtonClickHndler = saveButtonClickHandlers.simpleText
+  public saveButtonClickHandler: SaveButtonClickHndler = saveButtonClickHandlers.basic
+  fieldNotice: string | null
+  fieldNoticeLink: {
+    url: string
+    display: string
+  }
+
   public get answerValue(): AnswerValueMethods {
     return {
       displayComponent: AnswerValueSingleString, 
@@ -177,8 +180,8 @@ export abstract class BaseFormInput<AnswerType> {
     return response.data
   }
 
-  async deleteAnswer(path: FieldPath): Promise<boolean> {
-    const res = await client.send('deleteAnswer', path)
+  async deleteAnswer(id: number): Promise<boolean> {
+    const res = await client.send('deleteAnswer', id)
     return res.ok
   }
 
