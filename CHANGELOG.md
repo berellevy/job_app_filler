@@ -1,6 +1,19 @@
 # Change Log
 All significant changes to this project will be documented in this file.
 
+## [1.0.10] - 2024-10-06
+
+### Added
+- [UI] click outside to close modal.
+
+### Changed
+- [lookup] New in memory persisted datastore with text search.
+- [UI] Improved Flow to save answers
+### Fixed
+
+### Bugs
+
+
 ## [1.0.9] - 2024-09-26
 
 ### Added
