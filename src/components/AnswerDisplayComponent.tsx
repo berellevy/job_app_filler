@@ -26,9 +26,9 @@ export const AnswerDisplayComponent: FC<{ id: number }> = ({ id }) => {
   const { setEditable, setEditedPath, cancelEdit, saveAnswer, deleteAnswer } =
     editableAnswerState
   const { editedAnswer, originalAnswer, editable, error, isNew } =
-    editableAnswerState.answers[id]
+    editableAnswerState.answers.find((a) => a.id === id)
   const errorPopperRef = useRef(null)
-
+  
   return (
     <Paper elevation={4} sx={{ p: 1, width: '100%' }}>
       <SimplePopper
