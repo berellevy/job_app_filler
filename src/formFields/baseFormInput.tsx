@@ -44,7 +44,7 @@ export abstract class BaseFormInput<AnswerType> {
   public get answerValue(): AnswerValueMethods {
     return {
       displayComponent: AnswerValueSingleString, 
-      init: structuredClone,
+      init: (answer) => structuredClone(answer),
       prepForSave: _=>_,
       prepForFill: (answers)=> answers.map(a => a.originalAnswer.answer)
     }
@@ -79,6 +79,11 @@ export abstract class BaseFormInput<AnswerType> {
    */
   public error: string | null
 
+  abstract attachReactApp(
+    app: React.ReactNode,
+    inputContainer: HTMLElement
+  ): void
+
   constructor(element: HTMLElement) {
     this.element = element
     this.uuid = uuid4()
@@ -86,11 +91,10 @@ export abstract class BaseFormInput<AnswerType> {
     /** prevents the element from being registered twice */
     this.element.setAttribute('job-app-filler', this.uuid)
     this.listenForChanges()
-    attachReactApp(<App backend={this} />, element)
+    this.attachReactApp(<App backend={this} />, element)
   }
 
   static async autoDiscover(node: Node = document) {
-    
     const elements = getElements(node, this.XPATH)
     elements.forEach((el) => {
       if (!el.hasAttribute('job-app-filler')) {
