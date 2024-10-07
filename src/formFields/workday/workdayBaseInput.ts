@@ -1,9 +1,23 @@
+import { createRoot } from 'react-dom/client'
 import { getElement } from '../../utils/getElements'
 import { BaseFormInput } from '../baseFormInput'
 
 export abstract class WorkdayBaseInput<
   AnswerType
 > extends BaseFormInput<AnswerType> {
+
+
+  attachReactApp(
+    app: React.ReactNode,
+    inputContainer: HTMLElement
+  ) {
+    // cant just append the react app to the root element...
+    // it makes the element disappear
+    const rootElement = document.createElement('div')
+    inputContainer.insertBefore(rootElement, inputContainer.lastChild)
+    // inputContainer.appendChild(rootElement)
+    createRoot(rootElement).render(app)
+  }
   get sectionLabelXpath(): string {
 
     const primaryXpath = [
