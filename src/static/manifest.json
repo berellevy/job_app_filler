@@ -16,7 +16,8 @@
       ],
       "matches": [
         "https://*.myworkdayjobs.com/*",
-        "https://*.myworkdaysite.com/*"
+        "https://*.myworkdaysite.com/*",
+        "https://*.greenhouse.io/*"
       ]
     }
   ],
@@ -27,7 +28,8 @@
       ],
       "matches": [
         "https://*.myworkdayjobs.com/*",
-        "https://*.myworkdaysite.com/*"
+        "https://*.myworkdaysite.com/*",
+        "https://*.greenhouse.io/*"
 
       ]
     }
