@@ -12,3 +12,9 @@ export const ADDRESS_SEARCH_FIELD = [
   ".//div[@class='field']",
   "[.//auto-complete]",
 ].join("")
+
+
+export const SIMPLE_DROPDOWN = [
+  ".//div[@class='field']",
+  "[.//select]"
+].join("")
