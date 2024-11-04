@@ -30,24 +30,26 @@ export class AddressSearchField extends GreenhouseBaseInput<any> {
   }
   async fill(): Promise<void> {
     const answers = await this.answer()
-    if (this.inputElement && answers.length > 0) {
-      for (const answer of answers) {
-        this.inputElement().value = answer.answer
-        this.inputElement().dispatchEvent(new InputEvent("input"))
-        await waitForElement(this.element, './/auto-complete[@open]', {
-          timeout: 750,
-        })
-  
-        const correctAnswerXpath  = [
-          ".//ul/li",
-          `[text() = '${answer.answer}']`
-        ].join("")
-        const correctAnswerElement = getElement(this.element, correctAnswerXpath)
-        correctAnswerElement && correctAnswerElement.click()
-        if (this.currentValue() === answer.answer) {
-          return
+    await fieldFillerQueue.enqueue(async () => {
+      if (this.inputElement && answers.length > 0) {
+        for (const answer of answers) {
+          this.inputElement().value = answer.answer
+          this.inputElement().dispatchEvent(new InputEvent("input"))
+          await waitForElement(this.element, './/auto-complete[@open]', {
+            timeout: 750,
+          })
+    
+          const correctAnswerXpath  = [
+            ".//ul/li",
+            `[text() = '${answer.answer}']`
+          ].join("")
+          const correctAnswerElement = getElement(this.element, correctAnswerXpath)
+          correctAnswerElement && correctAnswerElement.click()
+          if (this.currentValue() === answer.answer) {
+            return
+          }
         }
       }
-    }
+    })
   }
 }
