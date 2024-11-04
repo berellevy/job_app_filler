@@ -2,6 +2,7 @@
 import { AddressSearchField } from './AddressSearchField'
 import { SimpleDropdown } from './SimpleDropdown'
 import { SingleFileUpload } from './SingleFileUpload'
+import { Textarea } from './Textarea'
 import { TextField } from './TextField'
 export const RegisterInputs = async (node: Node = document) => {
   Promise.all([
@@ -9,5 +10,6 @@ export const RegisterInputs = async (node: Node = document) => {
     SingleFileUpload.autoDiscover(node),
     AddressSearchField.autoDiscover(node),
     SimpleDropdown.autoDiscover(node),
+    Textarea.autoDiscover(node),
   ])
 }
