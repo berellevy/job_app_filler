@@ -11,6 +11,10 @@ export abstract class GreenhouseBaseInput<
   inputDisplayElement(): HTMLElement {
     return this.inputElement()
   }
+
+  public get fieldName() {
+    return super.fieldName.replace("j\n\na\n\nf", "")
+  }
   /**
    * Attach widget between label and field
    */
