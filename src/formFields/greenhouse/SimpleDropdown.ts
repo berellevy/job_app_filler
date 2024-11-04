@@ -87,9 +87,7 @@ export class SimpleDropdown extends GreenhouseBaseInput<any> {
                 cancelable: true,
               }))
               break
-              
             }
-
           }
         }
       }
