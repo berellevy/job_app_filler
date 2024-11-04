@@ -13,7 +13,7 @@ export abstract class GreenhouseBaseInput<
   }
 
   public get fieldName() {
-    return super.fieldName.replace("j\n\na\n\nf", "")
+    return super.fieldName?.replace("j\n\na\n\nf", "")
   }
   /**
    * Attach widget between label and field
