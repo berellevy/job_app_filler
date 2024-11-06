@@ -1,3 +1,4 @@
+import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
@@ -34,6 +35,7 @@ export class AddressSearchField extends GreenhouseBaseInput<any> {
       if (this.inputElement && answers.length > 0) {
         for (const answer of answers) {
           this.inputElement().value = answer.answer
+          await sleep(100)
           this.inputElement().dispatchEvent(new InputEvent("input"))
           await waitForElement(this.element, './/auto-complete[@open]', {
             timeout: 1500,
