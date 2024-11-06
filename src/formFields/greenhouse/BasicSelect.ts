@@ -1,4 +1,3 @@
-import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
