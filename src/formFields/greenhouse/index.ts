@@ -1,6 +1,7 @@
 
 import { AddressSearchField } from './AddressSearchField'
 import { BasicSelect } from './BasicSelect'
+import { MultiCheckbox } from './MultiCheckBox'
 import { SimpleDropdown } from './SimpleDropdown'
 import { SingleFileUpload } from './SingleFileUpload'
 import { Textarea } from './Textarea'
@@ -13,5 +14,6 @@ export const RegisterInputs = async (node: Node = document) => {
     SimpleDropdown.autoDiscover(node),
     Textarea.autoDiscover(node),
     BasicSelect.autoDiscover(node),
+    MultiCheckbox.autoDiscover(node),
   ])
 }

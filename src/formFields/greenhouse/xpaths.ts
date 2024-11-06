@@ -36,3 +36,8 @@ export const TEXTAREA = [
 ]
 .join("")
 
+export const MULTI_CHECKBOX = [
+  ".//div[starts-with(@class, 'field')]",
+  "[count(.//input[@type='checkbox']) > 1]"
+].join("")
+
