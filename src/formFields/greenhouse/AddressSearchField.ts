@@ -38,7 +38,6 @@ export class AddressSearchField extends GreenhouseBaseInput<any> {
           await waitForElement(this.element, './/auto-complete[@open]', {
             timeout: 1500,
           })
-    
           const correctAnswerXpath  = [
             ".//ul/li",
             `[text() = '${answer.answer}']`
