@@ -66,6 +66,21 @@ export const ReleaseComponent: FC<{release: Release}> = ({release}) => {
 
 export const releases: Release[] = [
   {
+    version: "2.0.0",
+    date: "11/6/24",
+    updates: [
+      {
+        title: "greenhouse.io Added!",
+        body: [
+          "Added support for greenhouse.io*",
+          "Most common fields, including dropdowns, that address field and file upload.",
+          "The remaining fields will be added after job-boards.greenhouse.io.",
+          "*boards.greenhouse.io, not job-boards.greenhouse.io, which will be added in the next update."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.0.10",
     date: "10/6/24",
     updates: [

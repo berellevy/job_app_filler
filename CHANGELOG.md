@@ -1,6 +1,25 @@
 # Change Log
 All significant changes to this project will be documented in this file.
 
+
+## [2.0.0] - 2024-11-06
+
+### Added
+- [boards.greenhouse] including iFrames. most common fields: 
+  - basic select
+  - textarea
+  - simple dropdown 
+  - address-searchabe 
+  - single file upload
+  - text field
+### Changed
+
+### Fixed
+
+### Bugs
+
+
+
 ## [1.0.10] - 2024-10-06
 
 ### Added
