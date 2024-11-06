@@ -36,7 +36,7 @@ export class AddressSearchField extends GreenhouseBaseInput<any> {
           this.inputElement().value = answer.answer
           this.inputElement().dispatchEvent(new InputEvent("input"))
           await waitForElement(this.element, './/auto-complete[@open]', {
-            timeout: 750,
+            timeout: 1500,
           })
     
           const correctAnswerXpath  = [
