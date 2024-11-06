@@ -1,5 +1,5 @@
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
-import { getElement, getElements, getString } from '../../utils/getElements'
+import { getElement, getElements } from '../../utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import * as xpaths from './xpaths'
 
