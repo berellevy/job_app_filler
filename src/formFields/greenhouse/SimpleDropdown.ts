@@ -30,6 +30,12 @@ export class SimpleDropdown extends GreenhouseBaseInput<any> {
     }
   }
 
+  closeDropdown(): void {
+    if (this.dropdownIsOpen) {
+      this.toggleDropdown()
+    }
+  }
+
   get dropdownIsOpen(): boolean {
     return this.select2ContainerElement.classList.contains(
       'select2-dropdown-open'
@@ -90,6 +96,7 @@ export class SimpleDropdown extends GreenhouseBaseInput<any> {
             }
           }
         }
+        this.closeDropdown()
       }
     })
   }
