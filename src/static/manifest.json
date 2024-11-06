@@ -18,7 +18,8 @@
         "https://*.myworkdayjobs.com/*",
         "https://*.myworkdaysite.com/*",
         "https://*.greenhouse.io/*"
-      ]
+      ],
+      "all_frames": true
     }
   ],
   "web_accessible_resources": [
@@ -30,8 +31,8 @@
         "https://*.myworkdayjobs.com/*",
         "https://*.myworkdaysite.com/*",
         "https://*.greenhouse.io/*"
-
-      ]
+      ],
+      "all_frames": true
     }
   ],
   "permissions": [
