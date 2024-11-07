@@ -1,8 +1,4 @@
-import { FC } from 'react'
 import { answerValueInitList } from '../../hooks/answerValueInit'
-import {
-  saveButtonClickHandlers,
-} from '../../hooks/saveButtonClickHandlers'
 import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
@@ -20,7 +16,6 @@ import { lowerText } from '../../utils/xpath'
 export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
   static XPATH: string = xpaths.SIMPLE_DROPDOWN
   fieldType: string = 'SimpleDropdown'
-  // public saveButtonClickHandler = saveButtonClickHandlers.backupAnswerList
   public get answerValue() {
     return {
       ...super.answerValue,
@@ -117,8 +112,7 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
   }
 
   answerElementXpath(answer: string): string {
-    const XPATH = `.//div[${lowerText()}='${answer.toLowerCase()}']/parent::li`
-    // const XPATH = `.//div[contains(${lowerText()}, '${answer.toLowerCase()}')]/parent::li`
+    const XPATH = `.//div[${lowerText()}="${answer.toLowerCase()}"]/parent::li`
     return XPATH
   }
 
