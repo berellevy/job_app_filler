@@ -6,7 +6,6 @@ export abstract class WorkdayBaseInput<
   AnswerType
 > extends BaseFormInput<AnswerType> {
 
-
   attachReactApp(
     app: React.ReactNode,
     inputContainer: HTMLElement
@@ -18,8 +17,9 @@ export abstract class WorkdayBaseInput<
     // inputContainer.appendChild(rootElement)
     createRoot(rootElement).render(app)
   }
-  get sectionLabelXpath(): string {
 
+
+  get sectionLabelXpath(): string {
     const primaryXpath = [
       'ancestor::fieldset', // get the nearest ancestor fieldset element
       '/parent::div', // get parent div element of above fieldset element
@@ -41,10 +41,10 @@ export abstract class WorkdayBaseInput<
     return `(${primaryXpath} | ${secondaryXpath})`
   }
 
-
   get sectionLabelElement(): HTMLElement {
     return getElement(this.element, this.sectionLabelXpath)
   }
+  
   public get section(): string {
     // must always return a string, even a blank one.
     return this.sectionLabelElement?.innerText || ''
