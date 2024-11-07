@@ -1,3 +1,6 @@
+import { AnswerValueBackupStrings } from '../../components/AnswerValueDisplayComponents/AnswerValueBackupStrings'
+import { answerValueInitList } from '../../hooks/answerValueInit'
+import { EditableAnswer } from '../../hooks/useEditableAnswerState'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, getElements } from '../../utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
@@ -10,6 +13,26 @@ import * as xpaths from './xpaths'
 export class MultiCheckbox extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.MULTI_CHECKBOX
   fieldType = "SimpleDropdown"
+  public get answerValue() {
+    return {
+      ...super.answerValue,
+      displayComponent: AnswerValueBackupStrings,
+      init: answerValueInitList,
+      prepForSave: (values: [string, boolean][]) => {
+        return values.map(([value, editable]) => value)
+      },
+      prepForFill: (answers: EditableAnswer[]): string[] => {
+        return super.answerValue.prepForFill(answers).flat()
+      },
+    }
+  }
+
+  public get fieldSnapshot() {
+    return {
+      path: this.path,
+      answer: [this.currentValue()],
+    }
+  }
   inputElement(): HTMLInputElement {
     return this.element as HTMLInputElement
   }
@@ -51,7 +74,7 @@ export class MultiCheckbox extends GreenhouseBaseInput<any> {
           const correctAnswerElement = getElements(
             this.element,
             `.//label`
-          ).find(el => el.innerText.trim() === answer.answer.trim())
+          ).find(el => el.innerText.trim() === answer.answer[0].trim())
           if (correctAnswerElement) {
             correctAnswerElement.click()
             break

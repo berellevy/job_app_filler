@@ -1,3 +1,6 @@
+import { AnswerValueBackupStrings } from '../../components/AnswerValueDisplayComponents/AnswerValueBackupStrings'
+import { answerValueInitList } from '../../hooks/answerValueInit'
+import { EditableAnswer } from '../../hooks/useEditableAnswerState'
 import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
@@ -7,6 +10,28 @@ import * as xpaths from './xpaths'
 export class SimpleDropdown extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.SIMPLE_DROPDOWN
   fieldType = 'SimpleDropdown'
+  public get answerValue() {
+    return {
+      ...super.answerValue,
+      displayComponent: AnswerValueBackupStrings,
+      init: answerValueInitList,
+      prepForSave: (values: [string, boolean][]) => {
+        return values.map(([value, editable]) => value)
+      },
+      prepForFill: (answers: EditableAnswer[]): string[] => {
+        return super.answerValue.prepForFill(answers).flat()
+      },
+    }
+  }
+
+
+  public get fieldSnapshot() {
+    return {
+      path: this.path,
+      answer: [this.currentValue()],
+    }
+  }
+
   inputElement(): HTMLInputElement {
     return getElement(this.element, './/select') as HTMLInputElement
   }
