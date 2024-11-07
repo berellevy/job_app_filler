@@ -19,4 +19,16 @@ const run = async () => {
   RegisterInputs(document)
 }
 
-run()
+/**
+ * Prevent the injected script from running until the tab is revealed.
+ * For example, when you open multiple tabs at once.
+ */
+if (!document.hidden) {
+  run()
+} else {
+  const f = () => {
+    run()
+    document.removeEventListener("visibilitychange", f)
+  }
+  document.addEventListener("visibilitychange", f)
+}
