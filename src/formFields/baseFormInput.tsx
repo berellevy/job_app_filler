@@ -33,7 +33,6 @@ export type AnswerValueMethods = {
 
 export abstract class BaseFormInput<AnswerType> {
   public editableAnswerHook = useEditableAnswerState
-  // public saveButtonClickHandler: SaveButtonClickHndler = saveButtonClickHandlers.simpleText
   public saveButtonClickHandler: SaveButtonClickHndler = saveButtonClickHandlers.basic
   fieldNotice: string | null
   fieldNoticeLink: {
