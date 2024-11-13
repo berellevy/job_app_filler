@@ -20,6 +20,7 @@ export abstract class GreenhouseBaseInput<
    */
   attachReactApp(app: React.ReactNode, inputContainer: HTMLElement) {
     const rootElement = document.createElement('div')
+    rootElement.classList.add("jaf-widget")
     if (this.inputDisplayElement) {
       this.inputDisplayElement()?.parentElement.insertBefore(
         rootElement,
