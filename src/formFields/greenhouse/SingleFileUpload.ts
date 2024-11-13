@@ -79,7 +79,7 @@ export class SingleFileUpload extends GreenhouseBaseInput<any> {
       const answer = (await this.answer()) || []
       if (answer.length > 0 && answer[0].answer) {
         const file = localStorageToFile(answer[0].answer)
-        this.deleteButtonElement.click()
+        this.deleteButtonElement?.click()
         dispatchFileDragEvent('drop', this.dropZoneElement, [file])
       }
     })
