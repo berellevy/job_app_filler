@@ -14,7 +14,6 @@ export abstract class WorkdayBaseInput<
     // it makes the element disappear
     const rootElement = document.createElement('div')
     inputContainer.insertBefore(rootElement, inputContainer.lastChild)
-    // inputContainer.appendChild(rootElement)
     createRoot(rootElement).render(app)
   }
 
