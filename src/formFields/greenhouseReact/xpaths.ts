@@ -15,11 +15,20 @@ export const FILE = [
 export const DROPDOWN = [
   `.//div`,
   `[@class="select"]`,
+  `[.//button[@aria-label="Toggle flyout"]]`,
+  `[not(.//div[contains(@class, "is-multi")])]`,
+].join("")
+
+export const DROPDOWN_SEARCHABLE = [
+  `.//div`,
+  `[@class="select"]`,
+  `[not(.//button[@aria-label="Toggle flyout"])]`,
   `[not(.//div[contains(@class, "is-multi")])]`,
 ].join("")
 
 export const DROPDOWN_MULTI = [
   `.//div`,
   `[@class="select"]`,
+  `[.//button[@aria-label="Toggle flyout"]]`,
   `[.//div[contains(@class, "is-multi")]]`,
 ].join("")
