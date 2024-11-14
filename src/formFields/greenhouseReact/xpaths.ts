@@ -3,6 +3,11 @@ export const TEXT_INPUT = [
   `[.//input[@type="text"]]`,
 ].join("")
 
+export const TEXTAREA = [
+  `.//div[@class="text-input-wrapper"]`,
+  `[.//textarea]`,
+].join("")
+
 export const FILE = [
   `.//div[@class="file-upload"]`,
 ].join("")

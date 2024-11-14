@@ -2,6 +2,7 @@ import { getElement } from "../../utils/getElements";
 import { Dropdown } from "./Dropdown"
 import { DropdownMulti } from "./DropdownMulti";
 import { File } from "./File"
+import { Textarea } from "./Textarea";
 import { TextInput } from "./TextInput"
 /** Not present in job search page */
 
@@ -14,6 +15,7 @@ export const RegisterInputs = async (node: Node = document) => {
   if (applicationContainerElement) {
     const inputs = [
       TextInput,
+      Textarea,
       File,
       Dropdown,
       DropdownMulti,
