@@ -157,8 +157,12 @@ export class Dropdown extends GreenhouseReactBaseInput<any> {
         await sleep(100)
         const {answerElements} = this
         for (const storedAnswer of answers) {
+          const answerValue = storedAnswer.answer[0]
+          if (!answerValue) {
+            break
+          }
           const correctAnswerElement = answerElements.find((el) => { 
-            return el.innerText === storedAnswer.answer[0]
+            return el.innerText === answerValue
           })
           if (correctAnswerElement) {
             correctAnswerElement.click()
