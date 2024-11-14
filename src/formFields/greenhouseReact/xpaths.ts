@@ -32,3 +32,15 @@ export const DROPDOWN_MULTI = [
   `[.//button[@aria-label="Toggle flyout"]]`,
   `[.//div[contains(@class, "is-multi")]]`,
 ].join("")
+
+export const CHECKBOX_MULTI = [
+  `.//fieldset`,
+  `[@class="checkbox"]`,
+  `[count(.//input[@type="checkbox"]) > 1]`,
+].join("")
+
+export const CHECKBOX_BOOLEAN = [
+  `.//fieldset`,
+  `[@class="checkbox"]`,
+  `[count(.//input[@type="checkbox"]) = 1]`,
+].join("")
