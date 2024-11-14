@@ -1,5 +1,6 @@
 import { getElement } from "../../utils/getElements";
 import { Dropdown } from "./Dropdown"
+import { DropdownMulti } from "./DropdownMulti";
 import { File } from "./File"
 import { TextInput } from "./TextInput"
 /** Not present in job search page */
@@ -15,6 +16,7 @@ export const RegisterInputs = async (node: Node = document) => {
       TextInput,
       File,
       Dropdown,
+      DropdownMulti,
     ]
     Promise.all(
       inputs.map(i => i.autoDiscover(node))
