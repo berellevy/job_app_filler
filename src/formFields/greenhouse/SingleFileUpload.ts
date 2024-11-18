@@ -27,13 +27,14 @@ export class SingleFileUpload extends GreenhouseBaseInput<any> {
   }
 
   listenForChanges(): void {
+    const observer = new MutationObserver(() => {
+      this.triggerReactUpdate()
+    })
+
     const chosenFileDisplayElement = getElement(
       this.element,
       ".//div[@class='chosen']"
     )
-    const observer = new MutationObserver((mutations: MutationRecord[]) => {
-      this.triggerReactUpdate()
-    })
 
     observer.observe(chosenFileDisplayElement, {
       attributes: true,
