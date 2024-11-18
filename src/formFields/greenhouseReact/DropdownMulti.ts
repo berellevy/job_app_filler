@@ -3,21 +3,22 @@ import { answerValueInitList } from "../../hooks/answerValueInit";
 import { EditableAnswer } from "../../hooks/useEditableAnswerState";
 import { sleep } from "../../utils/async";
 import fieldFillerQueue from "../../utils/fieldFillerQueue";
-import { getElement, getElements } from "../../utils/getElements";
+import { getElement, getElements, waitForElement, } from "../../utils/getElements";
 import { scrollBack } from "../../utils/scroll";
 import { getReactProps } from "../baseFormInput";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import * as xpaths from './xpaths'
 
+
+
 /**
  * IMPORTANT!
  * Currently this is a clone of `Dropdown`.
  * the only difference is how current value is detected.
- * 
  */
 export class DropdownMulti extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.DROPDOWN_MULTI
-  fieldType = "SimpleDropdown"
+  fieldType = 'SimpleDropdown'
   public get answerValue() {
     return {
       ...super.answerValue,
@@ -31,37 +32,22 @@ export class DropdownMulti extends GreenhouseReactBaseInput<any> {
       },
     }
   }
+
   public get fieldSnapshot() {
     return {
       path: this.path,
       answer: [this.currentValue()],
     }
   }
+
   get labelElement(): HTMLElement {
     return getElement(this.element, `.//label`)
   }
+
   listenForChanges(): void {
     const observer = new MutationObserver((mutations: MutationRecord[]) => {
-      if (mutations.some(({ addedNodes, removedNodes }) => {
-        return (
-          [...addedNodes].some(
-            (el: HTMLElement) => {
-              return (
-                el.getAttribute &&
-                el.getAttribute('class')?.startsWith('select__multi-value')
-              )
-            }
-          ) ||
-          [...removedNodes].some(
-            (el: HTMLElement) => {
-              return (
-                el.getAttribute &&
-                el.getAttribute('class')?.startsWith('select__multi-value')
-              )
-            }
-          )
-        )
-      })) {
+      const XPATH = `.//parent::*//*[starts-with(@class, "select__multi-value")]`
+      if (getElement(mutations, XPATH)) {
         this.triggerReactUpdate()
       }
     })
@@ -81,7 +67,7 @@ export class DropdownMulti extends GreenhouseReactBaseInput<any> {
   toggleDropdown(): void {
     const reactProps = getReactProps(this.menuOpenTriggerDivElement)
     reactProps?.onMouseUp({
-      defaultPrevented: false
+      defaultPrevented: false,
     })
   }
 
@@ -105,21 +91,22 @@ export class DropdownMulti extends GreenhouseReactBaseInput<any> {
   }
 
   get answerElements(): HTMLElement[] {
-    const {dropdownElement} = this
-    return dropdownElement 
-    ? getElements(
-      dropdownElement,
-      `.//div[starts-with(@class, "select__option")]`
-    )
-    : []
+    const { dropdownElement } = this
+    return dropdownElement
+      ? getElements(
+          dropdownElement,
+          `.//div[starts-with(@class, "select__option")]`
+        )
+      : []
   }
 
   currentValue() {
-    return this.selectedValueElement?.innerText || ""
+    return this.selectedValueElement?.innerText || ''
   }
 
   get selectControlElement() {
-    return getElement(this.element,
+    return getElement(
+      this.element,
       `.//div[starts-with(@class, "select__control")]`
     )
   }
@@ -137,8 +124,8 @@ export class DropdownMulti extends GreenhouseReactBaseInput<any> {
       this.element,
       [
         `.//div[starts-with(@class, "select__indicators")]`,
-        `/div[@aria-hidden="false"]`
-      ].join("")
+        `/div[@aria-hidden="false"]`,
+      ].join('')
     )
   }
 
@@ -152,33 +139,69 @@ export class DropdownMulti extends GreenhouseReactBaseInput<any> {
   public isFilled(current: any, stored: any[]): boolean {
     return stored.includes(current)
   }
+
+  get searchInputElement(): HTMLInputElement {
+    return getElement(
+      this.element,
+      `.//input[@class="select__input"]`
+    ) as HTMLInputElement
+  }
+
+  async waitForDropdownElement(): Promise<HTMLElement> {
+    return await waitForElement(
+      this.element, 
+      `.//div[starts-with(@class, "select__menu")]`,
+      {timeout: 200}
+    )
+  }
+
+  async waitForCorrectAnswerElement(answerValue): Promise<HTMLElement> {
+    const dropdownElement = await this.waitForDropdownElement()
+    const XPATH = [
+      `.//div`,
+      `[starts-with(@class, "select__option")]`,
+      `[text() = "${answerValue}"]`,
+    ].join("")
+    return await waitForElement(dropdownElement, XPATH, { timeout: 200 })
+  }
+
   async fill(): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
       const answers = await this.answer()
       if (answers.length > 0) {
         this.clearSelection()
         this.openDropdown()
-        await sleep(100)
-        const {answerElements} = this
+        const reactProps = getReactProps(this.searchInputElement)
+        const { answerElements } = this
         for (const storedAnswer of answers) {
           const answerValue = storedAnswer.answer[0]
           if (!answerValue) {
             break
           }
-          const correctAnswerElement = answerElements.find((el) => { 
-            return el.innerText === answerValue
-          })
+          fillReactTextInput(this.searchInputElement, answerValue)
+          const correctAnswerElement = await this.waitForCorrectAnswerElement(answerValue)
           if (correctAnswerElement) {
             correctAnswerElement.click()
             break
           }
+          // const correctAnswerElement = answerElements.find((el) => {
+          //   return el.innerText === answerValue
+          // })
+          // if (correctAnswerElement) {
+          //   correctAnswerElement.click()
+          //   break
+          // }
         }
       }
       this.closeDropdown()
     })
-    
-    
   }
+}
 
-  
+const fillReactTextInput = (input: HTMLInputElement, value: string): void => {
+  const reactProps = getReactProps(input)
+  input.value = value
+  const eventData = {}
+  eventData["currentTarget"] = input
+  reactProps?.onChange(eventData)
 }
