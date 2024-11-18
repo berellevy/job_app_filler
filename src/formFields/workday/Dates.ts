@@ -15,7 +15,7 @@ import {
   RelativeDateOptions,
 } from '../../hooks/answerValueInit'
 import { saveButtonClickHandlers, SaveButtonClickHndler } from '../../hooks/saveButtonClickHandlers'
-import { getReactProps } from '../utils'
+import { addCharacterMutationObserver, getReactProps } from '../utils'
 
 function formatDate(date: Date): [string, string, string] {
   return [
@@ -56,18 +56,10 @@ function dateCompare(date1: string[], date2: string[]): boolean {
 }
 
 const setupChangeListener = (formField) => {
-  const observer = new MutationObserver((mutations) => {
-    for (const mutation of mutations) {
-      if (mutation.type === 'characterData') {
-        formField.triggerReactUpdate()
-      }
-    }
-  })
-  observer.observe(formField.wrapperElement, {
-    characterData: true,
-    childList: true,
-    subtree: true,
-  })
+  addCharacterMutationObserver(
+    formField.wrapperElement,
+    () => {formField.triggerReactUpdate()}
+  )
 }
 
 /**
