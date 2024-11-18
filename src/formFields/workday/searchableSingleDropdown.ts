@@ -1,20 +1,17 @@
 import { AnswerValueBackupStrings } from '../../components/AnswerValueDisplayComponents/AnswerValueBackupStrings'
 import { answerValueInitList } from '../../hooks/answerValueInit'
-import { saveButtonClickHandlers } from '../../hooks/saveButtonClickHandlers'
 import {
   EditableAnswer,
   useEditableAnswerState,
 } from '../../hooks/useEditableAnswerState'
-
 import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
 import { scrollBack } from '../../utils/scroll'
 import { Answer } from '../../utils/types'
-import { AnswerValueMethods, } from '../baseFormInput'
+import { AnswerValueMethods } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
-import * as stringMatch from '../../utils/stringMatch'
 import { getReactProps } from '../utils'
 
 export class SearchableSingleDropdown extends WorkdayBaseInput<
@@ -23,7 +20,6 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
   editableAnswerHook = useEditableAnswerState
   static XPATH = xpaths.SEARCHABLE_SINGLE_DROPDOWN
   fieldType = 'SimpleDropdown'
-  // public saveButtonClickHandler = saveButtonClickHandlers.backupAnswerList
   public get answerValue() {
     return {
       ...super.answerValue,
@@ -38,33 +34,16 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
   }
 
   /**
-   * A cached property is only necessary if `listenForChanges`
-   * will be called more than once. But leave it for now.
-   */
-  private _observer: MutationObserver | null
-  get observer(): MutationObserver {
-    if (!this._observer) {
-      this._observer = new MutationObserver((mutations) => {
-        mutations.forEach(({ addedNodes, removedNodes }) => {
-          ;[...addedNodes, ...removedNodes].forEach((node) => {
-            if (
-              getElement(node, ".//ul[@data-automation-id='selectedItemList']")
-            ) {
-              this.triggerReactUpdate()
-            }
-          })
-        })
-      })
-    }
-    return this._observer
-  }
-
-
-  /**
    * A change is when an answer element is added or removed.
    */
   listenForChanges(): void {
-    this.observer.observe(this.multiSelectContainerElement, {
+    const observer = new MutationObserver((mutations: MutationRecord[]) => {
+      const XPATH = `.//ul[@data-automation-id='selectedItemList']`
+      if (getElement(mutations, XPATH)) {
+        this.triggerReactUpdate()
+      }
+    })
+    observer.observe(this.multiSelectContainerElement, {
       childList: true,
       subtree: true,
     })
@@ -119,9 +98,10 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
 
   async dropdownElement(): Promise<HTMLElement | undefined | null> {
     await sleep(100)
-    return await waitForElement(document, this.dropdownElementXpath, { timeout: 1000 })
+    return await waitForElement(document, this.dropdownElementXpath, {
+      timeout: 1000,
+    })
   }
-
 
   public clickIsInFormfield(e: PointerEvent): boolean {
     const target = e.target as HTMLElement
@@ -201,7 +181,11 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
             }
             // if there are multiple matches, click the first one.
             const dropdownElement = await this.dropdownElement()
-            dropdownElement && getElement(dropdownElement, ".//div[@data-automation-id='promptOption']")?.click()
+            dropdownElement &&
+              getElement(
+                dropdownElement,
+                ".//div[@data-automation-id='promptOption']"
+              )?.click()
           }
           this.closeDropdown() // asynchronously
         }
