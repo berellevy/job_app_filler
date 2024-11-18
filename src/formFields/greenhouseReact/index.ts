@@ -18,7 +18,7 @@ const inputs = [
   TextInput,
   Textarea,
   File,
-  Dropdown,
+  // Dropdown,
   DropdownMulti,
   DropdownSearchable,
   CheckboxMulti,
