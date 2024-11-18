@@ -4,7 +4,7 @@ import { getElement } from "../../utils/getElements";
 import { AnswerValueMethods } from "../baseFormInput";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { ChoiceInputWrapperElement } from "./utils";
-import * as xpaths from './xpaths'
+import { xpaths } from "./xpaths";
 
 
 export class CheckboxBoolean extends GreenhouseReactBaseInput<any> {

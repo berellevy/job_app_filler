@@ -7,7 +7,7 @@ import { getElement } from "../../utils/getElements";
 import { AnswerValueMethods, } from "../baseFormInput";
 import { getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
-import * as xpaths from './xpaths'
+import { xpaths } from "./xpaths";
 
 
 export class File extends GreenhouseReactBaseInput<any> {

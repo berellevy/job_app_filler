@@ -1,13 +1,11 @@
 import { AnswerValueBackupStrings } from "../../components/AnswerValueDisplayComponents/AnswerValueBackupStrings";
 import { answerValueInitList } from "../../hooks/answerValueInit";
 import { EditableAnswer } from "../../hooks/useEditableAnswerState";
-import { sleep } from "../../utils/async";
 import fieldFillerQueue from "../../utils/fieldFillerQueue";
 import { getElement, waitForElement } from "../../utils/getElements";
-import { scrollBack } from "../../utils/scroll";
 import { getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
-import * as xpaths from './xpaths'
+import { xpaths } from "./xpaths";
 
 
 export class DropdownSearchable extends GreenhouseReactBaseInput<any> {

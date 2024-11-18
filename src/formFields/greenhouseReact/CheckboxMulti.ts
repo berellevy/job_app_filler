@@ -6,7 +6,7 @@ import { getElement, getElements } from "../../utils/getElements";
 
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { ChoiceInputWrapperElement } from "./utils";
-import * as xpaths from './xpaths'
+import { xpaths } from "./xpaths";
 
 export class CheckboxMulti extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.CHECKBOX_MULTI

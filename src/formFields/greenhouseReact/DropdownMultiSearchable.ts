@@ -3,11 +3,9 @@ import { answerValueInitList } from "../../hooks/answerValueInit";
 import { EditableAnswer } from "../../hooks/useEditableAnswerState";
 import fieldFillerQueue from "../../utils/fieldFillerQueue";
 import { getElement, getElements, waitForElement, } from "../../utils/getElements";
-
 import { fillReactTextInput, getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
-import * as xpaths from './xpaths'
-
+import { xpaths } from "./xpaths";
 
 
 /**
