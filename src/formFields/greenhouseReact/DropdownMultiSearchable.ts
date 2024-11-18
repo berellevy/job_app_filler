@@ -1,11 +1,10 @@
 import { AnswerValueBackupStrings } from "../../components/AnswerValueDisplayComponents/AnswerValueBackupStrings";
 import { answerValueInitList } from "../../hooks/answerValueInit";
 import { EditableAnswer } from "../../hooks/useEditableAnswerState";
-import { sleep } from "../../utils/async";
 import fieldFillerQueue from "../../utils/fieldFillerQueue";
 import { getElement, getElements, waitForElement, } from "../../utils/getElements";
-import { scrollBack } from "../../utils/scroll";
-import { getReactProps } from "../baseFormInput";
+
+import { fillReactTextInput, getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import * as xpaths from './xpaths'
 
@@ -16,8 +15,8 @@ import * as xpaths from './xpaths'
  * Currently this is a clone of `Dropdown`.
  * the only difference is how current value is detected.
  */
-export class DropdownMulti extends GreenhouseReactBaseInput<any> {
-  static XPATH = xpaths.DROPDOWN_MULTI
+export class DropdownMultiSearchable extends GreenhouseReactBaseInput<any> {
+  static XPATH = xpaths.DROPDOWN_MULTI_SEARCHABLE
   fieldType = 'SimpleDropdown'
   public get answerValue() {
     return {
@@ -141,10 +140,12 @@ export class DropdownMulti extends GreenhouseReactBaseInput<any> {
   }
 
   get searchInputElement(): HTMLInputElement {
-    return getElement(
+    const input = getElement(
       this.element,
       `.//input[@class="select__input"]`
     ) as HTMLInputElement
+    input["reactProps"] = getReactProps(input)
+    return input
   }
 
   async waitForDropdownElement(): Promise<HTMLElement> {
@@ -171,8 +172,6 @@ export class DropdownMulti extends GreenhouseReactBaseInput<any> {
       if (answers.length > 0) {
         this.clearSelection()
         this.openDropdown()
-        const reactProps = getReactProps(this.searchInputElement)
-        const { answerElements } = this
         for (const storedAnswer of answers) {
           const answerValue = storedAnswer.answer[0]
           if (!answerValue) {
@@ -184,13 +183,6 @@ export class DropdownMulti extends GreenhouseReactBaseInput<any> {
             correctAnswerElement.click()
             break
           }
-          // const correctAnswerElement = answerElements.find((el) => {
-          //   return el.innerText === answerValue
-          // })
-          // if (correctAnswerElement) {
-          //   correctAnswerElement.click()
-          //   break
-          // }
         }
       }
       this.closeDropdown()
@@ -198,10 +190,3 @@ export class DropdownMulti extends GreenhouseReactBaseInput<any> {
   }
 }
 
-const fillReactTextInput = (input: HTMLInputElement, value: string): void => {
-  const reactProps = getReactProps(input)
-  input.value = value
-  const eventData = {}
-  eventData["currentTarget"] = input
-  reactProps?.onChange(eventData)
-}
