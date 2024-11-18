@@ -22,14 +22,12 @@ export const DROPDOWN = [
 export const DROPDOWN_SEARCHABLE = [
   `.//div`,
   `[@class="select"]`,
-  // `[not(.//button[@aria-label="Toggle flyout"])]`,
   `[not(.//div[contains(@class, "is-multi")])]`,
 ].join("")
 
-export const DROPDOWN_MULTI = [
+export const DROPDOWN_MULTI_SEARCHABLE = [
   `.//div`,
   `[@class="select"]`,
-  `[.//button[@aria-label="Toggle flyout"]]`,
   `[.//div[contains(@class, "is-multi")]]`,
 ].join("")
 
