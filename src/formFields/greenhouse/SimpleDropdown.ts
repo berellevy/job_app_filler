@@ -1,11 +1,10 @@
 import { AnswerValueBackupStrings } from '../../components/AnswerValueDisplayComponents/AnswerValueBackupStrings'
 import { answerValueInitList } from '../../hooks/answerValueInit'
 import { EditableAnswer } from '../../hooks/useEditableAnswerState'
-import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
-import * as xpaths from './xpaths'
+import { xpaths } from './xpaths'
 
 export class SimpleDropdown extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.SIMPLE_DROPDOWN

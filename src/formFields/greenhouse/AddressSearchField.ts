@@ -5,7 +5,8 @@ import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
-import * as xpaths from './xpaths'
+import { xpaths } from './xpaths'
+
 
 export class AddressSearchField extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.ADDRESS_SEARCH_FIELD

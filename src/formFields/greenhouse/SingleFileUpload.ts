@@ -1,14 +1,14 @@
-import { isEqual } from 'lodash'
 import { AnswerValueSingleFileUpload } from '../../components/AnswerValueDisplayComponents/AnswerValueSingleFileUpload'
 import { saveButtonClickHandlers } from '../../hooks/saveButtonClickHandlers'
 import { getElement } from '../../utils/getElements'
 import { AnswerValueMethods } from '../baseFormInput'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
-import * as xpaths from './xpaths'
+import { xpaths } from './xpaths'
 import { LocalStorageFile, localStorageToFile } from '../../utils/file'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
-import { sleep } from '../../utils/async'
 import { dispatchFileDragEvent } from '../../utils/fileUploadHelpers'
+
+
 export class SingleFileUpload extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.SINGLE_FILE_UPLOAD
   fieldType = 'SingleFileUpload'

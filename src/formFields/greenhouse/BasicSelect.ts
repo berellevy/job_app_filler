@@ -4,7 +4,7 @@ import { EditableAnswer } from '../../hooks/useEditableAnswerState'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
-import * as xpaths from './xpaths'
+import { xpaths } from './xpaths'
 
 export class BasicSelect extends GreenhouseBaseInput<any> {
   static XPATH: string = xpaths.BASIC_SELECT

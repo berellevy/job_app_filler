@@ -4,7 +4,7 @@ import { EditableAnswer } from '../../hooks/useEditableAnswerState'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, getElements } from '../../utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
-import * as xpaths from './xpaths'
+import { xpaths } from './xpaths'
 
 /**
  * Note: "Two or More Races opens a text box, add support eventually"

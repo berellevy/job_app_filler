@@ -1,7 +1,7 @@
 import fieldFillerQueue from "../../utils/fieldFillerQueue";
 import { getElement } from "../../utils/getElements";
 import { GreenhouseBaseInput } from "./GreenhouseBaseInput";
-import * as xpaths from "./xpaths";
+import { xpaths } from './xpaths'
 
 export class TextField extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.TEXT_FIELD
