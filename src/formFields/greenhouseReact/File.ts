@@ -32,20 +32,8 @@ export class File extends GreenhouseReactBaseInput<any> {
   }
   listenForChanges(): void {
     const observer = new MutationObserver((mutations: MutationRecord[]) => {
-      if (mutations.some(({ addedNodes, removedNodes }) => {
-        return (
-          [...addedNodes].some(
-            (el: HTMLElement) => {
-              return el.getAttribute('class') === 'file-upload__filename'
-            }
-          ) ||
-          [...removedNodes].some(
-            (el: HTMLElement) => {
-              return el.getAttribute('class') === 'file-upload__filename'
-            }
-          )
-        )
-      })) {
+      const XPATH = `self::*[starts-with(@class, "file-upload__filename")]`
+      if (getElement(mutations, XPATH)) {
         this.triggerReactUpdate()
       }
     })
