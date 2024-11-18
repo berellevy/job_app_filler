@@ -22,3 +22,20 @@ export const fillReactTextInput = (input: HTMLInputElement, value: string ): voi
   }
   reactProps?.onChange(eventData)
 }
+
+
+/**
+ * EventListener-like interface for characterData mutations.
+ */
+export const addCharacterMutationObserver = (element: Node, callback: () => any): void => {
+  const observer = new MutationObserver((mutations: MutationRecord[]) => {
+    if (mutations.some(mutation => mutation.type ==="characterData")) {
+      callback()
+    }
+  })
+  observer.observe(element, {
+    characterData: true,
+    childList: true,
+    subtree: true,
+  })
+}
