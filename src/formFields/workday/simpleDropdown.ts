@@ -4,7 +4,7 @@ import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
 import { scrollBack } from '../../utils/scroll'
 import { Answer } from '../../utils/types'
-import { getReactProps } from '../utils'
+import { addCharacterMutationObserver, getReactProps } from '../utils'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import { AnswerValueBackupStrings } from '../../components/AnswerValueDisplayComponents/AnswerValueBackupStrings'
 
@@ -33,28 +33,16 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
   private get buttonElement(): HTMLElement {
     return getElement(this.element, './/button[@aria-haspopup="listbox"]')
   }
-  /**
-   * fires whenever the buttonElement's innerText changes
-   */
+  /** fires whenever the buttonElement's innerText changes */
   listenForChanges(): void {
-    const observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        if (mutation.type === 'characterData') {
-          this.triggerReactUpdate()
-        }
-      }
-    })
-    observer.observe(this.buttonElement, {
-      characterData: true,
-      childList: true,
-      subtree: true,
+    addCharacterMutationObserver(this.buttonElement, () => {
+      this.triggerReactUpdate()
     })
   }
+
   currentValue(): string | null {
     return this.buttonElement.innerText
   }
-
-
 
   openDropdown() {
     if (!this.dropdownIsOpen) {
@@ -86,10 +74,7 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
 
   async dropdownElement(): Promise<HTMLElement | undefined | null> {
     if (this.dropdownIsOpen) {
-      const XPATH = [
-        './/body',
-        `//ul[@id='${this.dropdownId}']`,
-      ].join('')
+      const XPATH = ['.//body', `//ul[@id='${this.dropdownId}']`].join('')
       return await waitForElement(document, XPATH)
     }
   }
@@ -138,7 +123,7 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
               const answer = answerList.shift()
               const XPATH = this.answerElementXpath(answer)
               const answerElement = getElement(dropdownElement, XPATH)
-              
+
               if (answerElement) {
                 getReactProps(answerElement).onClick({
                   preventDefault: () => {},
