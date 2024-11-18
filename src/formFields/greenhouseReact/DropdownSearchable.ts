@@ -37,26 +37,8 @@ export class DropdownSearchable extends GreenhouseReactBaseInput<any> {
   }
   listenForChanges(): void {
     const observer = new MutationObserver((mutations: MutationRecord[]) => {
-      if (mutations.some(({ addedNodes, removedNodes }) => {
-        return (
-          [...addedNodes].some(
-            (el: HTMLElement) => {
-              return (
-                el.getAttribute &&
-                el.getAttribute('class')?.startsWith('select__single-value')
-              )
-            }
-          ) ||
-          [...removedNodes].some(
-            (el: HTMLElement) => {
-              return (
-                el.getAttribute &&
-                el.getAttribute('class')?.startsWith('select__single-value')
-              )
-            }
-          )
-        )
-      })) {
+      const XPATH = `self::*[starts-with(@class, "select__single-value")]`
+      if (getElement(mutations, XPATH)) {
         this.triggerReactUpdate()
       }
     })
@@ -84,10 +66,6 @@ export class DropdownSearchable extends GreenhouseReactBaseInput<any> {
     this.dropdownIsOpen || this.toggleDropdown()
   }
 
-  closeDropdown(): void {
-    // this.dropdownIsOpen && this.toggleDropdown()
-  }
-
   get dropdownElement(): HTMLElement {
     return getElement(
       this.element,
@@ -95,15 +73,31 @@ export class DropdownSearchable extends GreenhouseReactBaseInput<any> {
     )
   }
 
-  async correctAnswerElement(answerValue): Promise<HTMLElement> {
+  async waitForDropdownElement(): Promise<HTMLElement> {
     return await waitForElement(
-      this.dropdownElement,
-      [
-        `.//div`,
-        `[starts-with(@class, "select__option")]`,
-        `[text() = "${answerValue}"]`,
-      ].join("")
+      this.element, 
+      `.//div[starts-with(@class, "select__menu")]`,
+      {timeout: 200}
     )
+  }
+
+  async waitForCorrectAnswerElement(answerValue): Promise<HTMLElement> {
+    const dropdownElement = await this.waitForDropdownElement()
+    const XPATH = [
+      `.//div`,
+      `[starts-with(@class, "select__option")]`,
+      `[text() = "${answerValue}"]`,
+    ].join("")
+    return await waitForElement(dropdownElement, XPATH, { timeout: 200 })
+  }
+
+  correctAnswerElement(answerValue): HTMLElement {
+    const XPATH = [
+      `.//div`,
+      `[starts-with(@class, "select__option")]`,
+      `[text() = "${answerValue}"]`,
+    ].join("")
+    return getElement(this.dropdownElement, XPATH)
   }
 
   get dropdownIsOpen(): boolean {
@@ -129,13 +123,11 @@ export class DropdownSearchable extends GreenhouseReactBaseInput<any> {
 
   /** It's actually the button's parent div that gets the onMouseDown. */
   get clearSelectionButtonElement(): HTMLElement {
-    return getElement(
-      this.element,
-      [
-        `.//div[starts-with(@class, "select__indicators")]`,
-        `/div[@aria-hidden="false"]`
-      ].join("")
-    )
+    const XPATH = [
+      `.//div[starts-with(@class, "select__indicators")]`,
+      `/div[@aria-hidden="false"]`
+    ].join("")
+    return getElement(this.element, XPATH)
   }
 
   clearSelection(): void {
@@ -161,20 +153,19 @@ export class DropdownSearchable extends GreenhouseReactBaseInput<any> {
       const answers = await this.answer()
       if (answers.length > 0) {
         this.clearSelection()
+        this.openDropdown()
         const reactProps = getReactProps(this.searchInputElement)
         for (const storedAnswer of answers) {
           const answerValue = storedAnswer.answer[0]
           this.searchInputElement.value = answerValue
-          reactProps.onChange({currentTarget: this.searchInputElement})
-          this.openDropdown()
-          await sleep(100)
-          const correctAnswerElement = await this.correctAnswerElement(answerValue)
+          reactProps?.onChange({currentTarget: this.searchInputElement})
+          const correctAnswerElement = await this.waitForCorrectAnswerElement(answerValue)
           if (correctAnswerElement) {
             correctAnswerElement.click()
             break
           }
         }
-        reactProps.onBlur()
+        reactProps?.onBlur()
       }
     })
   }
