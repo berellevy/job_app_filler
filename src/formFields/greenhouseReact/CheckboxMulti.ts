@@ -3,7 +3,7 @@ import { answerValueInitList } from "../../hooks/answerValueInit";
 import { EditableAnswer } from "../../hooks/useEditableAnswerState";
 import fieldFillerQueue from "../../utils/fieldFillerQueue";
 import { getElement, getElements } from "../../utils/getElements";
-import { getReactProps } from "../baseFormInput";
+
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { ChoiceInputWrapperElement } from "./utils";
 import * as xpaths from './xpaths'
@@ -37,7 +37,7 @@ export class CheckboxMulti extends GreenhouseReactBaseInput<any> {
       `.//legend[starts-with(@class, "label")]`
     )
   }
-  
+
   listenForChanges(): void {
     this.element.addEventListener("click", (e) => {
       const {tagName} = (e.target as HTMLElement)

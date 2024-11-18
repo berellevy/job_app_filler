@@ -3,7 +3,7 @@ import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
 import { FieldPath } from '../../utils/types'
-import { getReactProps } from '../baseFormInput'
+import { getReactProps } from '../utils'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
 

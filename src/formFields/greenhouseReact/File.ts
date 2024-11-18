@@ -4,7 +4,8 @@ import { sleep } from "../../utils/async";
 import fieldFillerQueue from "../../utils/fieldFillerQueue";
 import { localStorageToFile } from "../../utils/file";
 import { getElement } from "../../utils/getElements";
-import { AnswerValueMethods, getReactProps } from "../baseFormInput";
+import { AnswerValueMethods, } from "../baseFormInput";
+import { getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import * as xpaths from './xpaths'
 

@@ -1,7 +1,7 @@
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
 
-import { getReactProps } from '../baseFormInput'
+import { getReactProps } from '../utils'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
 

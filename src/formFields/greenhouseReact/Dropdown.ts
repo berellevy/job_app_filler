@@ -5,7 +5,7 @@ import { sleep } from "../../utils/async";
 import fieldFillerQueue from "../../utils/fieldFillerQueue";
 import { getElement, getElements } from "../../utils/getElements";
 import { scrollBack } from "../../utils/scroll";
-import { getReactProps } from "../baseFormInput";
+import { getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import * as xpaths from './xpaths'
 

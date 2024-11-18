@@ -11,10 +11,11 @@ import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
 import { scrollBack } from '../../utils/scroll'
 import { Answer } from '../../utils/types'
-import { AnswerValueMethods, getReactProps } from '../baseFormInput'
+import { AnswerValueMethods, } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
 import * as stringMatch from '../../utils/stringMatch'
+import { getReactProps } from '../utils'
 
 export class SearchableSingleDropdown extends WorkdayBaseInput<
   string[] | null

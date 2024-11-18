@@ -6,13 +6,14 @@ import {
   waitForElement,
 } from '../../utils/getElements'
 import { Answer } from '../../utils/types'
-import { AnswerValueMethods, getReactProps } from '../baseFormInput'
+import { AnswerValueMethods } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
 import { AnswerValueMultiFileUpload } from '../../components/AnswerValueDisplayComponents/AnswerValueMultiFileUpload'
 import { LocalStorageFile, localStorageToFile } from '../../utils/file'
 import { isEqual } from 'lodash'
 import { saveButtonClickHandlers, SaveButtonClickHndler } from '../../hooks/saveButtonClickHandlers'
+import { getReactProps } from '../utils'
 
 export class MultiFileUpload extends WorkdayBaseInput<any> {
   fieldType = 'MultiFileUpload'

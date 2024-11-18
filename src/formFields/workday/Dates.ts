@@ -2,7 +2,7 @@ import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
 import { Answer } from '../../utils/types'
-import { AnswerValueMethods, getReactProps } from '../baseFormInput'
+import { AnswerValueMethods } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import * as xpaths from './xpaths'
 import { AnswerValueSingleDate } from '../../components/AnswerValueDisplayComponents/AnswerValueSingleDate'
@@ -15,6 +15,7 @@ import {
   RelativeDateOptions,
 } from '../../hooks/answerValueInit'
 import { saveButtonClickHandlers, SaveButtonClickHndler } from '../../hooks/saveButtonClickHandlers'
+import { getReactProps } from '../utils'
 
 function formatDate(date: Date): [string, string, string] {
   return [

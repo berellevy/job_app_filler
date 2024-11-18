@@ -1,5 +1,5 @@
 import { getElement } from "../../utils/getElements";
-import { getReactProps } from "../baseFormInput";
+import { getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import * as xpaths from './xpaths'
 

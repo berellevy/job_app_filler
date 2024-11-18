@@ -1,7 +1,7 @@
 import { AnswerValueSingleBool } from "../../components/AnswerValueDisplayComponents/AnswerValueSingleBool";
 import fieldFillerQueue from "../../utils/fieldFillerQueue";
 import { getElement } from "../../utils/getElements";
-import { AnswerValueMethods, getReactProps } from "../baseFormInput";
+import { AnswerValueMethods } from "../baseFormInput";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { ChoiceInputWrapperElement } from "./utils";
 import * as xpaths from './xpaths'

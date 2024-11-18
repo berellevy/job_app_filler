@@ -4,7 +4,7 @@ import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
 import { scrollBack } from '../../utils/scroll'
 import { Answer } from '../../utils/types'
-import { getReactProps } from '../baseFormInput'
+import { getReactProps } from '../utils'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import { AnswerValueBackupStrings } from '../../components/AnswerValueDisplayComponents/AnswerValueBackupStrings'
 
