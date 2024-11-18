@@ -8,10 +8,11 @@ import { addCharacterMutationObserver, getReactProps } from '../utils'
 import { WorkdayBaseInput } from './workdayBaseInput'
 import { AnswerValueBackupStrings } from '../../components/AnswerValueDisplayComponents/AnswerValueBackupStrings'
 
-import * as xpaths from './xpaths'
+
 import * as stringMatch from '../../utils/stringMatch'
 import { EditableAnswer } from '../../hooks/useEditableAnswerState'
 import { lowerText } from '../../utils/xpath'
+import { xpaths } from './xpaths'
 
 export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
   static XPATH: string = xpaths.SIMPLE_DROPDOWN

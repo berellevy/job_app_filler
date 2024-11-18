@@ -1,7 +1,7 @@
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
 import { WorkdayBaseInput } from './workdayBaseInput'
-import * as xpaths from './xpaths'
+import { xpaths } from './xpaths'
 import { AnswerValueSingleBool } from '../../components/AnswerValueDisplayComponents/AnswerValueSingleBool'
 import { AnswerValueMethods } from '../baseFormInput'
 

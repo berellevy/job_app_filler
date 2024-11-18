@@ -1,18 +1,14 @@
 import { AnswerValueBackupStrings } from '../../components/AnswerValueDisplayComponents/AnswerValueBackupStrings'
 import { answerValueInitList } from '../../hooks/answerValueInit'
-import {
-  saveButtonClickHandlers,
-  SaveButtonClickHndler,
-} from '../../hooks/saveButtonClickHandlers'
+
 import { EditableAnswer } from '../../hooks/useEditableAnswerState'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../utils/getElements'
 import { Answer } from '../../utils/types'
 import { WorkdayBaseInput } from './workdayBaseInput'
-import * as xpaths from './xpaths'
 import * as stringMatch from '../../utils/stringMatch'
 import { scrollBack } from '../../utils/scroll'
-import { lowerText } from '../../utils/xpath'
+import { xpaths } from './xpaths'
 
 export class MultiCheckbox extends WorkdayBaseInput<any> {
   static XPATH: string = xpaths.MULTI_CHECKBOX

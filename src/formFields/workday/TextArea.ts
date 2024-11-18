@@ -1,9 +1,8 @@
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
-
-import { fillReactTextInput, getReactProps } from '../utils'
+import { fillReactTextInput } from '../utils'
 import { WorkdayBaseInput } from './workdayBaseInput'
-import * as xpaths from './xpaths'
+import { xpaths } from './xpaths'
 
 export class TextArea extends WorkdayBaseInput<string | null> {
   static XPATH = xpaths.TEXT_AREA

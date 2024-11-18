@@ -1,11 +1,8 @@
-import { useEditableAnswerState } from '../../hooks/useEditableAnswerState'
-import { sleep } from '../../utils/async'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
-import { FieldPath } from '../../utils/types'
 import { fillReactTextInput, getReactProps } from '../utils'
 import { WorkdayBaseInput } from './workdayBaseInput'
-import * as xpaths from './xpaths'
+import { xpaths } from './xpaths'
 
 export class TextInput extends WorkdayBaseInput<string | null> {
   static XPATH = xpaths.TEXT_INPUT

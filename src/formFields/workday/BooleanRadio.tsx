@@ -1,10 +1,10 @@
-import { saveButtonClickHandlers } from '../../hooks/saveButtonClickHandlers'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
 import { getElement } from '../../utils/getElements'
 import { WorkdayBaseInput } from './workdayBaseInput'
-import * as xpaths from './xpaths'
+// import * as xpaths from './xpaths'
 import * as stringMatch from "../../utils/stringMatch"
 import { lowerText } from '../../utils/xpath'
+import { xpaths } from './xpaths'
 
 export class BooleanRadio extends WorkdayBaseInput<string> {
   static XPATH = xpaths.BOOLEAN_RADIO

@@ -11,8 +11,8 @@ import { scrollBack } from '../../utils/scroll'
 import { Answer } from '../../utils/types'
 import { AnswerValueMethods } from '../baseFormInput'
 import { WorkdayBaseInput } from './workdayBaseInput'
-import * as xpaths from './xpaths'
 import { getReactProps } from '../utils'
+import { xpaths } from './xpaths'
 
 export class SearchableSingleDropdown extends WorkdayBaseInput<
   string[] | null
@@ -130,11 +130,7 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
 
   isFilled(current: string, stored: string[]) {
     return stored.some((answer) => {
-      return (
-        answer === current
-        // stringMatch.contains(current, answer) ||
-        // stringMatch.keywordCount(current, answer)
-      )
+      return answer === current
     })
   }
 
