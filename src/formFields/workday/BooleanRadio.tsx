@@ -12,11 +12,7 @@ export class BooleanRadio extends WorkdayBaseInput<string> {
 
 
   listenForChanges(): void {
-    const radioGroupElement = getElement(
-      this.element,
-      // ".//div[@data-uxi-widget-type='radioGroup']"
-      ".//fieldset"
-    )
+    const radioGroupElement = getElement(this.element, './/fieldset')
     radioGroupElement.addEventListener('change', (e) => {
       this.triggerReactUpdate()
     })
