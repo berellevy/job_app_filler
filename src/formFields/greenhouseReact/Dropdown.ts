@@ -10,6 +10,11 @@ import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import * as xpaths from './xpaths'
 
 
+
+/**
+ * Not using this for now. Only searchable.
+ * 
+ */
 export class Dropdown extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.DROPDOWN
   fieldType = "SimpleDropdown"
