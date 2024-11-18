@@ -1,9 +1,9 @@
 import fieldFillerQueue from '../../../utils/fieldFillerQueue'
 import { getElement } from '../../../utils/getElements'
 import { WorkdayBaseInput } from '.././workdayBaseInput'
-import * as xpaths from '.././xpaths'
+import { xpaths } from '../xpaths'
 import { AnswerValueSingleDate } from '../../../components/AnswerValueDisplayComponents/AnswerValueSingleDate'
-import { setupChangeListener, dateCompare, fillDatePart, convertRelativeDate } from './utils'
+import { setupChangeListener, dateCompare, fillDatePart } from './utils'
 
 export class MonthYear extends WorkdayBaseInput<[string, string]> {
   static XPATH = xpaths.MONTH_YEAR

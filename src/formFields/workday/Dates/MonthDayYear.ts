@@ -3,28 +3,30 @@ import { getElement } from '../../../utils/getElements'
 import { Answer } from '../../../utils/types'
 import { AnswerValueMethods } from '../../baseFormInput'
 import { WorkdayBaseInput } from '.././workdayBaseInput'
-import * as xpaths from '.././xpaths'
 import { AnswerValueSingleRelativeDate } from '../../../components/AnswerValueDisplayComponents/AnswerValueSingleRelativeDate'
 import {
   AbsoluteDateValue,
   answerValueInitRelativeDate,
   AnswerValueRelativeDate,
   EditableAnswerValueRelativeDate,
-
 } from '../../../hooks/answerValueInit'
-import { saveButtonClickHandlers} from '../../../hooks/saveButtonClickHandlers'
-import { setupChangeListener, dateCompare, fillDatePart, convertRelativeDate } from './utils'
-
-
+import { saveButtonClickHandlers } from '../../../hooks/saveButtonClickHandlers'
+import {
+  setupChangeListener,
+  dateCompare,
+  fillDatePart,
+  convertRelativeDate,
+} from './utils'
+import { xpaths } from '../xpaths'
 
 export class MonthDayYear extends WorkdayBaseInput<[string, string]> {
   static XPATH = xpaths.MONTH_DAY_YEAR
   fieldType = 'MonthDayYear'
   public saveButtonClickHandler = saveButtonClickHandlers.withNotice
-  fieldNotice: string = "Choose a relative or absolute date."
+  fieldNotice: string = 'Choose a relative or absolute date.'
   fieldNoticeLink = {
-    display: "See How",
-    url: "https://www.youtube.com/watch?v=JYMATq9siIY&t=207s"
+    display: 'See How',
+    url: 'https://www.youtube.com/watch?v=JYMATq9siIY&t=207s',
   }
   get answerValue() {
     return {
@@ -115,4 +117,3 @@ export class MonthDayYear extends WorkdayBaseInput<[string, string]> {
     }
   }
 }
-
