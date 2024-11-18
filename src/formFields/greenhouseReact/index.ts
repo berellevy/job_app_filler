@@ -2,7 +2,7 @@ import { getElement } from "../../utils/getElements";
 import { CheckboxBoolean } from "./CheckboxBoolean";
 import { CheckboxMulti } from "./CheckboxMulti";
 import { Dropdown } from "./Dropdown"
-import { DropdownMulti } from "./DropdownMulti";
+import { DropdownMultiSearchable } from "./DropdownMultiSearchable";
 import { DropdownSearchable } from "./DropdownSearchable";
 import { File } from "./File"
 import { Textarea } from "./Textarea";
@@ -19,7 +19,7 @@ const inputs = [
   Textarea,
   File,
   // Dropdown,
-  DropdownMulti,
+  DropdownMultiSearchable,
   DropdownSearchable,
   CheckboxMulti,
   CheckboxBoolean,
