@@ -1,12 +1,43 @@
 import { sleep } from './async'
 
+type GetElemementFromMutationConfig = {
+  only?: 'addedNodes' | 'removedNodes'
+}
+
+
 /**
- * Find the first HTMLElemetn by a given xpath
+ * find an element matching `xpath` starting from `context`.
+ * `context` can be any of `Node`, `MutationRecord` of arrays thereof.
  */
-export const getElement = (parent: Node, path: string): HTMLElement => {
+export function getElement(context: Node | Node[], xpath: string): HTMLElement
+export function getElement(
+  context: MutationRecord | MutationRecord[],
+  xpath: string,
+  config?: GetElemementFromMutationConfig
+): HTMLElement
+export function getElement(context, xpath: string, config = {}) {
+  if (context instanceof Node) {
+    return getElementFromNode(context, xpath)
+  } else if (context instanceof MutationRecord) {
+    return getElementFromMutation(context, xpath, config)
+  } else if (Array.isArray(context)) {
+    for (const i of context) {
+      const found = getElement(i, xpath, config)
+      if (found) {
+        return found
+      }
+    }
+  }
+}
+
+/**
+ * Convenience wrapper around `document.evaluate`.
+ * Find the first HTMLElement by a given xpath
+ */
+const getElementFromNode = (context: Node, xpath: string): HTMLElement => {
   const node = document.evaluate(
-    path,
-    parent,
+    xpath,
+    context,
     null,
     XPathResult.FIRST_ORDERED_NODE_TYPE,
     null
@@ -14,12 +45,27 @@ export const getElement = (parent: Node, path: string): HTMLElement => {
   return node as HTMLElement
 }
 
+const getElementFromMutation = (
+  mutation: MutationRecord,
+  xpath: string,
+  config: GetElemementFromMutationConfig = {}
+) => {
+  const placesToCheck = config.only ? [config.only] : ['addedNodes', 'removedNodes']
+  for (const place of placesToCheck) {
+    for (const el of mutation[place]) {
+      if (getElementFromNode(el, xpath)) {
+        return el
+      }
+    }
+  }
+}
+
 /**
  * Find multiple HTMLElements by a given xpath.
  */
-export const getElements = (parent: Node, path: string): HTMLElement[] => {
+export const getElements = (parent: Node, xpath: string): HTMLElement[] => {
   const iterator = document.evaluate(
-    path,
+    xpath,
     parent,
     null,
     XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
@@ -31,6 +77,8 @@ export const getElements = (parent: Node, path: string): HTMLElement[] => {
   }
   return result
 }
+
+
 
 type WaitForElementOptions = {
   /**
@@ -49,16 +97,16 @@ type WaitForElementOptions = {
  */
 export const waitForElement = (
   parent: Node,
-  path: string,
+  xpath: string,
   { onlyNew = false, timeout = 3000 }: WaitForElementOptions = {}
 ): Promise<HTMLElement | null> => {
   return new Promise((resolve, reject) => {
-    const target = getElement(parent, path)
+    const target = getElementFromNode(parent, xpath)
     if (!onlyNew && target) {
       return resolve(target)
     }
     const observer = new MutationObserver((mutations, observer) => {
-      const target = getElement(parent, path)
+      const target = getElementFromNode(parent, xpath)
       if (target) {
         observer.disconnect()
         clearTimeout(timer)
