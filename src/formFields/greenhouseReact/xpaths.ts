@@ -4,6 +4,11 @@ export const xpaths = {
     `[.//input[@type="text"]]`,
   ].join(''),
 
+  NUMBER_INPUT: [
+    `.//div[@class="text-input-wrapper"]`,
+    `[.//input[@type="number"]]`,
+  ].join(''),
+
   TEXTAREA: [`.//div[@class="text-input-wrapper"]`, `[.//textarea]`].join(''),
 
   FILE: [`.//div[@class="file-upload"]`].join(''),
