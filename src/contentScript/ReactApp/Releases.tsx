@@ -66,6 +66,24 @@ export const ReleaseComponent: FC<{release: Release}> = ({release}) => {
 
 export const releases: Release[] = [
   {
+    version: "2.1.0",
+    date: "11/19/24",
+    updates: [
+      {
+        title: "job-boards.greenhouse.io Added!",
+        body: "All fields. Repeating sections work. (Dropdowns that allow more than one selection can only be autofilled with one selection for now."
+      }, 
+
+      {
+        title: "Bugs",
+        body: [
+          "job-boards.greenhouse (the newer one): page scroll behaves more erratic than usual when autofilling.",
+          "boards.greenhous (the older one): Searchable Dropdown fields don't always autofill."
+        ]
+      }
+    ]
+  },
+  {
     version: "2.0.0",
     date: "11/6/24",
     updates: [

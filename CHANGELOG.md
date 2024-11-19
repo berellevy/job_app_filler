@@ -2,6 +2,21 @@
 All significant changes to this project will be documented in this file.
 
 
+## [2.1.0] - 2024-11-19
+
+### Added
+- [job-boards.greenhouse] All fields and repeating sections. except that multiselect fields can only be autofilled with one answer. 
+### Changed
+- [workday] Break up Date fields into separate modules.
+- [internal] getElement can now accept a variety of contexts. 
+
+### Fixed
+
+### Bugs
+- [job-boards.greenhous] When filling, scroll flies all over the place.
+- [boards.greenhouse] DropdownSearchable doesn't always fill.
+
+
 ## [2.0.0] - 2024-11-06
 
 ### Added
