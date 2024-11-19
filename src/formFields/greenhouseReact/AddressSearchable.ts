@@ -1,8 +1,10 @@
 import { AnswerValueBackupStrings } from "../../components/AnswerValueDisplayComponents/AnswerValueBackupStrings";
 import { answerValueInitList } from "../../hooks/answerValueInit";
 import { EditableAnswer } from "../../hooks/useEditableAnswerState";
+import { sleep } from "../../utils/async";
 import fieldFillerQueue from "../../utils/fieldFillerQueue";
 import { getElement, waitForElement } from "../../utils/getElements";
+import { scrollBack } from "../../utils/scroll";
 import { getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { xpaths } from "./xpaths";
@@ -147,24 +149,28 @@ export class AddressSearchable extends GreenhouseReactBaseInput<any> {
   }
 
   async fill(): Promise<void> {
-    await fieldFillerQueue.enqueue(async () => {
-      const answers = await this.answer()
-      if (answers.length > 0) {
-        this.clearSelection()
-        this.openDropdown()
-        const reactProps = getReactProps(this.searchInputElement)
-        for (const storedAnswer of answers) {
-          const answerValue = storedAnswer.answer[0]
-          this.searchInputElement.value = answerValue
-          reactProps?.onChange({currentTarget: this.searchInputElement})
-          const correctAnswerElement = await this.waitForCorrectAnswerElement(answerValue)
-          if (correctAnswerElement) {
-            correctAnswerElement.click()
-            break
+    await scrollBack(async () => {
+      await fieldFillerQueue.enqueue(async () => {
+        const answers = await this.answer()
+        if (answers.length > 0) {
+          this.clearSelection()
+          this.openDropdown()
+          const reactProps = getReactProps(this.searchInputElement)
+          for (const storedAnswer of answers) {
+            const answerValue = storedAnswer.answer[0]
+            this.searchInputElement.value = answerValue
+            reactProps?.onChange({ currentTarget: this.searchInputElement })
+            const correctAnswerElement = await this.waitForCorrectAnswerElement(
+              answerValue
+            )
+            if (correctAnswerElement) {
+              correctAnswerElement.click()
+              break
+            }
           }
+          reactProps?.onBlur()
         }
-        reactProps?.onBlur()
-      }
+      })
     })
   }
 }

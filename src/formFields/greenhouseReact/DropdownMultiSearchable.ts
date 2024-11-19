@@ -1,8 +1,10 @@
 import { AnswerValueBackupStrings } from "../../components/AnswerValueDisplayComponents/AnswerValueBackupStrings";
 import { answerValueInitList } from "../../hooks/answerValueInit";
 import { EditableAnswer } from "../../hooks/useEditableAnswerState";
+import { sleep } from "../../utils/async";
 import fieldFillerQueue from "../../utils/fieldFillerQueue";
 import { getElement, getElements, waitForElement, } from "../../utils/getElements";
+import { scrollBack } from "../../utils/scroll";
 import { fillReactTextInput, getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { xpaths } from "./xpaths";
@@ -165,25 +167,29 @@ export class DropdownMultiSearchable extends GreenhouseReactBaseInput<any> {
   }
 
   async fill(): Promise<void> {
-    await fieldFillerQueue.enqueue(async () => {
-      const answers = await this.answer()
-      if (answers.length > 0) {
-        this.clearSelection()
-        this.openDropdown()
-        for (const storedAnswer of answers) {
-          const answerValue = storedAnswer.answer[0]
-          if (!answerValue) {
-            break
-          }
-          fillReactTextInput(this.searchInputElement, answerValue)
-          const correctAnswerElement = await this.waitForCorrectAnswerElement(answerValue)
-          if (correctAnswerElement) {
-            correctAnswerElement.click()
-            break
+    await scrollBack(async () => {
+      await fieldFillerQueue.enqueue(async () => {
+        const answers = await this.answer()
+        if (answers.length > 0) {
+          this.clearSelection()
+          this.openDropdown()
+          for (const storedAnswer of answers) {
+            const answerValue = storedAnswer.answer[0]
+            if (!answerValue) {
+              break
+            }
+            fillReactTextInput(this.searchInputElement, answerValue)
+            const correctAnswerElement = await this.waitForCorrectAnswerElement(
+              answerValue
+            )
+            if (correctAnswerElement) {
+              correctAnswerElement.click()
+              break
+            }
           }
         }
-      }
-      this.closeDropdown()
+        this.closeDropdown()
+      })
     })
   }
 }
