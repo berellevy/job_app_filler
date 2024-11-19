@@ -1,4 +1,5 @@
 
+import { Sections } from './Sections'
 import { AddressSearchField } from './AddressSearchField'
 import { BasicSelect } from './BasicSelect'
 import { MultiCheckbox } from './MultiCheckBox'
@@ -6,7 +7,9 @@ import { SimpleDropdown } from './SimpleDropdown'
 import { SingleFileUpload } from './SingleFileUpload'
 import { Textarea } from './Textarea'
 import { TextField } from './TextField'
+
 export const RegisterInputs = async (node: Node = document) => {
+  await Sections.autoDiscover(node)
   Promise.all([
     TextField.autoDiscover(node),
     SingleFileUpload.autoDiscover(node),

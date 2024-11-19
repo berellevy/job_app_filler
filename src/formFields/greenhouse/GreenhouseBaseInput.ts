@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import { BaseFormInput } from '../baseFormInput'
+import { getElement } from '../../utils/getElements'
 
 export abstract class GreenhouseBaseInput<
   AnswerType
@@ -14,6 +15,17 @@ export abstract class GreenhouseBaseInput<
 
   public get fieldName() {
     return super.fieldName?.replace("j\n\na\n\nf", "")
+  }
+
+  sectionElement(): HTMLElement {
+    return getElement(
+      this.element,
+      `ancestor::div[@jaf-section]`
+    )
+  }
+
+  get section(): string {
+    return this.sectionElement()?.getAttribute('jaf-section') || ""
   }
   /**
    * Attach widget between label and field
