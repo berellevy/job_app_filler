@@ -23,12 +23,20 @@ export const xpaths = {
   DROPDOWN_SEARCHABLE: [
     `.//div`,
     `[@class="select"]`,
+    `[.//button[@aria-label="Toggle flyout"]]`,
     `[not(.//div[contains(@class, "is-multi")])]`,
   ].join(''),
+
+  ADDRESS_SEARCHABLE: [
+    `.//div`,
+    `[@class="select"]`,
+    `[not(.//button[@aria-label="Toggle flyout"])]`,
+  ].join(""),
 
   DROPDOWN_MULTI_SEARCHABLE: [
     `.//div`,
     `[@class="select"]`,
+    `[.//button[@aria-label="Toggle flyout"]]`,
     `[.//div[contains(@class, "is-multi")]]`,
   ].join(''),
 

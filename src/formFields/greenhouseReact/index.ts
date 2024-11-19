@@ -1,4 +1,5 @@
 import { getElement } from '../../utils/getElements'
+import { AddressSearchable } from './AddressSearchable'
 import { CheckboxBoolean } from './CheckboxBoolean'
 import { CheckboxMulti } from './CheckboxMulti'
 import { DropdownMultiSearchable } from './DropdownMultiSearchable'
@@ -24,6 +25,7 @@ const inputs = [
   CheckboxMulti,
   CheckboxBoolean,
   NumberInput,
+  AddressSearchable,
 ]
 
 export const RegisterInputs = async (node: Node = document) => {
