@@ -30,4 +30,10 @@ export const xpaths = {
     ".//div[starts-with(@class, 'field')]",
     "[count(.//input[@type='checkbox']) > 1]",
   ].join(''),
+
+  MONTH_YEAR: [
+    ".//div[@class='field']",
+    `[.//input[@type="text"][@placeholder="MM"]]`,
+    `[.//input[@type="text"][@placeholder="YYYY"]]`,
+  ].join("")
 }
