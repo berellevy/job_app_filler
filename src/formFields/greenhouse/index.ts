@@ -8,6 +8,7 @@ import { SingleFileUpload } from './SingleFileUpload'
 import { Textarea } from './Textarea'
 import { TextField } from './TextField'
 import { MonthYear } from './MonthYear'
+import { DropdownSearchable } from './DropdownSearchable'
 
 const inputs = [
   TextField,
@@ -18,6 +19,7 @@ const inputs = [
   BasicSelect,
   MultiCheckbox,
   MonthYear,
+  DropdownSearchable,
 ]
 
 export const RegisterInputs = async (node: Node = document) => {

@@ -16,6 +16,13 @@ export const xpaths = {
   SIMPLE_DROPDOWN: [
     ".//div[@class='field']",
     "[.//div[contains(@class, 'select2-container')]]",
+    `[.//select]`,
+  ].join(''),
+
+  DROPDOWN_SEARCHABLE: [
+    ".//div[@class='field']",
+    "[.//div[contains(@class, 'select2-container')]]",
+    `[not(.//select)]`,
   ].join(''),
 
   BASIC_SELECT: [
@@ -35,5 +42,5 @@ export const xpaths = {
     ".//div[@class='field']",
     `[.//input[@type="text"][@placeholder="MM"]]`,
     `[.//input[@type="text"][@placeholder="YYYY"]]`,
-  ].join("")
+  ].join(''),
 }
