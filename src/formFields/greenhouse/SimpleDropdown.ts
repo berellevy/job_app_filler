@@ -46,7 +46,7 @@ export class SimpleDropdown extends GreenhouseBaseInput<any> {
   }
 
   toggleDropdown(): void {
-    this.select2ContainerAElement.dispatchEvent(new MouseEvent('mousedown'))
+    this.select2ContainerAElement?.dispatchEvent(new MouseEvent('mousedown'))
   }
   openDropdown(): void {
     if (!this.dropdownIsOpen) {
