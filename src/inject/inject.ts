@@ -8,6 +8,7 @@ const inputRegistrars: [string, InputSetup][] = [
   ['myworkdaysite.com', workday],
   ['job-boards.greenhouse.io', greenhouseReact],
   ['boards.greenhouse.io', greenhouse],
+  ['boards.eu.greenhouse.io', greenhouse],
 ]
 const getRegisterInput = (domain: string): InputSetup => {
   return inputRegistrars.find((site) => {
