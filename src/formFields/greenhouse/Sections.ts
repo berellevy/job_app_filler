@@ -1,18 +1,16 @@
 import { getElement, getElements } from '../../utils/getElements'
 
-const SECTION_XPATH = `.//div[@class = "education"]`
-const SECTION_WRAPPER_XPATH = `.//div[@id="education_section"]`
-
-
+const SECTION_CLASSES = `[@class="education" or @class="employment"]`
+const SECTION_WRAPPER_IDS = `[@id="education_section" or @id="employment_section"]`
 
 export class Sections {
-  static XPATH = SECTION_WRAPPER_XPATH
+  static XPATH = `.//div${SECTION_WRAPPER_IDS}`
   element: HTMLElement
-  
+
   static async autoDiscover(node: Node = document) {
     const elements = getElements(node, this.XPATH)
     elements.forEach((el) => {
-      if (!el.hasAttribute("job-app-filler")) {
+      if (!el.hasAttribute('job-app-filler')) {
         // @ts-ignore
         const input = new this(el)
       }
@@ -27,23 +25,27 @@ export class Sections {
   }
 
   registerElement(): void {
-    this.element.setAttribute("job-app-filler", "section-wrapper")
+    this.element.setAttribute('job-app-filler', 'section-wrapper')
+  }
+
+  get sectionType(): string {
+    return this.element.id.split('_')[0]
   }
 
   registerSections(): void {
-    const sectionElements = getElements(document, SECTION_XPATH)
+    const sectionElements = getElements(this.element, `.//div${SECTION_CLASSES}`)
     sectionElements.forEach((element, index) => {
-      element.setAttribute("jaf-section", "education " + (index+1).toString())
+      const sectionId = this.sectionType + ' ' + (index + 1).toString()
+      element.setAttribute('jaf-section', sectionId)
     })
   }
 
   reregisterSectionsOnMutation(): void {
     const observer = new MutationObserver((mutations: MutationRecord[]) => {
-      if (getElement(mutations, `self::div[@class = "education"]`)) {
+      if (getElement(mutations, `self::div${SECTION_CLASSES}`)) {
         this.registerSections()
       }
     })
-    observer.observe(this.element, {childList: true})
+    observer.observe(this.element, { childList: true })
   }
-
 }
