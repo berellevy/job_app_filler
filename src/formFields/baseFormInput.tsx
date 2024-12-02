@@ -1,16 +1,20 @@
 import React, { FC } from 'react'
 import { getElement, getElements } from '../utils/getElements'
 import '@fontsource/roboto'
-import {v4 as uuid4} from 'uuid'
+import { v4 as uuid4 } from 'uuid'
 import { client } from '../inject/client'
 import { App, attachReactApp } from '../App'
-import { Answer, FieldPath} from '../utils/types'
-import { saveButtonClickHandlers, SaveButtonClickHndler } from '../hooks/saveButtonClickHandlers'
-import { EditableAnswer, useEditableAnswerState } from '../hooks/useEditableAnswerState'
+import { Answer, FieldPath } from '../utils/types'
+import {
+  saveButtonClickHandlers,
+  SaveButtonClickHndler,
+} from '../hooks/saveButtonClickHandlers'
+import {
+  EditableAnswer,
+  useEditableAnswerState,
+} from '../hooks/useEditableAnswerState'
 import { AnswerValueSingleString } from '../components/AnswerValueDisplayComponents/AnswerValueSingleString'
-import * as stringMatch from "../utils/stringMatch"
-
-
+import * as stringMatch from '../utils/stringMatch'
 
 export type AnswerValueMethods = {
   displayComponent: FC<{ id: number }>
@@ -19,11 +23,18 @@ export type AnswerValueMethods = {
   prepForFill: (answers: EditableAnswer[]) => any[]
 }
 
+export function isRegistered(el: HTMLElement): boolean {
+  return el.hasAttribute('job-app-filler')
+}
 
+export function isVisible(el: HTMLElement): boolean {
+  return el.getBoundingClientRect().height > 0
+}
 
 export abstract class BaseFormInput<AnswerType> {
   public editableAnswerHook = useEditableAnswerState
-  public saveButtonClickHandler: SaveButtonClickHndler = saveButtonClickHandlers.basic
+  public saveButtonClickHandler: SaveButtonClickHndler =
+    saveButtonClickHandlers.basic
   fieldNotice: string | null
   fieldNoticeLink: {
     url: string
@@ -32,10 +43,10 @@ export abstract class BaseFormInput<AnswerType> {
 
   public get answerValue(): AnswerValueMethods {
     return {
-      displayComponent: AnswerValueSingleString, 
+      displayComponent: AnswerValueSingleString,
       init: (answer) => structuredClone(answer),
-      prepForSave: _=>_,
-      prepForFill: (answers)=> answers.map(a => a.originalAnswer.answer)
+      prepForSave: (_) => _,
+      prepForFill: (answers) => answers.map((a) => a.originalAnswer.answer),
     }
   }
 
@@ -62,7 +73,6 @@ export abstract class BaseFormInput<AnswerType> {
    */
   fieldType: string
 
-
   /**
    * for fill errors.
    */
@@ -86,10 +96,11 @@ export abstract class BaseFormInput<AnswerType> {
   static async autoDiscover(node: Node = document) {
     const elements = getElements(node, this.XPATH)
     elements.forEach((el) => {
-      if (!el.hasAttribute('job-app-filler')) {
-        // @ts-ignore
-        const input = new this(el)
+      if (isRegistered(el)) {
+        return
       }
+        // @ts-ignore
+        new this(el)
     })
   }
 
@@ -99,12 +110,7 @@ export abstract class BaseFormInput<AnswerType> {
    * call `triggerReactUpdate` on each change.
    * This method is ususally field specific.
    */
-  abstract listenForChanges(): void 
-  // {
-  //   throw new Error(
-  //     "'listenForChanges' method must be implemented by all subclasses of BaseFormInput"
-  //   )
-  // }
+  abstract listenForChanges(): void
 
   /**
    * communicate with the react display element by dispatching
@@ -116,7 +122,7 @@ export abstract class BaseFormInput<AnswerType> {
   }
 
   public get page(): string {
-    return getElement(document, './/h2')?.innerText || "" 
+    return getElement(document, './/h2')?.innerText || ''
   }
 
   /**
@@ -126,9 +132,9 @@ export abstract class BaseFormInput<AnswerType> {
 
   get labelElement(): HTMLElement {
     const XPATH = [
-      ".//*[self::label or self::legend]",
-      "[.//text()[(normalize-space() != '')]]"
-    ].join("")
+      './/*[self::label or self::legend]',
+      "[.//text()[(normalize-space() != '')]]",
+    ].join('')
     return getElement(this.element, XPATH)
   }
   public get fieldName(): string {
@@ -139,7 +145,7 @@ export abstract class BaseFormInput<AnswerType> {
    * A section is a grouping of fields that can be repeating
    * e.g. work history.
    * In such cases the form field name can appear twice on a page.
-   * 
+   *
    * Job site specific
    */
   public get section(): string {
@@ -157,12 +163,6 @@ export abstract class BaseFormInput<AnswerType> {
   }
 
   abstract currentValue(): any
-  // {
-  //   throw new Error(
-  //     "Getter 'currentValue' must be implemented by all subclasses of BaseFormInput"
-  //   )
-  //   return ''
-  // }
 
   public get fieldSnapshot(): Answer {
     return {
@@ -181,14 +181,13 @@ export abstract class BaseFormInput<AnswerType> {
     return res.ok
   }
 
-
   async answer(path?: FieldPath): Promise<Answer[]> {
     path = path || this.path
     const res = await client.send('getAnswer', path)
     if (res.ok) {
       return res.data
     } else {
-      console.log(res, this.path);
+      console.log(res, this.path)
       return []
     }
   }
@@ -197,18 +196,14 @@ export abstract class BaseFormInput<AnswerType> {
     return e.composedPath().includes(this.element)
   }
 
-
-
   public isFilled(current: any, stored: any[]): boolean {
-    return stored.some(answer=>stringMatch.exact(current, answer))
+    return stored.some((answer) => stringMatch.exact(current, answer))
   }
 
   /**
    * general logic that applies to all fields.
-   * 
+   *
    * for most fields it's enough to put the actual filling logic in the `fillField` method.
    */
-  abstract fill(): Promise<void> 
-
-
+  abstract fill(): Promise<void>
 }
