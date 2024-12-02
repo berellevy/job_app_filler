@@ -9,6 +9,7 @@ import { Textarea } from './Textarea'
 import { TextField } from './TextField'
 import { MonthYear } from './MonthYear'
 import { DropdownSearchable } from './DropdownSearchable'
+import { DropdownMulti } from './DropdownMulti'
 
 const inputs = [
   TextField,
@@ -20,6 +21,7 @@ const inputs = [
   MultiCheckbox,
   MonthYear,
   DropdownSearchable,
+  DropdownMulti,
 ]
 
 export const RegisterInputs = async (node: Node = document) => {

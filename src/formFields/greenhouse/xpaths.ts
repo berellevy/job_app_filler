@@ -16,6 +16,14 @@ export const xpaths = {
   SIMPLE_DROPDOWN: [
     ".//div[@class='field']",
     "[.//div[contains(@class, 'select2-container')]]",
+    "[not(.//div[contains(@class, 'select2-container-multi')])]",
+    `[.//select]`,
+  ].join(''),
+
+
+  DROPDOWN_MULTI: [
+    ".//div[@class='field']",
+    "[.//div[contains(@class, 'select2-container-multi')]]",
     `[.//select]`,
   ].join(''),
 
