@@ -18,8 +18,6 @@ import {
 import { createRoot } from 'react-dom/client'
 import { ThemeProvider } from '@emotion/react'
 import { theme } from '../utils/react'
-import Logo from '../components/Logo'
-import { teal } from '@mui/material/colors'
 import { ContentCopyIcon, GitHubIcon, OpenInNewIcon } from '../utils/icons'
 import { LogoTitleBar } from '../components/LogoTitleBar'
 
