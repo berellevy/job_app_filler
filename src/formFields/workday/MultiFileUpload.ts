@@ -13,12 +13,10 @@ import { xpaths } from './xpaths'
 export class MultiFileUpload extends WorkdayBaseInput<any> {
   fieldType = 'MultiFileUpload'
   public saveButtonClickHandler = saveButtonClickHandlers.withNotice
-  fieldNotice =
-    "To save and autofill files, upload them in the 'Answers' section below."
-  fieldNoticeLink = {
-    display: 'See How',
-    url: 'https://www.youtube.com/watch?v=JYMATq9siIY&t=134s',
-  }
+  fieldNotice = [
+    `##### To save and autofill files, upload them in the 'Answers' section below.
+    \n\n[See how](https://www.youtube.com/watch?v=JYMATq9siIY&t=134s)`
+  ].join("")
   static XPATH = xpaths.MULTI_FILE_UPLOAD
   get answerValue() {
     return {
