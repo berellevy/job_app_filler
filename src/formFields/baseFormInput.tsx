@@ -35,6 +35,7 @@ export abstract class BaseFormInput<AnswerType> {
   public editableAnswerHook = useEditableAnswerState
   public saveButtonClickHandler: SaveButtonClickHndler =
     saveButtonClickHandlers.basic
+  /** Supports Markdown */
   fieldNotice: string | null
   fieldNoticeLink: {
     url: string
