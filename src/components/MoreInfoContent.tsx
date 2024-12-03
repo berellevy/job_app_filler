@@ -19,6 +19,7 @@ import React, { FC } from 'react'
 import { useAppContext } from '../AppContext'
 import { AddIcon, InfoIcon, OpenInNewIcon } from '../utils/icons'
 import { AnswerDisplayComponent } from './AnswerDisplayComponent'
+import { Markdown } from './Markdown'
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -29,11 +30,10 @@ const Item = styled(Paper)(({ theme }) => ({
 }))
 
 export const MoreInfoContent: FC = () => {
-  const { currentValue, backend, editableAnswerState, fieldNotice } = useAppContext()
+  const { currentValue, backend, editableAnswerState, fieldNotice } =
+    useAppContext()
   const { answers, addNewAnswer } = editableAnswerState
   const { path } = backend
-  
-  
 
   return (
     <Box padding={1}>
@@ -42,18 +42,7 @@ export const MoreInfoContent: FC = () => {
           <Item>
             <Alert variant="filled" severity="info">
               <AlertTitle>NOTE</AlertTitle>
-              <Typography>{fieldNotice}</Typography>
-              {backend.fieldNoticeLink && (
-                <Button
-                  variant='text'
-                  sx={{color: "white"}}
-                  target="_blank"
-                  href={backend.fieldNoticeLink.url}
-                  endIcon={<OpenInNewIcon />}
-                >
-                  {backend.fieldNoticeLink.display}
-                </Button>
-              )}
+              <Markdown>{fieldNotice}</Markdown>
             </Alert>
           </Item>
         )}

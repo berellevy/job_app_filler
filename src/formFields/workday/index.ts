@@ -3,11 +3,12 @@ import { BooleanRadio } from './BooleanRadio'
 import { MonthYear, MonthDayYear, Year } from './Dates'
 import { MultiCheckbox } from './MultiCheckbox'
 import { MultiFileUpload } from './MultiFileUpload'
+import { PasswordInput } from './PasswordInput'
 import { SearchableSingleDropdown } from './searchableSingleDropdown'
 import { SimpleDropdown } from './simpleDropdown'
 import { SingleCheckbox } from './SingleCheckbox'
 import { TextArea } from './TextArea'
-import { PasswordInput, TextInput } from './textInput'
+import { TextInput } from './textInput'
 
 export const RegisterInputs = async (node: Node = document) => {
   const searchPageXpath = ".//div[@data-automation-id='jobSearch']"

@@ -23,11 +23,8 @@ export class MonthDayYear extends WorkdayBaseInput<[string, string]> {
   static XPATH = xpaths.MONTH_DAY_YEAR
   fieldType = 'MonthDayYear'
   public saveButtonClickHandler = saveButtonClickHandlers.withNotice
-  fieldNotice: string = 'Choose a relative or absolute date.'
-  fieldNoticeLink = {
-    display: 'See How',
-    url: 'https://www.youtube.com/watch?v=JYMATq9siIY&t=207s',
-  }
+  fieldNotice = `##### Choose a relative or absolute date. 
+  [See how](https://www.youtube.com/watch?v=JYMATq9siIY&t=207s)`
   get answerValue() {
     return {
       ...super.answerValue,

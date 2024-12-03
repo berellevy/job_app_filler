@@ -31,6 +31,7 @@
     "html-webpack-plugin": "^5.6.0",
     "lodash": "^4.17.21",
     "lunr": "^2.3.9",
+    "mui-markdown": "^1.2.3",
     "node-polyfill-webpack-plugin": "^4.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
