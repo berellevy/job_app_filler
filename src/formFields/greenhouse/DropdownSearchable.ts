@@ -2,12 +2,12 @@ import { AnswerValueBackupStrings } from '../../components/AnswerValueDisplayCom
 import { answerValueInitList } from '../../hooks/answerValueInit'
 import { EditableAnswer } from '../../hooks/useEditableAnswerState'
 import fieldFillerQueue from '../../utils/fieldFillerQueue'
-import { getElement } from '../../utils/getElements'
+import { getElement, getElements, waitForElement } from '../../utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
 
-export class SimpleDropdown extends GreenhouseBaseInput<any> {
-  static XPATH = xpaths.SIMPLE_DROPDOWN
+export class DropdownSearchable extends GreenhouseBaseInput<any> {
+  static XPATH = xpaths.DROPDOWN_SEARCHABLE
   fieldType = 'SimpleDropdown'
   public get answerValue() {
     return {
@@ -70,15 +70,16 @@ export class SimpleDropdown extends GreenhouseBaseInput<any> {
     return getElement(this.select2ContainerElement, "./label")?.getAttribute("for")
   }
 
-  get dropdownElement(): HTMLElement {
+  get dropdownElement(): DropdownElement {
     const XPATH = [
       ".//div[contains(@class, 'select2-drop-active')]",
       `[.//label[@for='${this.dropdownId}_search']]`
     ].join("")
-    return getElement(
+    const dropdown = getElement(
       document,
       XPATH
     )
+    return new DropdownElement(dropdown)
   }
 
   inputDisplayElement(): HTMLElement {
@@ -102,26 +103,74 @@ export class SimpleDropdown extends GreenhouseBaseInput<any> {
     await fieldFillerQueue.enqueue(async () => {
       if (answers.length > 0) {
         for (const answer of answers) {
+          const answerValue = answer.answer[0]
           this.openDropdown()
-          if (this.dropdownIsOpen) {
-            const correctAnswerXpath  = [
-              `.//div[contains(text(), "${answer.answer}")]/parent::li`
-            ].join("")
-            const correctAnswerElement = getElement(
-              this.dropdownElement,
-              correctAnswerXpath
-            )
-            if (correctAnswerElement) {
-              correctAnswerElement.dispatchEvent(new Event("mouseup", {
-                bubbles: true,
-                cancelable: true,
-              }))
-              break
-            }
+          if (await this.dropdownElement.selectCorrectAnswer(answerValue)) {
+            break
           }
         }
         this.closeDropdown()
       }
     })
+  }
+}
+
+
+class DropdownElement {
+  element: HTMLElement
+  constructor(element: HTMLElement) {
+    this.element = element
+  }
+
+  getElement(xpath: string): HTMLElement {
+    return getElement(this.element, xpath)
+  }
+
+  get searchInput(): HTMLInputElement {
+    return this.getElement(
+      `.//div[@class="select2-search"]/input`
+    ) as HTMLInputElement
+  } 
+
+  /**
+   * perform a search and return the resultslist.
+   * Note: whenever you perform a search, an `li` with
+   * innerText "Searching..." (very) briefly appears
+   * before results appear.
+   */
+  performSearch(value: string): Promise<HTMLElement> {
+    const RESULTS_ELEMENT_XPATH = [
+      `.//ul`,
+      `[not(./li[starts-with(text(),"Searching")])]`,
+    ].join("")
+    return new Promise((resolve) => {
+      waitForElement(
+        this.element, 
+        RESULTS_ELEMENT_XPATH,
+        {onlyNew: true , timeout: 600}
+      ).then((foundElement) => resolve(foundElement))
+      this.searchInput.value = value
+      this.searchInput.dispatchEvent(new InputEvent("input"))
+    })
+  }
+
+  /**
+   * Returns the li element whose innerText matches `value`
+   */
+  async search(value: string): Promise<HTMLElement> {
+    const searchResults = await this.performSearch(value)
+    const listElements = getElements(searchResults, `./li`)
+    return listElements.find((el) => el.innerText === value)
+  }
+  /**
+   * returns `true` if the correct answer is found/selected
+   */
+  async selectCorrectAnswer(answerValue: string): Promise<boolean> {
+    const correctAnswerElement = await this.search(answerValue)
+    const mouseupEvent = new Event("mouseup", {
+      bubbles: true,
+      cancelable: true,
+    })
+    return !!(correctAnswerElement && correctAnswerElement.dispatchEvent(mouseupEvent)) 
   }
 }

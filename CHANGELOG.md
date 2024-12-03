@@ -1,6 +1,19 @@
 # Change Log
 All significant changes to this project will be documented in this file.
 
+## [2.1.1] - 2024-12-03
+
+### Added
+- [greenhouse.io] fields: Month-Year, searchable dropdown, employment repeating section.
+- [greenhouse.io] scrollback
+### Changed
+- Extension name.
+### Fixed
+- [greenhouse.io] fields: multi dropdown.
+
+### Bugs
+- [job-boards.greenhous] When filling, scroll flies all over the place.
+- [boards.greenhouse] DropdownSearchable doesn't always fill.
 
 ## [2.1.0] - 2024-11-19
 

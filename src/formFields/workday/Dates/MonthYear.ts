@@ -3,7 +3,8 @@ import { getElement } from '../../../utils/getElements'
 import { WorkdayBaseInput } from '.././workdayBaseInput'
 import { xpaths } from '../xpaths'
 import { AnswerValueSingleDate } from '../../../components/AnswerValueDisplayComponents/AnswerValueSingleDate'
-import { setupChangeListener, dateCompare, fillDatePart } from './utils'
+import { setupChangeListener, fillDatePart } from './utils'
+import { dateCompare } from '../../utils/dateUtils'
 
 export class MonthYear extends WorkdayBaseInput<[string, string]> {
   static XPATH = xpaths.MONTH_YEAR

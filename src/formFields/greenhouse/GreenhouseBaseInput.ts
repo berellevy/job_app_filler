@@ -1,10 +1,21 @@
 import { createRoot } from 'react-dom/client'
-import { BaseFormInput } from '../baseFormInput'
+import { BaseFormInput, isRegistered, isVisible } from '../baseFormInput'
+import { getElement, getElements } from '../../utils/getElements'
 
 export abstract class GreenhouseBaseInput<
   AnswerType
 > extends BaseFormInput<AnswerType> {
   abstract inputElement(): HTMLInputElement
+  static async autoDiscover(node: Node = document) {
+    const elements = getElements(node, this.XPATH)
+    elements.forEach((el) => {
+      if (isRegistered(el) || !isVisible(el)) {
+        return
+      }
+        // @ts-ignore
+        new this(el)
+    })
+  }
   /**
    * needed to display the widget before.
    */
@@ -14,6 +25,17 @@ export abstract class GreenhouseBaseInput<
 
   public get fieldName() {
     return super.fieldName?.replace("j\n\na\n\nf", "")
+  }
+
+  sectionElement(): HTMLElement {
+    return getElement(
+      this.element,
+      `ancestor::div[@jaf-section]`
+    )
+  }
+
+  get section(): string {
+    return this.sectionElement()?.getAttribute('jaf-section') || ""
   }
   /**
    * Attach widget between label and field

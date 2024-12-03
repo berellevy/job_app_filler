@@ -5,7 +5,7 @@ const SECTION_XPATH = `.//div[@class = "education--form"]`
 const assignNumbersToSections = () => {
   const sectionElements = getElements(document, SECTION_XPATH)
   sectionElements.forEach((element, index) => {
-    element.setAttribute("jaf-section", (index+1).toString())
+    element.setAttribute("jaf-section", "education " +(index+1).toString())
   })
 }
 
@@ -28,6 +28,12 @@ export class Section {
     })
   }
 
+  constructor (element: HTMLElement) {
+    this.element = element
+    assignNumbersToSections()
+    this.reassignNumberOnRemoval()
+  }
+
   reassignNumberOnRemoval(): void {
     const observer = new MutationObserver((mutations: MutationRecord[]) => {
       if (getElement(
@@ -42,9 +48,4 @@ export class Section {
     observer.observe(this.element.parentElement, {childList: true})
   }
 
-  constructor (element: HTMLElement) {
-    this.element = element
-    assignNumbersToSections()
-    this.reassignNumberOnRemoval()
-  }
 }

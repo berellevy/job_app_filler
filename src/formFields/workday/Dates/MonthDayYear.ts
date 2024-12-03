@@ -13,11 +13,11 @@ import {
 import { saveButtonClickHandlers } from '../../../hooks/saveButtonClickHandlers'
 import {
   setupChangeListener,
-  dateCompare,
   fillDatePart,
   convertRelativeDate,
 } from './utils'
 import { xpaths } from '../xpaths'
+import { dateCompare } from '../../utils/dateUtils'
 
 export class MonthDayYear extends WorkdayBaseInput<[string, string]> {
   static XPATH = xpaths.MONTH_DAY_YEAR

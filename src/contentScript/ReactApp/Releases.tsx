@@ -66,6 +66,19 @@ export const ReleaseComponent: FC<{release: Release}> = ({release}) => {
 
 export const releases: Release[] = [
   {
+    version: "2.1.1",
+    date: "12/3/24",
+    updates: [
+      {
+        title: "greenhouse.io",
+        body: [
+          "Added Month-Year field, Searchable Dropdown field and Employment repeating section.",
+          "Fixed autofill for Dropdown with Multi Select. However it can still only save and fill one value."
+        ]
+      }
+    ]
+  },
+  {
     version: "2.1.0",
     date: "11/19/24",
     updates: [
