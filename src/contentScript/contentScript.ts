@@ -1,7 +1,7 @@
 import { Server } from '../shared/utils/crossContextCommunication/server'
 import { FieldPath, Answer } from '../shared/utils/types'
 import { EVENT_LISTENER_ID, loadApp } from './app/App'
-import { answers1010, migrate1010 } from './utils/Answers1010'
+import { answers1010, migrate1010 } from './utils/storage/Answers1010'
 import { convert106To1010, convert1010To106 } from './utils/storage/DataStore'
 import { SavedAnswer } from './utils/storage/DataStoreTypes'
 import { migrateEducation } from './utils/storage/migrateEducationSectionNames'

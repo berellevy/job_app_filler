@@ -1,6 +1,4 @@
 /**
- * Context: contentScript
- * 
  * For a short period of time, greenhouse react saved education sections as just the section number.
  * this would pose a problem of making it reusable in workday which has multiple types of repeating sections.
  * this migration converts any existing sections named "1" or "2" etc. to "education 1" etc..

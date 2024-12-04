@@ -1,5 +1,6 @@
-import { DataStore } from "./storage/DataStore"
-import { parseKey } from "./storage/utils"
+import { DataStore } from "./DataStore"
+import { parseKey } from "./utils"
+
 
 
 

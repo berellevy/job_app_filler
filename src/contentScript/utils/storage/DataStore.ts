@@ -1,8 +1,6 @@
-
 import elasticlunr from 'elasticlunr'
 import { NewAnswer, SavedAnswer } from './DataStoreTypes'
 import { Answer, FieldPath } from '../../../shared/utils/types'
-
 
 export const convert106To1010 = (
   answer106: Answer
@@ -26,15 +24,12 @@ export const convert1010To106 = (
   return { answer, id, matchType, path: { section, fieldName, fieldType } }
 }
 
-
 const tsIndex = () => {
   const index = elasticlunr<{ fieldName: string; id: number }>()
-  .addField('fieldName')
-  .addField('id')
-
+    .addField('fieldName')
+    .addField('id')
   return index
 }
-
 
 class ExactMatchIndex {
   store: { [key: string]: number[] }
@@ -68,7 +63,10 @@ export class DataStore {
   name: string
   loaded: boolean
   exactMatchIndex: ExactMatchIndex
-  ts_index: any
+  ts_index: elasticlunr.Index<{
+    fieldName: string
+    id: number
+  }>
 
   constructor(name: string) {
     this.name = name
@@ -76,7 +74,7 @@ export class DataStore {
     this.autoIncrement = 0 // Auto-incrementing ID counter
     this.exactMatchIndex = new ExactMatchIndex()
     this.ts_index = tsIndex()
-    
+
     this.loaded = false
   }
   // BUT WHAT ABOUT DATE VALUES AND ARRAY VALUES.
@@ -209,4 +207,3 @@ export class DataStore {
     return filteredResults
   }
 }
-
