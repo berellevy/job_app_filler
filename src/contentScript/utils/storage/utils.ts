@@ -1,5 +1,6 @@
 import { lowerCase, startCase, upperFirst } from "lodash"
-import { FieldPath } from "../types"
+import { FieldPath } from "../../../shared/utils/types"
+
 
 export const buildKey = ({
   page,

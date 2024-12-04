@@ -1,6 +1,7 @@
-import { Answer, FieldPath } from '../types'
+
 import { parseKey } from './utils'
 import * as comparePath from './comparePath'
+import { Answer, FieldPath } from '../../../shared/utils/types'
 
 type MethodNames = keyof typeof comparePath
 

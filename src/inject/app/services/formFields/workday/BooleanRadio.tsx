@@ -1,8 +1,7 @@
 import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
 import { getElement } from '../../../../../shared/utils/getElements'
 import { WorkdayBaseInput } from './workdayBaseInput'
-// import * as xpaths from './xpaths'
-import * as stringMatch from "../../../../../shared/utils/stringMatch"
+import stringMatch from '../../../../../shared/utils/stringMatch'
 import { lowerText } from '../../../../../shared/utils/xpath'
 import { xpaths } from './xpaths'
 

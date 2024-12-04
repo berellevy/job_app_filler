@@ -1,5 +1,6 @@
-import { DataStore } from "../../shared/utils/storage/DataStore"
-import { parseKey } from "../../shared/utils/storage/utils"
+import { DataStore } from "./storage/DataStore"
+import { parseKey } from "./storage/utils"
+
 
 
 const ANSWERS1010 = "answers1010"

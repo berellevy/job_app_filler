@@ -22,7 +22,7 @@ function prepStrings(...args: [...(string | null)[], StringMatchConfig]): string
   return strs
 }
 
-export const countMatchingStartCharacters: StringMatcher<number> = (
+const countMatchingStartCharacters: StringMatcher<number> = (
   str1,
   str2
 ) => {
@@ -38,7 +38,7 @@ export const countMatchingStartCharacters: StringMatcher<number> = (
   return matchCount
 }
 
-export const countMatchingEndCharacters: StringMatcher<number> = (
+const countMatchingEndCharacters: StringMatcher<number> = (
   str1,
   str2,
   config = {}
@@ -57,37 +57,37 @@ export const countMatchingEndCharacters: StringMatcher<number> = (
   return matchCount
 }
 
-export const exact: StringMatcher = (str1, str2, config = {}) => {
+const exact: StringMatcher = (str1, str2, config = {}) => {
   ;[str1, str2] = prepStrings(str1, str2, config)
   return str1 === str2
 }
 
-export const ignore: StringMatcher<true> = (str1, str2, config = {}) => {
+const ignore: StringMatcher<true> = (str1, str2, config = {}) => {
   ;[str1, str2] = prepStrings(str1, str2, config)
   return true
 }
 
-export const startsWith: StringMatcher = (str1, str2, config = {}) => {
+const startsWith: StringMatcher = (str1, str2, config = {}) => {
   ;[str1, str2] = prepStrings(str1, str2, config)
   return str1.startsWith(str2)
 }
 
-export const isPrefix: StringMatcher = (str1, str2, config = {}) => {
+const isPrefix: StringMatcher = (str1, str2, config = {}) => {
   ;[str1, str2] = prepStrings(str1, str2, config)
   return str2.startsWith(str1)
 }
 
-export const endsWith: StringMatcher = (str1, str2, config = {}) => {
+const endsWith: StringMatcher = (str1, str2, config = {}) => {
   ;[str1, str2] = prepStrings(str1, str2, config)
   return str1.endsWith(str2)
 }
 
-export const isSuffix: StringMatcher = (str1, str2, config = {}) => {
+const isSuffix: StringMatcher = (str1, str2, config = {}) => {
   ;[str1, str2] = prepStrings(str1, str2, config)
   return str2.endsWith(str1)
 }
 
-export const contains: StringMatcher = (str1, str2, config = {}) => {
+const contains: StringMatcher = (str1, str2, config = {}) => {
   ;[str1, str2] = prepStrings(str1, str2, config)
   return str1.includes(str2)
 }
@@ -96,7 +96,7 @@ export const contains: StringMatcher = (str1, str2, config = {}) => {
  * Count how many keywords str1 contains. Split str2 into keywords by comma, pipe or space.
  * @param config.threshold: how many matches to find before returning. defaults to 1
  */
-export const keywordCount: StringMatcher<number> = (
+const keywordCount: StringMatcher<number> = (
   str1,
   str2,
   config = {}
@@ -113,4 +113,17 @@ export const keywordCount: StringMatcher<number> = (
     }
   }
   return count
+}
+
+
+export default {
+  keywordCount,
+  contains,
+  isPrefix,
+  isSuffix,
+  endsWith,
+  exact,
+  startsWith,
+  countMatchingEndCharacters,
+  countMatchingStartCharacters,
 }

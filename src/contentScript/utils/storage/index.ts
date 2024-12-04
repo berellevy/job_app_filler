@@ -1,4 +1,5 @@
-import { FieldPath, AnswerData, Answer, LocalStorage } from '../types'
+
+import { AnswerData, Answer, LocalStorage, FieldPath } from '../../../shared/utils/types'
 import { getMatchingAnswers } from './answerMatching'
 import { buildKey, clean, parseKey } from './utils'
 

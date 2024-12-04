@@ -8,7 +8,7 @@ import { WorkdayBaseInput } from './workdayBaseInput'
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
 
 
-import * as stringMatch from '../../../../../shared/utils/stringMatch'
+import stringMatch from '../../../../../shared/utils/stringMatch'
 import { lowerText } from '../../../../../shared/utils/xpath'
 import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'
