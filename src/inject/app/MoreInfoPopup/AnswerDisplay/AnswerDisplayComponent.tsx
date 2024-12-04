@@ -17,7 +17,7 @@ import { useAppContext } from '../../AppContext'
 import { SimplePopper } from '../../components/SimplePopper'
 import { DeleteIcon, EditIcon, CloseIcon } from '../../../../shared/utils/icons'
 import _ from 'lodash'
-import { sentenceCase } from '../../../../contentScript/utils/storage/utils'
+import { sentenceCase } from '../../../../shared/utils/strings'
 
 export const AnswerDisplayComponent: FC<{ id: number }> = ({ id }) => {
   const {

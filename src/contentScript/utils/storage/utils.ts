@@ -1,4 +1,3 @@
-import { lowerCase, startCase, upperFirst } from "lodash"
 import { FieldPath } from "../../../shared/utils/types"
 
 
@@ -18,9 +17,4 @@ export const parseKey = (key: string): FieldPath => {
 
 export const clean = (fieldName: string) => {
   return fieldName.replace(/\*$/, '')
-}
-
-
-export const sentenceCase = (str: string): string => {
-  return upperFirst(startCase(str).toLowerCase())
 }
