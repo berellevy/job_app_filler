@@ -1,5 +1,5 @@
 import { Answer, AnswerData, FieldPath } from "../../../../shared/utils/types"
-import { getMatchingAnswers } from "../answerMatching"
+import { getMatchingAnswers } from "./answerMatching"
 import { clean } from "../utils"
 
 

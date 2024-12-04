@@ -1,5 +1,5 @@
-import stringMatch from "../../../shared/utils/stringMatch"
-import { FieldPath } from "../../../shared/utils/types"
+import stringMatch from "../../../../shared/utils/stringMatch"
+import { FieldPath } from "../../../../shared/utils/types"
 
 
 class Ignore {}
@@ -66,8 +66,7 @@ const storedFieldNameIsSubstring: PathMatcher = (lookup, path) => {
     stringMatch.contains(lookup.fieldName, path.fieldName)
   )
 }
-
-export default {
+const a =  {
   storedFieldNameIsSubstring,
   storedFieldNameIsSuffix,
   storedFieldNameIsPrefix,
@@ -76,3 +75,5 @@ export default {
   noPage,
   exact,
 }
+
+export default a

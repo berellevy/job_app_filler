@@ -1,4 +1,4 @@
-import { getAnswers106 } from "."
+import { getAnswers106 } from "./answers106"
 import { parseKey } from "./utils"
 import elasticlunr from "elasticlunr"
 
