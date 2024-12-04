@@ -5,7 +5,3 @@ export const parseKey = (key: string): FieldPath => {
   const [page, section, fieldType, ...fieldName] = key.split(':')
   return { page, section, fieldType, fieldName: fieldName.join(':') }
 }
-
-// export const clean = (fieldName: string) => {
-//   return fieldName.replace(/\*$/, '')
-// }
