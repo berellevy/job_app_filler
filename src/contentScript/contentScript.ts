@@ -1,14 +1,13 @@
-import { Server } from '../utils/crossContextCommunication/server'
-// import { saveAnswer, getAnswer, deleteAnswer } from '../utils/storage'
+import { Server } from '../shared/utils/crossContextCommunication/server'
 import {
   convert1010To106,
   convert106To1010,
-} from '../utils/storage/DataStore'
-import { SavedAnswer } from '../utils/storage/DataStoreTypes'
-import { migrateEducation } from '../utils/storage/migrateEducationSectionNames'
-import { FieldPath, Answer } from '../utils/types'
-import { answers1010, migrate1010 } from './Answers1010'
-import { EVENT_LISTENER_ID, loadApp } from './ReactApp/App'
+} from '../shared/utils/storage/DataStore'
+import { SavedAnswer } from '../shared/utils/storage/DataStoreTypes'
+import { migrateEducation } from '../shared/utils/storage/migrateEducationSectionNames'
+import { FieldPath, Answer } from '../shared/utils/types'
+import { EVENT_LISTENER_ID, loadApp } from './app/App'
+import { answers1010, migrate1010 } from './utils/Answers1010'
 
 // Regiser server and methods accessible to injected script.
 const server = new Server(process.env.CONTENT_SCRIPT_URL)
