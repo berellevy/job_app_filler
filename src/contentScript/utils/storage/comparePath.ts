@@ -8,7 +8,7 @@ type Methods = [Method, Method, Method, Method]
 
 type PathMatcher = (lookup: FieldPath, path: FieldPath) => boolean
 
-export const exact: PathMatcher = (lookup, path) => {
+const exact: PathMatcher = (lookup, path) => {
   return (
     stringMatch.exact(lookup.section, path.section) &&
     stringMatch.exact(lookup.fieldType, path.fieldType) &&
@@ -16,7 +16,7 @@ export const exact: PathMatcher = (lookup, path) => {
   )
 }
 
-export const noPage: PathMatcher = (lookup, path) => {
+const noPage: PathMatcher = (lookup, path) => {
   return (
     stringMatch.exact(lookup.section, path.section) &&
     stringMatch.exact(lookup.fieldType, path.fieldType) &&
@@ -24,7 +24,7 @@ export const noPage: PathMatcher = (lookup, path) => {
   )
 }
 
-export const fieldNameStart: PathMatcher = (lookup, path) => {
+const fieldNameStart: PathMatcher = (lookup, path) => {
   return (
     stringMatch.exact(lookup.section, path.section) &&
     stringMatch.exact(lookup.fieldType, path.fieldType) &&
@@ -32,7 +32,7 @@ export const fieldNameStart: PathMatcher = (lookup, path) => {
   )
 }
 
-export const fieldNameEnd: PathMatcher = (lookup, path) => {
+const fieldNameEnd: PathMatcher = (lookup, path) => {
   return (
     stringMatch.exact(lookup.section, path.section) &&
     stringMatch.exact(lookup.fieldType, path.fieldType) &&
@@ -40,7 +40,7 @@ export const fieldNameEnd: PathMatcher = (lookup, path) => {
   )
 }
 
-export const storedFieldNameIsPrefix: PathMatcher = (lookup, path) => {
+const storedFieldNameIsPrefix: PathMatcher = (lookup, path) => {
   return (
     // stringMatch.ignore(lookup.page, path.page) &&
     stringMatch.exact(lookup.section, path.section) &&
@@ -49,7 +49,7 @@ export const storedFieldNameIsPrefix: PathMatcher = (lookup, path) => {
   )
 }
 
-export const storedFieldNameIsSuffix: PathMatcher = (lookup, path) => {
+const storedFieldNameIsSuffix: PathMatcher = (lookup, path) => {
   return (
     // stringMatch.ignore(lookup.page, path.page) &&
     stringMatch.exact(lookup.section, path.section) &&
@@ -58,11 +58,21 @@ export const storedFieldNameIsSuffix: PathMatcher = (lookup, path) => {
   )
 }
 
-export const storedFieldNameIsSubstring: PathMatcher = (lookup, path) => {
+const storedFieldNameIsSubstring: PathMatcher = (lookup, path) => {
   return (
     // stringMatch.ignore(lookup.page, path.page) &&
     stringMatch.exact(lookup.section, path.section) &&
     stringMatch.exact(lookup.fieldType, path.fieldType) &&
     stringMatch.contains(lookup.fieldName, path.fieldName)
   )
+}
+
+export default {
+  storedFieldNameIsSubstring,
+  storedFieldNameIsSuffix,
+  storedFieldNameIsPrefix,
+  fieldNameEnd,
+  fieldNameStart,
+  noPage,
+  exact,
 }
