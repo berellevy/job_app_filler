@@ -1,6 +1,6 @@
 import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
 import { getElement, waitForElement } from '../../../../../shared/utils/getElements'
-import { WorkdayBaseInput } from './workdayBaseInput'
+import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { xpaths } from './xpaths'
 import { AnswerValueSingleBool } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleBool'
 import { AnswerValueMethods } from '../baseFormInput'
@@ -61,17 +61,17 @@ export class SingleCheckbox extends WorkdayBaseInput<boolean> {
    * before ending the function and allowing the react app to update.
    */
   async fill(): Promise<void> {
-    const answer = await this.answer()
-    const isFilled = this.isFilled(this.currentValue(), answer.map(a=> a.answer))
-    if (answer.length > 0 && !isFilled) {
-      await fieldFillerQueue.enqueue(async () => {
-        const initialValue = this.currentValue()
-        this.checkboxElement().click()
-        await waitForElement(
-          this.element,
-          this.currentStateXpath(!initialValue)
-        )
+    await fieldFillerQueue.enqueue(async () => {
+      const answer = await this.answer()
+      const isFilled = this.isFilled(this.currentValue(), answer.map(a=> a.answer))
+        if (answer.length > 0 && !isFilled) {
+          const initialValue = this.currentValue()
+          this.checkboxElement().click()
+          await waitForElement(
+            this.element,
+            this.currentStateXpath(!initialValue)
+          )
+        }
       })
-    }
   }
 }

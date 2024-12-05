@@ -9,7 +9,7 @@ import { dispatchFileDragEvent } from '../../../../../shared/utils/fileUploadHel
 import { saveButtonClickHandlers } from '../../../hooks/saveButtonClickHandlers'
 
 
-export class SingleFileUpload extends GreenhouseBaseInput<any> {
+export class File extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.SINGLE_FILE_UPLOAD
   fieldType = 'SingleFileUpload'
   public saveButtonClickHandler = saveButtonClickHandlers.withNotice

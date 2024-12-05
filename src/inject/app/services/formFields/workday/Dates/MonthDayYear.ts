@@ -2,7 +2,7 @@ import fieldFillerQueue from '../../../../../../shared/utils/fieldFillerQueue'
 import { getElement } from '../../../../../../shared/utils/getElements'
 import { Answer } from '../../../../../../shared/utils/types'
 import { AnswerValueMethods } from '../../baseFormInput'
-import { WorkdayBaseInput } from '../workdayBaseInput'
+import { WorkdayBaseInput } from '../WorkdayBaseInput'
 import { AnswerValueSingleRelativeDate } from '../../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleRelativeDate'
 
 import { setupChangeListener, fillDatePart, convertRelativeDate } from './utils'

@@ -1,6 +1,9 @@
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
 import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement, getElements } from '../../../../../shared/utils/getElements'
+import {
+  getElement,
+  getElements,
+} from '../../../../../shared/utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'
@@ -8,11 +11,11 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 /**
  * Note: "Two or More Races opens a text box, add support eventually"
- * 
+ *
  */
-export class MultiCheckbox extends GreenhouseBaseInput<any> {
+export class Checkboxes extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.MULTI_CHECKBOX
-  fieldType = "SimpleDropdown"
+  fieldType = 'SimpleDropdown'
   public get answerValue() {
     return {
       ...super.answerValue,
@@ -44,43 +47,41 @@ export class MultiCheckbox extends GreenhouseBaseInput<any> {
     return getElement(this.element, ".//input[@type='hidden']")
   }
   listenForChanges(): void {
-    this.element.addEventListener("click", (e) => {
-      if ((e.target as HTMLElement).nodeName === "INPUT") {
+    this.element.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).nodeName === 'INPUT') {
         this.triggerReactUpdate()
       }
     })
   }
 
   get checkboxLabelElements(): HTMLElement[] {
-    return getElements(
-      this.element,
-      ".//label[.//input[@type='checkbox']]"
-    )
+    return getElements(this.element, ".//label[.//input[@type='checkbox']]")
   }
 
   get selectedElement(): HTMLElement {
-    return this.checkboxLabelElements.find(labelEl => {
+    return this.checkboxLabelElements.find((labelEl) => {
       return (labelEl.firstElementChild as HTMLInputElement).checked
     })
   }
   currentValue() {
-    return this.selectedElement?.innerText || ""
+    return this.selectedElement?.innerText || ''
   }
+
   async fill(): Promise<void> {
-    const answers = await this.answer()
-    if (answers.length > 0) {
-      await fieldFillerQueue.enqueue(async () => {
+    await fieldFillerQueue.enqueue(async () => {
+      const answers = await this.answer()
+      if (answers.length > 0) {
         for (const answer of answers) {
           const correctAnswerElement = getElements(
             this.element,
             `.//label`
-          ).find(el => el.innerText.trim() === answer.answer[0].trim())
+          ).find((el) => el.innerText.trim() === answer.answer[0].trim())
           if (correctAnswerElement) {
             correctAnswerElement.click()
             break
           }
         }
-      })
-    }
+      }
+    })
   }
 }

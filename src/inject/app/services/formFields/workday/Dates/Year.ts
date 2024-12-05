@@ -1,6 +1,6 @@
 import fieldFillerQueue from "../../../../../../shared/utils/fieldFillerQueue"
 import { getElement } from "../../../../../../shared/utils/getElements"
-import { WorkdayBaseInput } from "../workdayBaseInput"
+import { WorkdayBaseInput } from "../WorkdayBaseInput"
 import { setupChangeListener, fillDatePart } from "./utils"
 import { xpaths } from '../xpaths'
 

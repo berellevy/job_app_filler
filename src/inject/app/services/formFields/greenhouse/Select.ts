@@ -6,7 +6,7 @@ import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'
 import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
-export class BasicSelect extends GreenhouseBaseInput<any> {
+export class Select extends GreenhouseBaseInput<any> {
   static XPATH: string = xpaths.BASIC_SELECT
   fieldType = 'SimpleDropdown'
   public get answerValue() {

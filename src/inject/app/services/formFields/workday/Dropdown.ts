@@ -4,7 +4,7 @@ import { getElement, waitForElement } from '../../../../../shared/utils/getEleme
 import { scrollBack } from '../../../../../shared/utils/scroll'
 import { Answer } from '../../../../../shared/utils/types'
 import { addCharacterMutationObserver, getReactProps } from '../utils'
-import { WorkdayBaseInput } from './workdayBaseInput'
+import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
 
 
@@ -14,7 +14,7 @@ import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'
 import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
-export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
+export class Dropdown extends WorkdayBaseInput<string[] | null> {
   static XPATH: string = xpaths.SIMPLE_DROPDOWN
   fieldType: string = 'SimpleDropdown'
   public get answerValue() {

@@ -1,6 +1,6 @@
 import fieldFillerQueue from '../../../../../../shared/utils/fieldFillerQueue'
 import { getElement } from '../../../../../../shared/utils/getElements'
-import { WorkdayBaseInput } from '../workdayBaseInput'
+import { WorkdayBaseInput } from '../WorkdayBaseInput'
 import { xpaths } from '../xpaths'
 import { AnswerValueSingleDate } from '../../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleDate'
 import { setupChangeListener, fillDatePart } from './utils'

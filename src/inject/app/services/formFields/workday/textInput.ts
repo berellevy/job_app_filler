@@ -1,7 +1,7 @@
 import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
 import { getElement } from '../../../../../shared/utils/getElements'
 import { fillReactTextInput, getReactProps } from '../utils'
-import { WorkdayBaseInput } from './workdayBaseInput'
+import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { xpaths } from './xpaths'
 
 export class TextInput extends WorkdayBaseInput<string | null> {

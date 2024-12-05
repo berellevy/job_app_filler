@@ -2,7 +2,7 @@ import { sleep } from '../../../../../shared/utils/async'
 import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
 import { getElement, getElements } from '../../../../../shared/utils/getElements'
 import { AnswerValueMethods } from '../baseFormInput'
-import { WorkdayBaseInput } from './workdayBaseInput'
+import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { AnswerValueMultiFileUpload } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueMultiFileUpload'
 import { LocalStorageFile, localStorageToFile } from '../../../../../shared/utils/file'
 import { isEqual } from 'lodash'
@@ -10,7 +10,7 @@ import { getReactProps } from '../utils'
 import { xpaths } from './xpaths'
 import { saveButtonClickHandlers } from '../../../hooks/saveButtonClickHandlers'
 
-export class MultiFileUpload extends WorkdayBaseInput<any> {
+export class FileMulti extends WorkdayBaseInput<any> {
   fieldType = 'MultiFileUpload'
   public saveButtonClickHandler = saveButtonClickHandlers.withNotice
   fieldNotice = [
@@ -18,12 +18,14 @@ export class MultiFileUpload extends WorkdayBaseInput<any> {
     \n\n[See how](https://www.youtube.com/watch?v=JYMATq9siIY&t=134s)`
   ].join("")
   static XPATH = xpaths.MULTI_FILE_UPLOAD
+
   get answerValue() {
     return {
       ...super.answerValue,
       displayComponent: AnswerValueMultiFileUpload,
     } as AnswerValueMethods
   }
+
   listenForChanges(): void {
     const observer = new MutationObserver((mutations: MutationRecord[]) => {
       const fileAdded = getElement(

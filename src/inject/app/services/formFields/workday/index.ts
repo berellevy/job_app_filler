@@ -1,30 +1,29 @@
 import { getElement } from '../../../../../shared/utils/getElements'
 import { BooleanRadio } from './BooleanRadio'
+import { CheckboxesSingle } from './CheckboxesSingle'
 import { MonthYear, MonthDayYear, Year } from './Dates'
-import { MultiCheckbox } from './MultiCheckbox'
-import { MultiFileUpload } from './MultiFileUpload'
-import { PasswordInput } from './PasswordInput'
-import { SearchableSingleDropdown } from './searchableSingleDropdown'
-import { SimpleDropdown } from './simpleDropdown'
+import { Dropdown } from './Dropdown'
+import { DropdownSearchable } from './DropdownSearchable'
+import { FileMulti } from './FileMulti'
+import { Password } from './Password'
 import { SingleCheckbox } from './SingleCheckbox'
 import { TextArea } from './TextArea'
-import { TextInput } from './textInput'
+import { TextInput } from './TextInput'
 
 const inputs = [
   TextInput,
-  PasswordInput,
-  SimpleDropdown,
-  SearchableSingleDropdown,
+  Password,
+  Dropdown,
+  DropdownSearchable,
   SingleCheckbox,
   MonthYear,
   Year,
   MonthDayYear,
   TextArea,
   BooleanRadio,
-  MultiCheckbox,
-  MultiFileUpload,
+  CheckboxesSingle,
+  FileMulti,
 ]
-
 
 export const RegisterInputs = async (node: Node = document) => {
   const searchPageXpath = ".//div[@data-automation-id='jobSearch']"

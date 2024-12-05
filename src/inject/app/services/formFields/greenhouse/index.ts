@@ -1,24 +1,24 @@
 
 import { Sections } from './Sections'
-import { AddressSearchField } from './AddressSearchField'
-import { BasicSelect } from './BasicSelect'
-import { MultiCheckbox } from './MultiCheckBox'
-import { SimpleDropdown } from './SimpleDropdown'
-import { SingleFileUpload } from './SingleFileUpload'
 import { Textarea } from './Textarea'
-import { TextField } from './TextField'
 import { MonthYear } from './MonthYear'
 import { DropdownSearchable } from './DropdownSearchable'
 import { DropdownMulti } from './DropdownMulti'
+import { TextInput } from './TextInput'
+import { File } from './File'
+import { Dropdown } from './Dropdown'
+import { Checkboxes } from './Checkboxes'
+import { Select } from './Select'
+import { AddressSearchable } from './AddressSearchable'
 
 const inputs = [
-  TextField,
-  SingleFileUpload,
-  AddressSearchField,
-  SimpleDropdown,
+  TextInput,
+  File,
+  AddressSearchable,
+  Dropdown,
   Textarea,
-  BasicSelect,
-  MultiCheckbox,
+  Select,
+  Checkboxes,
   MonthYear,
   DropdownSearchable,
   DropdownMulti,
