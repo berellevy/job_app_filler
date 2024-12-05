@@ -1,10 +1,11 @@
-import { sleep } from "../../../../../../shared/utils/async"
+import { sleep } from '../../../../../../shared/utils/async'
+import { createKeyboardEvent } from '../../../../../../shared/utils/events'
 import {
   AbsoluteDateValue,
   AnswerValueRelativeDate,
   RelativeDateOptions,
 } from '../../../../hooks/answerValueInit'
-import { addCharacterMutationObserver, getReactProps } from "../../utils"
+import { addCharacterMutationObserver, getReactProps } from '../../utils'
 
 export function formatDate(date: Date): [string, string, string] {
   return [
@@ -33,10 +34,21 @@ export const convertRelativeDate = ({
 }
 
 export const setupChangeListener = (formField) => {
-  addCharacterMutationObserver(
-    formField.wrapperElement,
-    () => {formField.triggerReactUpdate()}
-  )
+  addCharacterMutationObserver(formField.wrapperElement, () => {
+    formField.triggerReactUpdate()
+  })
+}
+
+/**
+ * vastly simplified. But still needs to be clicked.
+ */
+export async function fillDatePart(
+  datePartElement: HTMLInputElement,
+  datePartValue: string
+): Promise<void> {
+  datePartElement.value = (parseInt(datePartValue) - 1).toString()
+  datePartElement.dispatchEvent(createKeyboardEvent('keydown', 'ArrowUp'))
+  datePartElement.click()
 }
 
 /**
@@ -49,22 +61,22 @@ export const setupChangeListener = (formField) => {
  * Also, sometimes, we have to send the onKeyDown event more than once for it to work
  *
  */
-export async function fillDatePart(
-  datePartElement: HTMLInputElement,
-  datePartValue: string
-): Promise<void> {
-  let retries = 20
-  while (!(datePartElement.value === datePartValue) && retries >= 0) {
-    await sleep(50)
-    getReactProps(datePartElement).onKeyDown({
-      nativeEvent: { key: 'Up', setSelectionRange: () => {} },
-      preventDefault: () => {},
-      currentTarget: {
-        value: parseInt(datePartValue) - 1,
-        setSelectionRange: () => {},
-      },
-    })
-    retries--
-  }
-  datePartElement.click()
-}
+// export async function fillDatePart(
+//   datePartElement: HTMLInputElement,
+//   datePartValue: string
+// ): Promise<void> {
+//   let retries = 1
+//   while (!(datePartElement.value === datePartValue) && retries >= 0) {
+//     await sleep(100)
+//     getReactProps(datePartElement).onKeyDown({
+//       nativeEvent: { key: 'Up', setSelectionRange: () => {} },
+//       preventDefault: () => {},
+//       currentTarget: {
+//         value: parseInt(datePartValue) - 1,
+//         setSelectionRange: () => {},
+//       },
+//     })
+//     retries--
+//   }
+//   datePartElement.click()
+// }
