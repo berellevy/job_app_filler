@@ -1,10 +1,16 @@
 import { sleep } from '../../../../../shared/utils/async'
 import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement, getElements } from '../../../../../shared/utils/getElements'
+import {
+  getElement,
+  getElements,
+} from '../../../../../shared/utils/getElements'
 import { AnswerValueMethods } from '../baseFormInput'
 import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { AnswerValueMultiFileUpload } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueMultiFileUpload'
-import { LocalStorageFile, localStorageToFile } from '../../../../../shared/utils/file'
+import {
+  LocalStorageFile,
+  localStorageToFile,
+} from '../../../../../shared/utils/file'
 import { isEqual } from 'lodash'
 import { getReactProps } from '../utils'
 import { xpaths } from './xpaths'
@@ -15,8 +21,8 @@ export class FileMulti extends WorkdayBaseInput<any> {
   public saveButtonClickHandler = saveButtonClickHandlers.withNotice
   fieldNotice = [
     `##### To save and autofill files, upload them in the 'Answers' section below.
-    \n\n[See how](https://www.youtube.com/watch?v=JYMATq9siIY&t=134s)`
-  ].join("")
+    \n\n[See how](https://www.youtube.com/watch?v=JYMATq9siIY&t=134s)`,
+  ].join('')
   static XPATH = xpaths.MULTI_FILE_UPLOAD
 
   get answerValue() {
@@ -94,9 +100,9 @@ export class FileMulti extends WorkdayBaseInput<any> {
   }
 
   async fill(): Promise<void> {
-    const answer = (await this.answer()) || []
-    if (answer.length > 0) {
-      await fieldFillerQueue.enqueue(async () => {
+    await fieldFillerQueue.enqueue(async () => {
+      const answer = (await this.answer()) || []
+      if (answer.length > 0) {
         const firstAnswer = answer[0]
         const files = firstAnswer.answer.map(localStorageToFile)
         for (const button of this.uploadedFileDeleteButtonElements) {
@@ -111,7 +117,7 @@ export class FileMulti extends WorkdayBaseInput<any> {
           }
           getReactProps(this.dropZoneElement).onDrop(fakeEvent)
         }
-      })
-    }
+      }
+    })
   }
 }

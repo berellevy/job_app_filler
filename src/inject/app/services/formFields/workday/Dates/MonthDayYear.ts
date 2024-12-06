@@ -100,14 +100,14 @@ export class MonthDayYear extends WorkdayBaseInput<[string, string]> {
   }
 
   async fill(answers?: any): Promise<void> {
-    answers = answers || (await this.answer())
-    if (answers.length > 0) {
-      await fieldFillerQueue.enqueue(async () => {
+    await fieldFillerQueue.enqueue(async () => {
+      answers = answers || (await this.answer())
+      if (answers.length > 0) {
         const [month, day, year] = convertRelativeDate(answers[0].answer)
         await fillDatePart(this.monthInputElement, month)
         await fillDatePart(this.dayInputElement, day)
         await fillDatePart(this.yearInputElement, year)
-      })
-    }
+      }
+    })
   }
 }

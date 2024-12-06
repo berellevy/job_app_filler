@@ -5,7 +5,7 @@ import { xpaths } from './xpaths'
 import { AnswerValueSingleBool } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleBool'
 import { AnswerValueMethods } from '../baseFormInput'
 
-export class SingleCheckbox extends WorkdayBaseInput<boolean> {
+export class BooleanCheckbox extends WorkdayBaseInput<boolean> {
   static XPATH = xpaths.SINGLE_CHECKBOX
   fieldType: string = 'SingleCheckbox'
   public answerValueDisplayComponent = AnswerValueSingleBool

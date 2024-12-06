@@ -55,13 +55,13 @@ export class MonthYear extends WorkdayBaseInput<[string, string]> {
   }
 
   async fill(answers?: any): Promise<void> {
-    answers = answers || (await this.answer())
-    if (answers.length > 0) {
-      await fieldFillerQueue.enqueue(async () => {
+    await fieldFillerQueue.enqueue(async () => {
+      answers = answers || (await this.answer())
+      if (answers.length > 0) {
         const [month, year] = answers[0].answer
         await fillDatePart(this.monthInputElement, month)
         await fillDatePart(this.yearInputElement, year)
-      })
-    }
+      }
+    })
   }
 }

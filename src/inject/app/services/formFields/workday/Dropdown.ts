@@ -1,12 +1,14 @@
 import { sleep } from '../../../../../shared/utils/async'
 import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement, waitForElement } from '../../../../../shared/utils/getElements'
+import {
+  getElement,
+  waitForElement,
+} from '../../../../../shared/utils/getElements'
 import { scrollBack } from '../../../../../shared/utils/scroll'
 import { Answer } from '../../../../../shared/utils/types'
 import { addCharacterMutationObserver, getReactProps } from '../utils'
 import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
-
 
 import stringMatch from '../../../../../shared/utils/stringMatch'
 import { lowerText } from '../../../../../shared/utils/xpath'
@@ -111,8 +113,8 @@ export class Dropdown extends WorkdayBaseInput<string[] | null> {
    *
    */
   async fill(): Promise<void> {
-    const answers = await this.answer()
     await fieldFillerQueue.enqueue(async () => {
+      const answers = await this.answer()
       await scrollBack(async () => {
         for (const answer of answers) {
           const answerList = answer.answer

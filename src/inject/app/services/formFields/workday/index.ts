@@ -1,4 +1,5 @@
 import { getElement } from '../../../../../shared/utils/getElements'
+import { BooleanCheckbox } from './BooleanCheckbox'
 import { BooleanRadio } from './BooleanRadio'
 import { CheckboxesSingle } from './CheckboxesSingle'
 import { MonthYear, MonthDayYear, Year } from './Dates'
@@ -6,7 +7,6 @@ import { Dropdown } from './Dropdown'
 import { DropdownSearchable } from './DropdownSearchable'
 import { FileMulti } from './FileMulti'
 import { Password } from './Password'
-import { SingleCheckbox } from './SingleCheckbox'
 import { TextArea } from './TextArea'
 import { TextInput } from './TextInput'
 
@@ -15,7 +15,7 @@ const inputs = [
   Password,
   Dropdown,
   DropdownSearchable,
-  SingleCheckbox,
+  BooleanCheckbox,
   MonthYear,
   Year,
   MonthDayYear,

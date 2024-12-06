@@ -1,7 +1,7 @@
-import fieldFillerQueue from "../../../../../../shared/utils/fieldFillerQueue"
-import { getElement } from "../../../../../../shared/utils/getElements"
-import { WorkdayBaseInput } from "../WorkdayBaseInput"
-import { setupChangeListener, fillDatePart } from "./utils"
+import fieldFillerQueue from '../../../../../../shared/utils/fieldFillerQueue'
+import { getElement } from '../../../../../../shared/utils/getElements'
+import { WorkdayBaseInput } from '../WorkdayBaseInput'
+import { setupChangeListener, fillDatePart } from './utils'
 import { xpaths } from '../xpaths'
 
 export class Year extends WorkdayBaseInput<string> {
@@ -33,16 +33,16 @@ export class Year extends WorkdayBaseInput<string> {
   }
 
   async fill(): Promise<void> {
-    const answers = await this.answer()
-    const isFilled = this.isFilled(
-      this.currentValue(),
-      answers.map((a) => a.answer)
-    )
-    if (answers.length > 0 && !isFilled) {
-      await fieldFillerQueue.enqueue(async () => {
+    await fieldFillerQueue.enqueue(async () => {
+      const answers = await this.answer()
+      const isFilled = this.isFilled(
+        this.currentValue(),
+        answers.map((a) => a.answer)
+      )
+      if (answers.length > 0 && !isFilled) {
         const year = answers[0]?.answer
         await fillDatePart(this.yearInputElement, year)
-      })
-    }
+      }
+    })
   }
 }

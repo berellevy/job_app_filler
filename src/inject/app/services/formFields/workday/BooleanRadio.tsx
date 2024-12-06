@@ -55,9 +55,9 @@ export class BooleanRadio extends WorkdayBaseInput<string> {
   }
 
   async fill(): Promise<void> {
-    const answer = await this.answer()
-    if (answer.length > 0) {
-      await fieldFillerQueue.enqueue(async () => {
+    await fieldFillerQueue.enqueue(async () => {
+      const answer = await this.answer()
+      if (answer.length > 0) {
         const XPATH = [
           '//div',
           `[label[${lowerText()}='${answer[0].answer.toLowerCase()}']]`,
@@ -65,8 +65,8 @@ export class BooleanRadio extends WorkdayBaseInput<string> {
         ].join('')
         const checkElement = getElement(this.element, XPATH)
         checkElement?.click()
-      })
-    }
+      }
+    })
   }
   
 }

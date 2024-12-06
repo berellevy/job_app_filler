@@ -27,13 +27,13 @@ export class TextArea extends WorkdayBaseInput<string | null> {
   }
 
   async fill(): Promise<void> {
-    const answer = await this.answer()
-    if (answer.length > 0) {
-      await fieldFillerQueue.enqueue(async () => {
-        // fillReactTextInput(this.inputElement, answer[0].answer, {
-        //   eventName: 'onBlur',
-        // })
-      })
-    }
+    await fieldFillerQueue.enqueue(async () => {
+      const answer = await this.answer()
+      if (answer.length > 0) {
+        fillReactTextInput(this.inputElement, answer[0].answer, {
+          eventName: 'onBlur',
+        })
+      }
+    })
   }
 }
