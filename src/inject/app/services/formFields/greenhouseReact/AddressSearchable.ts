@@ -1,18 +1,20 @@
-import { AnswerValueBackupStrings } from "../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings";
-import { sleep } from "../../../../../shared/utils/async";
-import fieldFillerQueue from "../../../../../shared/utils/fieldFillerQueue";
-import { getElement, waitForElement } from "../../../../../shared/utils/getElements";
-import { scrollBack } from "../../../../../shared/utils/scroll";
-import { getReactProps } from "../utils";
-import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
-import { xpaths } from "./xpaths";
-import { answerValueInitList } from "../../../hooks/answerValueInit";
-import { EditableAnswer } from "../../../hooks/useEditableAnswerState";
-
+import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
+import { sleep } from '../../../../../shared/utils/async'
+import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
+import {
+  getElement,
+  waitForElement,
+} from '../../../../../shared/utils/getElements'
+import { scrollBack } from '../../../../../shared/utils/scroll'
+import { getReactProps } from '../utils'
+import { GreenhouseReactBaseInput } from './GreenhouseReactBaseInput'
+import { xpaths } from './xpaths'
+import { answerValueInitList } from '../../../hooks/answerValueInit'
+import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class AddressSearchable extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.ADDRESS_SEARCHABLE
-  fieldType = "SimpleDropdown"
+  fieldType = 'SimpleDropdown'
   public get answerValue() {
     return {
       ...super.answerValue,
@@ -58,7 +60,7 @@ export class AddressSearchable extends GreenhouseReactBaseInput<any> {
   toggleDropdown(): void {
     const reactProps = getReactProps(this.menuOpenTriggerDivElement)
     reactProps?.onMouseUp({
-      defaultPrevented: false
+      defaultPrevented: false,
     })
   }
 
@@ -75,9 +77,9 @@ export class AddressSearchable extends GreenhouseReactBaseInput<any> {
 
   async waitForDropdownElement(): Promise<HTMLElement> {
     return await waitForElement(
-      this.element, 
+      this.element,
       `.//div[starts-with(@class, "select__menu")]`,
-      {timeout: 500}
+      { timeout: 500 }
     )
   }
 
@@ -87,7 +89,7 @@ export class AddressSearchable extends GreenhouseReactBaseInput<any> {
       `.//div`,
       `[starts-with(@class, "select__option")]`,
       `[text() = "${answerValue}"]`,
-    ].join("")
+    ].join('')
     return await waitForElement(dropdownElement, XPATH, { timeout: 500 })
   }
 
@@ -96,7 +98,7 @@ export class AddressSearchable extends GreenhouseReactBaseInput<any> {
       `.//div`,
       `[starts-with(@class, "select__option")]`,
       `[text() = "${answerValue}"]`,
-    ].join("")
+    ].join('')
     return getElement(this.dropdownElement, XPATH)
   }
 
@@ -105,11 +107,12 @@ export class AddressSearchable extends GreenhouseReactBaseInput<any> {
   }
 
   currentValue() {
-    return this.selectedValueElement?.innerText || ""
+    return this.selectedValueElement?.innerText || ''
   }
 
   get selectControlElement() {
-    return getElement(this.element,
+    return getElement(
+      this.element,
       `.//div[starts-with(@class, "select__control")]`
     )
   }
@@ -125,8 +128,8 @@ export class AddressSearchable extends GreenhouseReactBaseInput<any> {
   get clearSelectionButtonElement(): HTMLElement {
     const XPATH = [
       `.//div[starts-with(@class, "select__indicators")]`,
-      `/div[@aria-hidden="false"]`
-    ].join("")
+      `/div[@aria-hidden="false"]`,
+    ].join('')
     return getElement(this.element, XPATH)
   }
 
@@ -149,8 +152,8 @@ export class AddressSearchable extends GreenhouseReactBaseInput<any> {
   }
 
   async fill(): Promise<void> {
-    await scrollBack(async () => {
-      await fieldFillerQueue.enqueue(async () => {
+    await fieldFillerQueue.enqueue(async () => {
+      await scrollBack(async () => {
         const answers = await this.answer()
         if (answers.length > 0) {
           this.clearSelection()
