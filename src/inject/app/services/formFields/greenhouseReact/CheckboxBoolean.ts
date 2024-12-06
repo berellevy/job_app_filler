@@ -3,8 +3,8 @@ import fieldFillerQueue from "../../../../../shared/utils/fieldFillerQueue";
 import { getElement } from "../../../../../shared/utils/getElements";
 import { AnswerValueMethods } from "../baseFormInput";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
-import { ChoiceInputWrapperElement } from "./utils";
 import { xpaths } from "./xpaths";
+import { CheckboxWrapperContainer } from "./ElementWrappers/CheckboxWrapperContainer";
 
 
 export class CheckboxBoolean extends GreenhouseReactBaseInput<any> {
@@ -36,27 +36,28 @@ export class CheckboxBoolean extends GreenhouseReactBaseInput<any> {
   }
 
   currentValue() {
-    return this.checkboxWrapperElement.checked
+    return this.checkboxWrapper.checked
   }
 
-  get checkboxWrapperElement(): ChoiceInputWrapperElement {
+  get checkboxWrapper(): CheckboxWrapperContainer {
     const el = getElement(
       this.element,
       `.//div[@class="checkbox__wrapper"]`
     )
-    return new ChoiceInputWrapperElement(el)
+    return new CheckboxWrapperContainer(el)
   }
 
   public isFilled(current: any, stored: any[]): boolean {
     return current === stored[0]
   }
+
   async fill(): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
       const answers = await this.answer()
       if (answers.length > 0) {
         const firstAnswer = answers[0].answer
         if (!(this.currentValue === firstAnswer)) {
-          this.checkboxWrapperElement.check()
+          this.checkboxWrapper.check()
         }
       }
     })
