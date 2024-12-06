@@ -1,3 +1,4 @@
+import fieldFillerQueue from "../../../../../shared/utils/fieldFillerQueue";
 import { getElement } from "../../../../../shared/utils/getElements";
 import { getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
@@ -27,13 +28,14 @@ export class TextInput extends GreenhouseReactBaseInput<any> {
     return this.inputElement.value
   }
   async fill(): Promise<void> {
-    const answers = await this.answer()
-    if (answers.length > 0) {
-      const firstAnswer = answers[0]
-      this.inputElement.value = firstAnswer.answer
-      const reactProps = getReactProps(this.inputElement)
-      reactProps?.onChange({currentTarget: this.inputElement})
-    }
-
+    fieldFillerQueue.enqueue(async () => {
+      const answers = await this.answer()
+      if (answers.length > 0) {
+        const firstAnswer = answers[0]
+        this.inputElement.value = firstAnswer.answer
+        const reactProps = getReactProps(this.inputElement)
+        reactProps?.onChange({currentTarget: this.inputElement})
+      }
+    })
   }
 }
