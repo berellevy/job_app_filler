@@ -11,7 +11,6 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 /**
  * Note: "Two or More Races opens a text box, add support eventually"
- *
  */
 export class Checkboxes extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.MULTI_CHECKBOX
