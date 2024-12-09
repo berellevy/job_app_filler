@@ -28,7 +28,6 @@ export class TextInput extends GreenhouseReactBaseInput<any> {
     return this.inputElement.value
   }
   async fill(): Promise<void> {
-    fieldFillerQueue.enqueue(async () => {
       const answers = await this.answer()
       if (answers.length > 0) {
         const firstAnswer = answers[0]
@@ -36,6 +35,5 @@ export class TextInput extends GreenhouseReactBaseInput<any> {
         const reactProps = getReactProps(this.inputElement)
         reactProps?.onChange({currentTarget: this.inputElement})
       }
-    })
   }
 }
