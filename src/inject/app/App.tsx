@@ -2,12 +2,12 @@ import React, { FC } from 'react'
 import { createRoot } from 'react-dom/client'
 
 import { Box, Grid, ThemeProvider } from '@mui/material'
-import { theme } from '../../shared/utils/react'
+import { theme } from '@src/shared/utils/react'
 import { ContextProvider } from './AppContext'
 
 import { BaseFormInput } from './services/formFields/baseFormInput'
 import { FieldWidgetButtons } from './FieldWidget/FieldWidgetButtons'
-import Logo from '../../shared/components/Logo'
+import Logo from '@src/shared/components/Logo'
 
 const Main: FC = () => {
   return (

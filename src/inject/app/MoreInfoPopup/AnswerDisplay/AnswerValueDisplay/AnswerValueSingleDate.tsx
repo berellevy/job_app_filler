@@ -6,24 +6,28 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import React, { FC, ReactElement, ReactNode, cloneElement } from 'react'
+import React, { FC } from 'react'
 
 import { useAppContext } from '../../../AppContext'
-import { joinComponents } from '../../../../../shared/utils/react'
-import { CloseIcon, EditIcon, InputIcon } from '../../../../../shared/utils/icons'
+import { joinComponents } from '@src/shared/utils/react'
+import { CloseIcon, EditIcon, InputIcon } from '@src/shared/utils/icons'
 
 /**
  * The Value is stored as an array of strings.
  */
 export const AnswerValueSingleDate: FC<{ id: number }> = ({ id }) => {
-  const { editableAnswerState, backend } = useAppContext()
-  const { setEditable, setEditedValue, cancelEdit } = editableAnswerState
-  const { editedAnswer, editable } = editableAnswerState.answers.find((a) => a.id === id)
-  const { value } = editedAnswer
+  const {
+    editableAnswerState: { setEditable, setEditedValue, cancelEdit, answers },
+    backend,
+  } = useAppContext()
+  const {
+    editedAnswer: { value },
+    editable,
+  } = answers.find((a) => a.id === id)
 
   const editFields =
     editable &&
-    editedAnswer.value.map((part: string, index: number) => {
+    value.map((part: string, index: number) => {
       return (
         <TextField
           key={index}
@@ -65,9 +69,7 @@ export const AnswerValueSingleDate: FC<{ id: number }> = ({ id }) => {
         </Collapse>
       ) : (
         <>
-          <Typography component="span">
-            {editedAnswer.value.join('/')}
-          </Typography>
+          <Typography component="span">{value.join('/')}</Typography>
           <IconButton onClick={() => setEditable(id, true)}>
             <EditIcon />
           </IconButton>

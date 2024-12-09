@@ -1,8 +1,8 @@
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement } from '../../../../../shared/utils/getElements'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import { getElement } from '@src/shared/utils/getElements'
 import { WorkdayBaseInput } from './WorkdayBaseInput'
-import stringMatch from '../../../../../shared/utils/stringMatch'
-import { lowerText } from '../../../../../shared/utils/xpath'
+import stringMatch from '@src/shared/utils/stringMatch'
+import { lowerText } from '@src/shared/utils/xpath'
 import { xpaths } from './xpaths'
 
 export class BooleanRadio extends WorkdayBaseInput<string> {

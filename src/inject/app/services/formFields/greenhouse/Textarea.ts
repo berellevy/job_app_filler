@@ -1,5 +1,5 @@
-import fieldFillerQueue from "../../../../../shared/utils/fieldFillerQueue";
-import { getElement } from "../../../../../shared/utils/getElements";
+import fieldFillerQueue from "@src/shared/utils/fieldFillerQueue";
+import { getElement } from "@src/shared/utils/getElements";
 import { GreenhouseBaseInput } from "./GreenhouseBaseInput";
 import { xpaths } from './xpaths'
 

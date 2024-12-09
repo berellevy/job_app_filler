@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { MoreInfoPopper } from '../MoreInfoPopup/MoreInfoPopper'
-import { CloseIcon, MoreVertIcon } from '../../../shared/utils/icons'
+import { CloseIcon, MoreVertIcon } from '@src/shared/utils/icons'
 import { useAppContext } from '../AppContext'
 import { Button } from '@mui/material'
 

@@ -15,9 +15,8 @@ import React, { FC, useRef } from 'react'
 import { ConfirmButton } from '../../components/ConfirmButton'
 import { useAppContext } from '../../AppContext'
 import { SimplePopper } from '../../components/SimplePopper'
-import { DeleteIcon, EditIcon, CloseIcon } from '../../../../shared/utils/icons'
-import _ from 'lodash'
-import { sentenceCase } from '../../../../shared/utils/strings'
+import { DeleteIcon, EditIcon, CloseIcon } from '@src/shared/utils/icons'
+import { sentenceCase } from '@src/shared/utils/strings'
 
 export const AnswerDisplayComponent: FC<{ id: number }> = ({ id }) => {
   const {

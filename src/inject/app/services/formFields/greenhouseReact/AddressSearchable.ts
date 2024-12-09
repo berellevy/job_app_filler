@@ -1,11 +1,11 @@
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
-import { sleep } from '../../../../../shared/utils/async'
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
+import { sleep } from '@src/shared/utils/async'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import {
   getElement,
   waitForElement,
-} from '../../../../../shared/utils/getElements'
-import { scrollBack } from '../../../../../shared/utils/scroll'
+} from '@src/shared/utils/getElements'
+import { scrollBack } from '@src/shared/utils/scroll'
 import { getReactProps } from '../utils'
 import { GreenhouseReactBaseInput } from './GreenhouseReactBaseInput'
 import { xpaths } from './xpaths'

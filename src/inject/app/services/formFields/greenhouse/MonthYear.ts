@@ -1,6 +1,6 @@
 import { AnswerValueSingleDate } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleDate'
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement } from '../../../../../shared/utils/getElements'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import { getElement } from '@src/shared/utils/getElements'
 import { dateCompare } from '../utils/dateUtils'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'

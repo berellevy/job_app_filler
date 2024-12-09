@@ -1,18 +1,18 @@
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import {
   getElement,
   getElements,
   waitForElement,
-} from '../../../../../shared/utils/getElements'
-import { scrollBack } from '../../../../../shared/utils/scroll'
+} from '@src/shared/utils/getElements'
+import { scrollBack } from '@src/shared/utils/scroll'
 import { getReactProps } from '../utils'
 import { GreenhouseReactBaseInput } from './GreenhouseReactBaseInput'
 import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'
 import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
-import { createKeyboardEvent } from '../../../../../shared/utils/events'
-import { sleep } from '../../../../../shared/utils/async'
+import { createKeyboardEvent } from '@src/shared/utils/events'
+import { sleep } from '@src/shared/utils/async'
 
 export class DropdownSearchable extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.DROPDOWN_SEARCHABLE

@@ -1,5 +1,5 @@
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement } from '../../../../../shared/utils/getElements'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import { getElement } from '@src/shared/utils/getElements'
 import { fillReactTextInput, getReactProps } from '../utils'
 import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { xpaths } from './xpaths'

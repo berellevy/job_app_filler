@@ -8,13 +8,15 @@ import {
 } from '@mui/material'
 import React, { FC } from 'react'
 
-import { CloseIcon, EditIcon, InputIcon } from '../../../../../shared/utils/icons'
+import { CloseIcon, EditIcon, InputIcon } from '@src/shared/utils/icons'
 import { useAppContext } from '../../../AppContext'
 
 export const AnswerValueSingleString: FC<{ id: number }> = ({ id }) => {
-  const { editableAnswerState, backend } = useAppContext()
-  const { setEditable, setEditedValue, cancelEdit} = editableAnswerState
-  const { editedAnswer, editable } = editableAnswerState.answers.find((a) => a.id === id)
+  const {
+    editableAnswerState: { setEditable, setEditedValue, cancelEdit, answers },
+    backend,
+  } = useAppContext()
+  const { editedAnswer, editable } = answers.find((a) => a.id === id)
   return (
     <>
       <Divider sx={{ mb: 1 }} />

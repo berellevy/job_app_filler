@@ -1,10 +1,10 @@
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
-import { createKeyboardEvent } from '../../../../../shared/utils/events'
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
+import { createKeyboardEvent } from '@src/shared/utils/events'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import {
   getElement,
   getElements,
-} from '../../../../../shared/utils/getElements'
+} from '@src/shared/utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'

@@ -1,4 +1,4 @@
-import { getElement, getElements } from '../../../../../shared/utils/getElements'
+import { getElement, getElements } from '@src/shared/utils/getElements'
 
 const SECTION_XPATH = `.//div[@class = "education--form"]`
 

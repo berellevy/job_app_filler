@@ -1,4 +1,4 @@
-import { getElement, getElements } from '../../../../../shared/utils/getElements'
+import { getElement, getElements } from '@src/shared/utils/getElements'
 
 const SECTION_CLASSES = `[@class="education" or @class="employment"]`
 const SECTION_WRAPPER_IDS = `[@id="education_section" or @id="employment_section"]`

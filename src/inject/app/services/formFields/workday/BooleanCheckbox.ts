@@ -1,5 +1,5 @@
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement, waitForElement } from '../../../../../shared/utils/getElements'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import { getElement, waitForElement } from '@src/shared/utils/getElements'
 import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { xpaths } from './xpaths'
 import { AnswerValueSingleBool } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleBool'

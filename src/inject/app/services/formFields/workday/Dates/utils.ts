@@ -1,5 +1,5 @@
-import { sleep } from '../../../../../../shared/utils/async'
-import { createKeyboardEvent } from '../../../../../../shared/utils/events'
+import { sleep } from '@src/shared/utils/async'
+import { createKeyboardEvent } from '@src/shared/utils/events'
 import {
   AbsoluteDateValue,
   AnswerValueRelativeDate,

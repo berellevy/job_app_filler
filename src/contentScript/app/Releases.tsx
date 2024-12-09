@@ -1,6 +1,5 @@
-import { TypographyProps, Typography, Box, List, ListItem, ListItemText, ListItemIcon } from "@mui/material"
+import { TypographyProps, Typography, Box } from "@mui/material"
 import React, { FC } from "react"
-import { FiberManualRecordIcon } from "../../shared/utils/icons"
 
 const Bold = (props: TypographyProps) => {
   props = { 

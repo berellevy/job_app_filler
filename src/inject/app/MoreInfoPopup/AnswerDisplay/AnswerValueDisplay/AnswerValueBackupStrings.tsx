@@ -1,9 +1,7 @@
 import {
-  Collapse,
   Divider,
   Grid,
   IconButton,
-  InputAdornment,
   TextField,
   Tooltip,
   Typography,
@@ -18,7 +16,7 @@ import {
   InfoIcon,
   InputIcon,
   DeleteIcon,
-} from '../../../../../shared/utils/icons'
+} from '@src/shared/utils/icons'
 
 export const AnswerValueBackupStrings: FC<{ id: number }> = ({ id }) => {
   const { editableAnswerState, backend } = useAppContext()

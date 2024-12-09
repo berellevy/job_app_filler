@@ -1,7 +1,7 @@
 import { AnswerValueBackupStrings } from "../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings";
 
-import fieldFillerQueue from "../../../../../shared/utils/fieldFillerQueue";
-import { getElement, getElements } from "../../../../../shared/utils/getElements";
+import fieldFillerQueue from "@src/shared/utils/fieldFillerQueue";
+import { getElement, getElements } from "@src/shared/utils/getElements";
 
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { xpaths } from "./xpaths";

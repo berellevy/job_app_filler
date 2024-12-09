@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { Fade } from '@mui/material'
 import Badge, { BadgeProps } from '@mui/material/Badge'
 import React, { FC } from 'react'
-import { CheckCircleIcon } from '../../../shared/utils/icons'
+import { CheckCircleIcon } from '@src/shared/utils/icons'
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   '& .MuiBadge-badge': {

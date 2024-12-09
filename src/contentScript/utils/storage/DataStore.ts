@@ -1,6 +1,6 @@
 import elasticlunr from 'elasticlunr'
 import { NewAnswer, SavedAnswer } from './DataStoreTypes'
-import { Answer, FieldPath } from '../../../shared/utils/types'
+import { Answer, FieldPath } from '@src/shared/utils/types'
 
 export const convert106To1010 = (
   answer106: Answer

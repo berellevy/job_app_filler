@@ -1,16 +1,16 @@
-import { sleep } from '../../../../../shared/utils/async'
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
+import { sleep } from '@src/shared/utils/async'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import {
   getElement,
   getElements,
-} from '../../../../../shared/utils/getElements'
+} from '@src/shared/utils/getElements'
 import { AnswerValueMethods } from '../baseFormInput'
 import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { AnswerValueMultiFileUpload } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueMultiFileUpload'
 import {
   LocalStorageFile,
   localStorageToFile,
-} from '../../../../../shared/utils/file'
+} from '@src/shared/utils/file'
 import { isEqual } from 'lodash'
 import { getReactProps } from '../utils'
 import { xpaths } from './xpaths'

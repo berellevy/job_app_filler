@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { getElement } from '../../../../../shared/utils/getElements'
+import { getElement } from '@src/shared/utils/getElements'
 import { BaseFormInput } from '../baseFormInput'
 
 export abstract class WorkdayBaseInput<

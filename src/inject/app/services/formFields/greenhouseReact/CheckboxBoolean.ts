@@ -1,6 +1,6 @@
 import { AnswerValueSingleBool } from "../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleBool";
-import fieldFillerQueue from "../../../../../shared/utils/fieldFillerQueue";
-import { getElement } from "../../../../../shared/utils/getElements";
+import fieldFillerQueue from "@src/shared/utils/fieldFillerQueue";
+import { getElement } from "@src/shared/utils/getElements";
 import { AnswerValueMethods } from "../baseFormInput";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { xpaths } from "./xpaths";

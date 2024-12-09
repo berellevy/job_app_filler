@@ -1,4 +1,4 @@
-import { FieldPath } from "../../../shared/utils/types"
+import { FieldPath } from "@src/shared/utils/types"
 
 export const parseKey = (key: string): FieldPath => {
   // there can be colons in the fieldName.

@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Button, Tooltip } from '@mui/material'
-import { AutoFixHighIcon } from '../../../shared/utils/icons'
+import { AutoFixHighIcon } from '@src/shared/utils/icons'
 import { useAppContext } from '../AppContext'
 import { ButtonSuccessBadge } from '../components/ButtonSuccessBadge'
 

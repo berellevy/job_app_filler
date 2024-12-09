@@ -1,39 +1,30 @@
 import {
   Button,
-  Collapse,
   Divider,
   Grid,
   IconButton,
-  InputAdornment,
-  TextField,
   Tooltip,
   Typography,
 } from '@mui/material'
-import React, { FC, useEffect } from 'react'
+import React, { FC } from 'react'
 
 import { useAppContext } from '../../../AppContext'
 import {
-  EditIcon,
-  CloseIcon,
-  AddIcon,
-  InfoIcon,
-  InputIcon,
   DeleteIcon,
-  CloudUploadIcon,
   UploadFileIcon,
-} from '../../../../../shared/utils/icons'
+} from '@src/shared/utils/icons'
 import { VisuallyHiddenInput } from '../../../components/VisuallyHiddenInput'
 import {
   downloadFile,
   fileToLocalStorage,
   LocalStorageFile,
   localStorageToFile,
-} from '../../../../../shared/utils/file'
+} from '@src/shared/utils/file'
 import InsertDriveFile from '@mui/icons-material/InsertDriveFile'
 
 export const AnswerValueMultiFileUpload: FC<{ id: number }> = ({ id }) => {
   const { editableAnswerState, backend } = useAppContext()
-  const { setEditable, setEditedValue, cancelEdit } = editableAnswerState
+  const { setEditable, setEditedValue, } = editableAnswerState
   const { editedAnswer } = editableAnswerState.answers.find((a) => a.id === id)
   
   const deleteAnswerValue = (answerValueId) => {

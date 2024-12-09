@@ -1,6 +1,6 @@
 import { Button, ButtonTypeMap } from '@mui/material'
 import React, { FC } from 'react'
-import { OpenInNewIcon } from '../../../shared/utils/icons'
+import { OpenInNewIcon } from '@src/shared/utils/icons'
 import MuiMarkdown, { getOverrides, MuiMarkdownProps } from 'mui-markdown'
 
 const MarkdownLink: FC<{ children: string; href: string }> = ({

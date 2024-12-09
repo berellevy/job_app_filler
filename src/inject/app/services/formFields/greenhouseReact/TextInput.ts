@@ -1,8 +1,7 @@
-import fieldFillerQueue from "../../../../../shared/utils/fieldFillerQueue";
-import { getElement } from "../../../../../shared/utils/getElements";
-import { getReactProps } from "../utils";
+import { getElement } from "@src/shared/utils/getElements";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { xpaths } from "./xpaths";
+import { getReactProps } from "../utils";
 
 
 

@@ -1,4 +1,4 @@
-import { getElement } from "../../../../../../shared/utils/getElements"
+import { getElement } from "@src/shared/utils/getElements"
 
 
 export class CheckboxWrapperContainer {
