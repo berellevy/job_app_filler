@@ -1,7 +1,7 @@
 import { Box, Fade, Paper, Popper } from '@mui/material'
 import React, { FC } from 'react'
 import { useAppContext } from '../AppContext'
-import { MoreInfoCardContainer } from './MoreInfoCardContainer'
+import MoreInfoCardContainer from './MoreInfoCardContainer'
 
 export const MoreInfoPopper: FC = () => {
   const {
