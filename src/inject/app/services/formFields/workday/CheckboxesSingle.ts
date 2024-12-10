@@ -1,18 +1,17 @@
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement} from '../../../../../shared/utils/getElements'
-import { Answer } from '../../../../../shared/utils/types'
-import { WorkdayBaseInput } from './workdayBaseInput'
-import stringMatch from '../../../../../shared/utils/stringMatch'
-import { scrollBack } from '../../../../../shared/utils/scroll'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import { getElement} from '@src/shared/utils/getElements'
+import { Answer } from '@src/shared/utils/types'
+import { WorkdayBaseInput } from './WorkdayBaseInput'
+import stringMatch from '@src/shared/utils/stringMatch'
+import { scrollBack } from '@src/shared/utils/scroll'
 import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'
 import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
-export class MultiCheckbox extends WorkdayBaseInput<any> {
+export class CheckboxesSingle extends WorkdayBaseInput<any> {
   static XPATH: string = xpaths.MULTI_CHECKBOX
   fieldType: string = 'MultiCheckbox'
-  // public saveButtonClickHandler = saveButtonClickHandlers.backupAnswerList
   public get answerValue() {
     return {
       ...super.answerValue,

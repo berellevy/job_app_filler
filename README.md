@@ -1,4 +1,4 @@
-# Job App Filler 1.0.2
+# Job App Filler 2.1.2
 
 Job App Filler is a chrome extension that autofills fields properly
 on tedious job sites such as workday, icims, etc. 
@@ -60,6 +60,8 @@ The `FormField` class and a `React` app which are attached to each fillable inpu
 The `FormField` class contains all the logic to discover inputs on a page and fill them.
 This structure is ported from a python/selenium project [site_applier](https://github.com/berellevy/site_applier).
 This includes form field discovery, answer lookup, answer filling and saving current values as an answer.
+
+For a complete description of every field [see here](https://docs.google.com/spreadsheets/d/1DwpJbDmqmOngjBXQNKXoQaExnx4sHvrND0GoHctqoiQ/edit?usp=drive_link).
 
 #### Form Field Discovery
 

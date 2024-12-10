@@ -15,9 +15,9 @@ import DialogTitle from '@mui/material/DialogTitle'
 import React, { useState, useRef, useEffect, FC} from 'react'
 import { createRoot } from 'react-dom/client'
 import { v4 as uuid4 } from 'uuid'
-import { joinComponents, theme } from '../../shared/utils/react'
 import { releases, ReleaseComponent } from './Releases'
-import { LogoTitleBar } from '../../shared/components/LogoTitleBar'
+import { LogoTitleBar } from '@src/shared/components/LogoTitleBar'
+import { theme, joinComponents } from '@src/shared/utils/react'
 
 
 

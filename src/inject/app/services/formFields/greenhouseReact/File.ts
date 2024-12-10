@@ -1,8 +1,8 @@
 import { AnswerValueSingleFileUpload } from "../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleFileUpload";
-import { sleep } from "../../../../../shared/utils/async";
-import fieldFillerQueue from "../../../../../shared/utils/fieldFillerQueue";
-import { localStorageToFile } from "../../../../../shared/utils/file";
-import { getElement } from "../../../../../shared/utils/getElements";
+import { sleep } from "@src/shared/utils/async";
+import fieldFillerQueue from "@src/shared/utils/fieldFillerQueue";
+import { localStorageToFile } from "@src/shared/utils/file";
+import { getElement } from "@src/shared/utils/getElements";
 import { AnswerValueMethods, } from "../baseFormInput";
 import { getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";

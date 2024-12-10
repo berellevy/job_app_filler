@@ -2,10 +2,10 @@
   "manifest_version": 3,
   "name": "Autofill Job Applications - JobAppFiller",
   "description": "The Best Autofill Since Sliced Bread.",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "action": {
     "default_icon": "logo.png",
-    "default_title": "Job App Filler",
+    "default_title": "Autofill Job Applications - JobAppFiller",
     "default_popup": "popup.html"
   },
 

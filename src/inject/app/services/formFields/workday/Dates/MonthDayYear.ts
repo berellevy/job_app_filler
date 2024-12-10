@@ -1,8 +1,8 @@
-import fieldFillerQueue from '../../../../../../shared/utils/fieldFillerQueue'
-import { getElement } from '../../../../../../shared/utils/getElements'
-import { Answer } from '../../../../../../shared/utils/types'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import { getElement } from '@src/shared/utils/getElements'
+import { Answer } from '@src/shared/utils/types'
 import { AnswerValueMethods } from '../../baseFormInput'
-import { WorkdayBaseInput } from '../workdayBaseInput'
+import { WorkdayBaseInput } from '../WorkdayBaseInput'
 import { AnswerValueSingleRelativeDate } from '../../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleRelativeDate'
 
 import { setupChangeListener, fillDatePart, convertRelativeDate } from './utils'
@@ -100,14 +100,14 @@ export class MonthDayYear extends WorkdayBaseInput<[string, string]> {
   }
 
   async fill(answers?: any): Promise<void> {
-    answers = answers || (await this.answer())
-    if (answers.length > 0) {
-      await fieldFillerQueue.enqueue(async () => {
+    await fieldFillerQueue.enqueue(async () => {
+      answers = answers || (await this.answer())
+      if (answers.length > 0) {
         const [month, day, year] = convertRelativeDate(answers[0].answer)
         await fillDatePart(this.monthInputElement, month)
         await fillDatePart(this.dayInputElement, day)
         await fillDatePart(this.yearInputElement, year)
-      })
-    }
+      }
+    })
   }
 }

@@ -1,4 +1,4 @@
-import { getElement } from '../../../../../shared/utils/getElements'
+import { getElement } from '@src/shared/utils/getElements'
 import { AddressSearchable } from './AddressSearchable'
 import { CheckboxBoolean } from './CheckboxBoolean'
 import { CheckboxMulti } from './CheckboxMulti'

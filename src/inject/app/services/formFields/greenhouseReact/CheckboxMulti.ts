@@ -1,13 +1,13 @@
 import { AnswerValueBackupStrings } from "../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings";
 
-import fieldFillerQueue from "../../../../../shared/utils/fieldFillerQueue";
-import { getElement, getElements } from "../../../../../shared/utils/getElements";
+import fieldFillerQueue from "@src/shared/utils/fieldFillerQueue";
+import { getElement, getElements } from "@src/shared/utils/getElements";
 
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
-import { ChoiceInputWrapperElement } from "./utils";
 import { xpaths } from "./xpaths";
 import { answerValueInitList } from "../../../hooks/answerValueInit";
 import { EditableAnswer } from "../../../hooks/useEditableAnswerState";
+import { CheckboxWrapperContainer } from "./ElementWrappers/CheckboxWrapperContainer";
 
 export class CheckboxMulti extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.CHECKBOX_MULTI
@@ -56,11 +56,11 @@ export class CheckboxMulti extends GreenhouseReactBaseInput<any> {
     return firstSelectedElement?.value || ""
   }
 
-  get choiceElements(): ChoiceInputWrapperElement[] {
+  get choiceElements(): CheckboxWrapperContainer[] {
     return getElements(
       this.element,
       `.//div[@class="checkbox__wrapper"]`
-    ).map((el) => new ChoiceInputWrapperElement(el))
+    ).map((el) => new CheckboxWrapperContainer(el))
   }
 
   public isFilled(current: any, stored: any[]): boolean {

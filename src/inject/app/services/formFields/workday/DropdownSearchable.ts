@@ -1,18 +1,18 @@
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
 
-import { sleep } from '../../../../../shared/utils/async'
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement, waitForElement } from '../../../../../shared/utils/getElements'
-import { scrollBack } from '../../../../../shared/utils/scroll'
-import { Answer } from '../../../../../shared/utils/types'
+import { sleep } from '@src/shared/utils/async'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import { getElement, waitForElement } from '@src/shared/utils/getElements'
+import { scrollBack } from '@src/shared/utils/scroll'
+import { Answer } from '@src/shared/utils/types'
 import { AnswerValueMethods } from '../baseFormInput'
-import { WorkdayBaseInput } from './workdayBaseInput'
+import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { getReactProps } from '../utils'
 import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'
 import { useEditableAnswerState, EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
-export class SearchableSingleDropdown extends WorkdayBaseInput<
+export class DropdownSearchable extends WorkdayBaseInput<
   string[] | null
 > {
   editableAnswerHook = useEditableAnswerState
@@ -175,11 +175,18 @@ export class SearchableSingleDropdown extends WorkdayBaseInput<
             }
             // if there are multiple matches, click the first one.
             const dropdownElement = await this.dropdownElement()
-            dropdownElement &&
+            const firstChoice =
+              dropdownElement &&
               getElement(
                 dropdownElement,
                 ".//div[@data-automation-id='promptOption']"
-              )?.click()
+              )
+            if (firstChoice) {
+              console.log('firstChoice');
+              
+              firstChoice.click()
+              break
+            }
           }
           this.closeDropdown() // asynchronously
         }

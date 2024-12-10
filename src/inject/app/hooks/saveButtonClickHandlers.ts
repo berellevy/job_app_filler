@@ -1,4 +1,4 @@
-import { Answer } from '../../../shared/utils/types'
+import { Answer } from '@src/shared/utils/types'
 import { AppContextType } from '../AppContext'
 import { contentScriptAPI } from '../services/contentScriptApi'
 

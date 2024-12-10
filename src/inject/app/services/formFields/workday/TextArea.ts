@@ -1,7 +1,7 @@
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement } from '../../../../../shared/utils/getElements'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import { getElement } from '@src/shared/utils/getElements'
 import { fillReactTextInput } from '../utils'
-import { WorkdayBaseInput } from './workdayBaseInput'
+import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { xpaths } from './xpaths'
 
 export class TextArea extends WorkdayBaseInput<string | null> {
@@ -27,13 +27,13 @@ export class TextArea extends WorkdayBaseInput<string | null> {
   }
 
   async fill(): Promise<void> {
-    const answer = await this.answer()
-    if (answer.length > 0) {
-      await fieldFillerQueue.enqueue(async () => {
+    await fieldFillerQueue.enqueue(async () => {
+      const answer = await this.answer()
+      if (answer.length > 0) {
         fillReactTextInput(this.inputElement, answer[0].answer, {
           eventName: 'onBlur',
         })
-      })
-    }
+      }
+    })
   }
 }

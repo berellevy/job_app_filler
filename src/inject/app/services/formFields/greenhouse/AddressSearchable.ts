@@ -1,14 +1,14 @@
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
-import { sleep } from '../../../../../shared/utils/async'
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement, waitForElement } from '../../../../../shared/utils/getElements'
+import { sleep } from '@src/shared/utils/async'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import { getElement, waitForElement } from '@src/shared/utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'
 import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 
-export class AddressSearchField extends GreenhouseBaseInput<any> {
+export class AddressSearchable extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.ADDRESS_SEARCH_FIELD
   fieldType = 'SimpleDropdown'
   public get answerValue() {

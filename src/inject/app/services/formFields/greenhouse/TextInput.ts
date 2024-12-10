@@ -1,9 +1,9 @@
-import fieldFillerQueue from "../../../../../shared/utils/fieldFillerQueue";
-import { getElement } from "../../../../../shared/utils/getElements";
+import fieldFillerQueue from "@src/shared/utils/fieldFillerQueue";
+import { getElement } from "@src/shared/utils/getElements";
 import { GreenhouseBaseInput } from "./GreenhouseBaseInput";
 import { xpaths } from './xpaths'
 
-export class TextField extends GreenhouseBaseInput<any> {
+export class TextInput extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.TEXT_FIELD
   fieldType = 'TextInput'
 

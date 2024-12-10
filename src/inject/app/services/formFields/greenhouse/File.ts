@@ -1,15 +1,15 @@
 import { AnswerValueSingleFileUpload } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleFileUpload'
-import { getElement } from '../../../../../shared/utils/getElements'
+import { getElement } from '@src/shared/utils/getElements'
 import { AnswerValueMethods } from '../baseFormInput'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
-import { LocalStorageFile, localStorageToFile } from '../../../../../shared/utils/file'
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { dispatchFileDragEvent } from '../../../../../shared/utils/fileUploadHelpers'
+import { LocalStorageFile, localStorageToFile } from '@src/shared/utils/file'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import { dispatchFileDragEvent } from '@src/shared/utils/fileUploadHelpers'
 import { saveButtonClickHandlers } from '../../../hooks/saveButtonClickHandlers'
 
 
-export class SingleFileUpload extends GreenhouseBaseInput<any> {
+export class File extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.SINGLE_FILE_UPLOAD
   fieldType = 'SingleFileUpload'
   public saveButtonClickHandler = saveButtonClickHandlers.withNotice

@@ -6,11 +6,10 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import React, { FC} from 'react'
+import React, { FC } from 'react'
 
-
-import { joinComponents } from '../../../../../shared/utils/react'
-import { CloseIcon, EditIcon, InputIcon } from '../../../../../shared/utils/icons'
+import { joinComponents } from '@src/shared/utils/react'
+import { CloseIcon, EditIcon, InputIcon } from '@src/shared/utils/icons'
 import { AbsoluteRelativeSwitch } from '../../../components/AbsoluteRelativeSwitch'
 import { useAppContext } from '../../../AppContext'
 
@@ -18,10 +17,14 @@ import { useAppContext } from '../../../AppContext'
  * The Value is stored as an array of strings.
  */
 export const AnswerValueSingleRelativeDate: FC<{ id: number }> = ({ id }) => {
-  const { editableAnswerState, backend } = useAppContext()
-  const { setEditable, setEditedValue, cancelEdit } = editableAnswerState
-  const { editedAnswer, editable } = editableAnswerState.answers.find((a) => a.id === id)
-  const { value } = editedAnswer
+  const {
+    editableAnswerState: { setEditable, setEditedValue, cancelEdit, answers },
+    backend,
+  } = useAppContext()
+  const {
+    editedAnswer: { value },
+    editable,
+  } = answers.find((a) => a.id === id)
 
   const toggleRelative = ({ target }) => {
     value.relative = target.checked
@@ -81,9 +84,10 @@ export const AnswerValueSingleRelativeDate: FC<{ id: number }> = ({ id }) => {
           ) : (
             <Typography display={'inline'}>Current Date</Typography>
           )}
-
-          <AbsoluteRelativeSwitch checked={value.relative} onChange={toggleRelative} />
-
+          <AbsoluteRelativeSwitch
+            checked={value.relative}
+            onChange={toggleRelative}
+          />
           <IconButton onClick={() => cancelEdit(id)}>
             <CloseIcon />
           </IconButton>
@@ -93,7 +97,7 @@ export const AnswerValueSingleRelativeDate: FC<{ id: number }> = ({ id }) => {
           <Typography component="span">
             {value.relative
               ? value.relativeValue
-              : editedAnswer.value.absoluteValue.join('/')}
+              : value.absoluteValue.join('/')}
           </Typography>
           <IconButton onClick={() => setEditable(id, true)}>
             <EditIcon />

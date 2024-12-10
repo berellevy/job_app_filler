@@ -1,4 +1,4 @@
-import { getElement } from "../../../../../shared/utils/getElements";
+import { getElement } from "@src/shared/utils/getElements";
 import { getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { xpaths } from "./xpaths";

@@ -14,9 +14,9 @@ import {
 } from '@mui/material'
 
 import { ThemeProvider } from '@emotion/react'
-import { theme } from '../../shared/utils/react'
-import { ContentCopyIcon, GitHubIcon, OpenInNewIcon } from '../../shared/utils/icons'
-import { LogoTitleBar } from '../../shared/components/LogoTitleBar'
+import { theme } from '@src/shared/utils/react'
+import { ContentCopyIcon, GitHubIcon, OpenInNewIcon } from '@src/shared/utils/icons'
+import { LogoTitleBar } from '@src/shared/components/LogoTitleBar'
 
 const EMAIL_ADDRESS = 'berellevy+chromeextensions@gmail.com'
 

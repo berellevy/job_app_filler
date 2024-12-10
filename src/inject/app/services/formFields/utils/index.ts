@@ -29,6 +29,7 @@ export const fillReactTextInput = (
   reactProps?.[config.eventName](eventData)
 }
 
+
 /**
  * EventListener-like interface for characterData mutations.
  */

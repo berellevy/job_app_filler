@@ -1,6 +1,7 @@
-import { getElement } from "../../../../../shared/utils/getElements"
+import { getElement } from "@src/shared/utils/getElements"
 
-export class ChoiceInputWrapperElement {
+
+export class CheckboxWrapperContainer {
   element: HTMLElement
   constructor(element: HTMLElement) {
     this.element = element

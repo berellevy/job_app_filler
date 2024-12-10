@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Button, Tooltip } from '@mui/material'
-import { SaveIcon } from '../../../shared/utils/icons'
+import { SaveIcon } from '@src/shared/utils/icons'
 import { useAppContext } from '../AppContext'
 import { ButtonSuccessBadge } from '../components/ButtonSuccessBadge'
 

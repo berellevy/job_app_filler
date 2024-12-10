@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import { BaseFormInput } from '../baseFormInput'
-import { getElement } from '../../../../../shared/utils/getElements'
+import { getElement } from '@src/shared/utils/getElements'
 
 export abstract class GreenhouseReactBaseInput<
   AnswerType

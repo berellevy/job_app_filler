@@ -1,9 +1,9 @@
-import { getElement } from "../../../../../shared/utils/getElements"
+import { getElement } from "@src/shared/utils/getElements"
 import { fillReactTextInput } from "../utils"
-import { WorkdayBaseInput } from "./workdayBaseInput"
+import { WorkdayBaseInput } from "./WorkdayBaseInput"
 import { xpaths } from "./xpaths"
 
-export class PasswordInput extends WorkdayBaseInput<string | null> {
+export class Password extends WorkdayBaseInput<string | null> {
   static XPATH = xpaths.PASSWORD_INPUT
   fieldType = 'PasswordInput'
 

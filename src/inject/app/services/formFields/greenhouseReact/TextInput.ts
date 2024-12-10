@@ -1,7 +1,7 @@
-import { getElement } from "../../../../../shared/utils/getElements";
-import { getReactProps } from "../utils";
+import { getElement } from "@src/shared/utils/getElements";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { xpaths } from "./xpaths";
+import { getReactProps } from "../utils";
 
 
 
@@ -27,13 +27,12 @@ export class TextInput extends GreenhouseReactBaseInput<any> {
     return this.inputElement.value
   }
   async fill(): Promise<void> {
-    const answers = await this.answer()
-    if (answers.length > 0) {
-      const firstAnswer = answers[0]
-      this.inputElement.value = firstAnswer.answer
-      const reactProps = getReactProps(this.inputElement)
-      reactProps?.onChange({currentTarget: this.inputElement})
-    }
-
+      const answers = await this.answer()
+      if (answers.length > 0) {
+        const firstAnswer = answers[0]
+        this.inputElement.value = firstAnswer.answer
+        const reactProps = getReactProps(this.inputElement)
+        reactProps?.onChange({currentTarget: this.inputElement})
+      }
   }
 }

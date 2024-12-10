@@ -1,7 +1,7 @@
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement } from '../../../../../shared/utils/getElements'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import { getElement } from '@src/shared/utils/getElements'
 import { fillReactTextInput, getReactProps } from '../utils'
-import { WorkdayBaseInput } from './workdayBaseInput'
+import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { xpaths } from './xpaths'
 
 export class TextInput extends WorkdayBaseInput<string | null> {
@@ -37,16 +37,16 @@ export class TextInput extends WorkdayBaseInput<string | null> {
    * and goes ahead calls onBlur again (i think) which sets react state to be a blank string.
    */
   async fill() {
-    const answers = await this.answer()
-    if (
-      answers.length > 0 &&
-      !this.isFilled(
-        this.currentValue(),
-        answers.map((a) => a.answer)
-      )
-    ) {
-      const firstAnswer = answers[0]
-      await fieldFillerQueue.enqueue(async () => {
+    await fieldFillerQueue.enqueue(async () => {
+      const answers = await this.answer()
+      if (
+        answers.length > 0 &&
+        !this.isFilled(
+          this.currentValue(),
+          answers.map((a) => a.answer)
+        )
+      ) {
+        const firstAnswer = answers[0]
         const reactProps = getReactProps(this.inputElement)
         this.inputElement.value = firstAnswer.answer
         if (reactProps.onChange) {
@@ -55,9 +55,7 @@ export class TextInput extends WorkdayBaseInput<string | null> {
         if (reactProps.onBlur) {
           reactProps.onBlur({ target: this.inputElement })
         }
-      })
-    }
+      }
+    })
   }
 }
-
-

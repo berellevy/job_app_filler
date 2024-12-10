@@ -1,6 +1,6 @@
-import fieldFillerQueue from '../../../../../../shared/utils/fieldFillerQueue'
-import { getElement } from '../../../../../../shared/utils/getElements'
-import { WorkdayBaseInput } from '../workdayBaseInput'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import { getElement } from '@src/shared/utils/getElements'
+import { WorkdayBaseInput } from '../WorkdayBaseInput'
 import { xpaths } from '../xpaths'
 import { AnswerValueSingleDate } from '../../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleDate'
 import { setupChangeListener, fillDatePart } from './utils'
@@ -55,13 +55,13 @@ export class MonthYear extends WorkdayBaseInput<[string, string]> {
   }
 
   async fill(answers?: any): Promise<void> {
-    answers = answers || (await this.answer())
-    if (answers.length > 0) {
-      await fieldFillerQueue.enqueue(async () => {
+    await fieldFillerQueue.enqueue(async () => {
+      answers = answers || (await this.answer())
+      if (answers.length > 0) {
         const [month, year] = answers[0].answer
         await fillDatePart(this.monthInputElement, month)
         await fillDatePart(this.yearInputElement, year)
-      })
-    }
+      }
+    })
   }
 }

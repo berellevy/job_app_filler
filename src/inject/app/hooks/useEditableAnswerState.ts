@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { sleep } from '../../../shared/utils/async'
-import { Answer, FieldPath } from '../../../shared/utils/types'
+import { sleep } from '@src/shared/utils/async'
+import { Answer, FieldPath } from '@src/shared/utils/types'
 import { BaseFormInput } from '../services/formFields/baseFormInput'
 import { contentScriptAPI } from '../services/contentScriptApi'
 

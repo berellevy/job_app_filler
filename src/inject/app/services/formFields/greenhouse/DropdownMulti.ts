@@ -1,10 +1,10 @@
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
-import { keydownEnter, keydownEscape } from '../../../../../shared/utils/events'
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
+import { createKeyboardEvent } from '@src/shared/utils/events'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import {
   getElement,
   getElements,
-} from '../../../../../shared/utils/getElements'
+} from '@src/shared/utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'
@@ -39,7 +39,7 @@ export class DropdownMulti extends GreenhouseBaseInput<any> {
   }
 
   listenForChanges(): void {
-    // the only thing that get added or removed is answer elements. no need to filter.
+    // the only answer elements are added or removed. no need to filter.
     const observer = new MutationObserver((mutations: MutationRecord[]) => {
       this.triggerReactUpdate()
     })
@@ -69,9 +69,7 @@ export class DropdownMulti extends GreenhouseBaseInput<any> {
         dropdown.open()
         for (const answer of answers) {
           const answerValue = answer.answer[0]
-          
-          dropdown.selectExact(answerValue)
-          if (this.currentValue() === answerValue) {
+          if (dropdown.selectAnswer(answerValue)) {
             break
           }
         }
@@ -135,6 +133,11 @@ class DropdownContainer {
     getElement(el, './a')?.click()
   }
 
+  get dropdown(): HTMLElement {
+    const XPATH = [`./div`, `[@id="select2-drop"]`].join('')
+    return getElement(document.body, XPATH)
+  }
+
   get isOpen(): boolean {
     return this.elements.select2Container.classList.contains(
       'select2-dropdown-open'
@@ -142,42 +145,55 @@ class DropdownContainer {
   }
 
   close() {
-    this.elements.searchInput.dispatchEvent(keydownEscape())
+    this.elements.searchInput.dispatchEvent(
+      createKeyboardEvent('keydown', 'Escape')
+    )
   }
 
   open() {
     !this.isOpen && this.elements.searchInput.click()
   }
 
-  /**
-   * searches `value` and hits enter.
-   */
-  selectInexact(value: string) {
-    if (!this.isOpen) {
-      return
-    }
-    this.elements.searchInput.value = value
-    this.elements.searchInput.dispatchEvent(new InputEvent('input'))
-    this.elements.searchInput.dispatchEvent(keydownEnter())
+  get choices(): HTMLElement[] {
+    return getElements(this.dropdown, `.//li`)
+  }
+
+  hasChoice(value: string): HTMLElement {
+    return this.choices.find((el) => el.innerText === value)
+  }
+
+  highlightedChoice(): HTMLElement {
+    const XPATH = `./ul/li[contains(@class,"select2-highlighted")]`
+    return getElement(this.dropdown, XPATH)
+  }
+
+  keydownEnter(): void {
+    this.elements.searchInput.dispatchEvent(
+      createKeyboardEvent('keydown', 'Enter')
+    )
+  }
+
+  keydownArrowDown(): void {
+    this.elements.searchInput.dispatchEvent(
+      createKeyboardEvent('keydown', 'ArrowDown')
+    )
   }
 
   /**
-   * search a value, select result and delete if it doesn't match exactly.
+   * uses the keyboard to navigate through the list of options by dispatching 
+   * keydown events on the search input.
    */
-  selectExact(value: string) {
-    const observer = new MutationObserver((mutations: MutationRecord[]) => {
-      const selectedElement = mutations[0].addedNodes[0] as HTMLElement
-      const match = selectedElement?.innerText === value
-      if (!match) {
-        this.deleteSelectedItem(selectedElement)
+  selectAnswer(value: string): boolean {
+    if (!this.hasChoice(value)) {
+      return false
+    }
+    for (let i=0; i<this.choices.length; i++) {
+      if (this.highlightedChoice()?.innerText === value) {
+        this.keydownEnter()
+        return true 
       }
-      observer.disconnect()
-    })
-    observer.observe(this.elements.choiceList, {
-      childList: true,
-      subtree: true,
-    })
-
-    this.selectInexact(value)
+      this.keydownArrowDown()
+    }
+    return false
   }
 }

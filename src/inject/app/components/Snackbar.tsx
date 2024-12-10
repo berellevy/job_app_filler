@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
-import { CloseIcon } from '../../../shared/utils/icons';
+import { CloseIcon } from '@src/shared/utils/icons';
 
 export default function SimpleSnackbar() {
   const [open, setOpen] = React.useState(false);

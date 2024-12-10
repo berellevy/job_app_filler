@@ -1,8 +1,8 @@
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement } from '../../../../../shared/utils/getElements'
-import { WorkdayBaseInput } from './workdayBaseInput'
-import stringMatch from '../../../../../shared/utils/stringMatch'
-import { lowerText } from '../../../../../shared/utils/xpath'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import { getElement } from '@src/shared/utils/getElements'
+import { WorkdayBaseInput } from './WorkdayBaseInput'
+import stringMatch from '@src/shared/utils/stringMatch'
+import { lowerText } from '@src/shared/utils/xpath'
 import { xpaths } from './xpaths'
 
 export class BooleanRadio extends WorkdayBaseInput<string> {
@@ -55,9 +55,9 @@ export class BooleanRadio extends WorkdayBaseInput<string> {
   }
 
   async fill(): Promise<void> {
-    const answer = await this.answer()
-    if (answer.length > 0) {
-      await fieldFillerQueue.enqueue(async () => {
+    await fieldFillerQueue.enqueue(async () => {
+      const answer = await this.answer()
+      if (answer.length > 0) {
         const XPATH = [
           '//div',
           `[label[${lowerText()}='${answer[0].answer.toLowerCase()}']]`,
@@ -65,8 +65,8 @@ export class BooleanRadio extends WorkdayBaseInput<string> {
         ].join('')
         const checkElement = getElement(this.element, XPATH)
         checkElement?.click()
-      })
-    }
+      }
+    })
   }
   
 }

@@ -1,20 +1,22 @@
-import { sleep } from '../../../../../shared/utils/async'
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement, waitForElement } from '../../../../../shared/utils/getElements'
-import { scrollBack } from '../../../../../shared/utils/scroll'
-import { Answer } from '../../../../../shared/utils/types'
+import { sleep } from '@src/shared/utils/async'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import {
+  getElement,
+  waitForElement,
+} from '@src/shared/utils/getElements'
+import { scrollBack } from '@src/shared/utils/scroll'
+import { Answer } from '@src/shared/utils/types'
 import { addCharacterMutationObserver, getReactProps } from '../utils'
-import { WorkdayBaseInput } from './workdayBaseInput'
+import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
 
-
-import stringMatch from '../../../../../shared/utils/stringMatch'
-import { lowerText } from '../../../../../shared/utils/xpath'
+import stringMatch from '@src/shared/utils/stringMatch'
+import { lowerText } from '@src/shared/utils/xpath'
 import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'
 import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
-export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
+export class Dropdown extends WorkdayBaseInput<string[] | null> {
   static XPATH: string = xpaths.SIMPLE_DROPDOWN
   fieldType: string = 'SimpleDropdown'
   public get answerValue() {
@@ -111,8 +113,8 @@ export class SimpleDropdown extends WorkdayBaseInput<string[] | null> {
    *
    */
   async fill(): Promise<void> {
-    const answers = await this.answer()
     await fieldFillerQueue.enqueue(async () => {
+      const answers = await this.answer()
       await scrollBack(async () => {
         for (const answer of answers) {
           const answerList = answer.answer

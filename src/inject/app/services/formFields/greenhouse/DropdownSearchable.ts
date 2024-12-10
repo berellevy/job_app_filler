@@ -1,6 +1,6 @@
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
-import fieldFillerQueue from '../../../../../shared/utils/fieldFillerQueue'
-import { getElement, getElements, waitForElement } from '../../../../../shared/utils/getElements'
+import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
+import { getElement, getElements, waitForElement } from '@src/shared/utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'
@@ -41,6 +41,7 @@ export class DropdownSearchable extends GreenhouseBaseInput<any> {
       ".//div[contains(@class, 'select2-container')]"
     )
   }
+  
   get select2ContainerAElement(): HTMLElement {
     return getElement(this.select2ContainerElement, './/a')
   }
@@ -85,6 +86,7 @@ export class DropdownSearchable extends GreenhouseBaseInput<any> {
   inputDisplayElement(): HTMLElement {
     return this.select2ContainerElement
   }
+  
   listenForChanges(): void {
     const observer = new MutationObserver((mutationsList) => {
       this.triggerReactUpdate()
@@ -95,9 +97,11 @@ export class DropdownSearchable extends GreenhouseBaseInput<any> {
       subtree: true,
     })
   }
+  
   currentValue() {
     return this.select2ContainerAElement?.innerText
   }
+
   async fill(): Promise<void> {
     const answers = await this.answer()
     await fieldFillerQueue.enqueue(async () => {
@@ -163,7 +167,7 @@ class DropdownElement {
     return listElements.find((el) => el.innerText === value)
   }
   /**
-   * returns `true` if the correct answer is found/selected
+   * returns `true` if the correct answer is found and selected
    */
   async selectCorrectAnswer(answerValue: string): Promise<boolean> {
     const correctAnswerElement = await this.search(answerValue)

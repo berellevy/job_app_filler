@@ -9,7 +9,7 @@ import {
 import React, { FC } from 'react'
 
 import { useAppContext } from '../AppContext'
-import { AddIcon, InfoIcon } from '../../../shared/utils/icons'
+import { AddIcon, InfoIcon } from '@src/shared/utils/icons'
 import { AnswerDisplayComponent } from './AnswerDisplay/AnswerDisplayComponent'
 import { Item } from './components'
 import { EditableAnswer } from '../hooks/useEditableAnswerState'
