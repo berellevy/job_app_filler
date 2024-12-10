@@ -17,7 +17,7 @@ import { FieldNotice, Item } from './components'
 import { AnswersSection } from './AnswerSection'
 import { FieldInfo } from './FieldInfo'
 
-export const MoreInfoCardContainer: FC = () => {
+const MoreInfoCardContainer: FC = () => {
   const { currentValue, fieldNotice } = useAppContext()
 
   return (
@@ -55,3 +55,5 @@ export const MoreInfoCardContainer: FC = () => {
     </Card>
   )
 }
+
+export default MoreInfoCardContainer
