@@ -193,6 +193,7 @@ export class DataStore {
   }
 
   search({ fieldName, section, fieldType }: FieldPath): SavedAnswer[] {
+    const limit = 10
     // get matches
     const exactMatches = this.exactSearch(fieldName)
     const tsMatches = this.tsSearch(fieldName)
@@ -204,6 +205,6 @@ export class DataStore {
     const filteredResults = results.filter((answer: SavedAnswer) => {
       return answer.fieldType === fieldType && answer.section === section
     })
-    return filteredResults
+    return filteredResults.slice(0, limit)
   }
 }
