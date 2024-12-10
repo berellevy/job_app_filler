@@ -1,6 +1,17 @@
 # Change Log
 All significant changes to this project will be documented in this file.
 
+## [2.1.2] - 2024-12-10
+
+### Added
+### Changed
+- only load 10 answers per question.
+- large code reorg.
+### Fixed
+
+### Bugs
+
+
 ## [2.1.1] - 2024-12-03
 
 ### Added
