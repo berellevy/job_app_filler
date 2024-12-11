@@ -47,9 +47,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 })
 
 const run = async () => {
-  await migrateEducation()
-  await migrate1010()
   await answers1010.load()
+  await migrate1010()
+  await migrateEducation()
   injectScript('inject.js')
   loadApp()
 }
