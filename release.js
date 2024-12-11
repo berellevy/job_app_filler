@@ -12,6 +12,8 @@
  * - zips dist folder into releases folder with versioned name.
  */
 const mnfst = require('./src/static/manifest.json')
+const path = require("path")
+const os = require("os")
 const fs = require('fs')
 const {confirm} = require("@inquirer/prompts")
 const { setTimeout } = require('timers/promises')
@@ -66,11 +68,25 @@ const execAsync = (command) => {
   })
 }
 
+const getZipCommand = (newReleasePath) => {
+  const platform = os.platform()
+
+  const zipCommands = {
+    win32: `powershell Compress-Archive -Path dist -DestinationPath ${newReleasePath}`,
+    darwin: `zip -r ${newReleasePath} dist -x '*/.DS_Store'`,
+  }
+  const zipCommand = zipCommands[platform]
+  if (!zipCommand) {
+    throw new Error(`please add a zip command for ${platform} os.`)
+  }
+  return zipCommand
+}
+
 
 // MAIN
 ;(async () => {
-  const newReleasePath = `releases/${snakeCase(mnfst.name)}-${mnfst.version}.zip`
-
+  const newReleasePath = path.join("releases", `${snakeCase(mnfst.name)}-${mnfst.version}.zip`)
+  
   // prevent accidental release file overwrite
   await handleNameConflict(newReleasePath)
 
@@ -86,7 +102,7 @@ const execAsync = (command) => {
 
   // zip release bundle
   console.log('\nzipping release bundle\n')
-  await execAsync(`zip -r ${newReleasePath} dist -x '*/.DS_Store'`)
+  await execAsync(getZipCommand(newReleasePath))
   console.log(`Complete. New release available at ${newReleasePath}`);
 
 })().then(() => {
