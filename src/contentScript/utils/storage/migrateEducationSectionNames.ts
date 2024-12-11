@@ -20,6 +20,9 @@ async function markMigrationAsCompleted() {
 async function runMigration() {
   console.log("migrating education")
   const {answers1010} = await chrome.storage.local.get("answers1010")
+  if (!answers1010) {
+    return
+  }
 
   for (const item of answers1010.store) {
     if (item[1].section.length === 1) {
