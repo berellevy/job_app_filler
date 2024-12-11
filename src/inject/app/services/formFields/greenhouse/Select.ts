@@ -8,27 +8,28 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class Select extends GreenhouseBaseInput<any> {
   static XPATH: string = xpaths.BASIC_SELECT
-  fieldType = 'SimpleDropdown'
-  public get answerValue() {
-    return {
-      ...super.answerValue,
-      displayComponent: AnswerValueBackupStrings,
-      init: answerValueInitList,
-      prepForSave: (values: [string, boolean][]) => {
-        return values.map(([value, editable]) => value)
-      },
-      prepForFill: (answers: EditableAnswer[]): string[] => {
-        return super.answerValue.prepForFill(answers).flat()
-      },
-    }
-  }
+  // fieldType = 'SimpleDropdown'
+  fieldType = 'TextInput'
+  // public get answerValue() {
+  //   return {
+  //     ...super.answerValue,
+  //     displayComponent: AnswerValueBackupStrings,
+  //     init: answerValueInitList,
+  //     prepForSave: (values: [string, boolean][]) => {
+  //       return values.map(([value, editable]) => value)
+  //     },
+  //     prepForFill: (answers: EditableAnswer[]): string[] => {
+  //       return super.answerValue.prepForFill(answers).flat()
+  //     },
+  //   }
+  // }
 
-  public get fieldSnapshot() {
-    return {
-      path: this.path,
-      answer: [this.currentValue()],
-    }
-  }
+  // public get fieldSnapshot() {
+  //   return {
+  //     path: this.path,
+  //     answer: [this.currentValue()],
+  //   }
+  // }
 
 
   get selectElement(): HTMLSelectElement {
@@ -50,8 +51,8 @@ export class Select extends GreenhouseBaseInput<any> {
     return this.selectElement.selectedOptions[0]?.innerText || ''
   }
   async fill(): Promise<void> {
-    const answers = await this.answer()
     await fieldFillerQueue.enqueue(async () => {
+      const answers = await this.answer()
       for (const answer of answers) {
         const correctAnswerElement = getElement(
           this.selectElement,

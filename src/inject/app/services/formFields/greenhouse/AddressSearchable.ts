@@ -10,27 +10,28 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class AddressSearchable extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.ADDRESS_SEARCH_FIELD
-  fieldType = 'SimpleDropdown'
+  // fieldType = 'SimpleDropdown'
+fieldType = 'TextInput'
   public get answerValue() {
     return {
       ...super.answerValue,
-      displayComponent: AnswerValueBackupStrings,
-      init: answerValueInitList,
-      prepForSave: (values: [string, boolean][]) => {
-        return values.map(([value, editable]) => value)
-      },
-      prepForFill: (answers: EditableAnswer[]): string[] => {
-        return super.answerValue.prepForFill(answers).flat()
-      },
+      // displayComponent: AnswerValueBackupStrings,
+      // init: answerValueInitList,
+      // prepForSave: (values: [string, boolean][]) => {
+      //   return values.map(([value, editable]) => value)
+      // },
+      // prepForFill: (answers: EditableAnswer[]): string[] => {
+      //   return super.answerValue.prepForFill(answers).flat()
+      // },
     }
   }
 
-  public get fieldSnapshot() {
-    return {
-      path: this.path,
-      answer: [this.currentValue()],
-    }
-  }
+  // public get fieldSnapshot() {
+  //   return {
+  //     path: this.path,
+  //     answer: [this.currentValue()],
+  //   }
+  // }
 
   inputElement(): HTMLInputElement {
     return getElement(
@@ -43,7 +44,6 @@ export class AddressSearchable extends GreenhouseBaseInput<any> {
     const observer = new MutationObserver((mutationsList) => {
       this.triggerReactUpdate()
     })
-
     // Set the observer to watch for attribute changes
     observer.observe(this.autoCompleteElement, {
       attributes: true,
@@ -60,8 +60,8 @@ export class AddressSearchable extends GreenhouseBaseInput<any> {
   }
 
   async fill(): Promise<void> {
-    const answers = await this.answer()
     await fieldFillerQueue.enqueue(async () => {
+      const answers = await this.answer()
       if (this.inputElement && answers.length > 0) {
         for (const answer of answers) {
           this.inputElement().value = answer.answer
@@ -79,7 +79,8 @@ export class AddressSearchable extends GreenhouseBaseInput<any> {
             correctAnswerXpath
           )
           correctAnswerElement && correctAnswerElement.click()
-          if (this.currentValue() === answer.answer[0]) {
+          // if (this.currentValue() === answer.answer[0]) {
+          if (this.currentValue() === answer.answer) {
             return
           }
         }

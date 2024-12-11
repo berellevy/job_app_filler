@@ -17,27 +17,28 @@ import { EditableAnswer } from "../../../hooks/useEditableAnswerState";
  */
 export class DropdownMultiSearchable extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.DROPDOWN_MULTI_SEARCHABLE
-  fieldType = 'SimpleDropdown'
-  public get answerValue() {
-    return {
-      ...super.answerValue,
-      displayComponent: AnswerValueBackupStrings,
-      init: answerValueInitList,
-      prepForSave: (values: [string, boolean][]) => {
-        return values.map(([value, editable]) => value)
-      },
-      prepForFill: (answers: EditableAnswer[]): string[] => {
-        return super.answerValue.prepForFill(answers).flat()
-      },
-    }
-  }
+  // fieldType = 'SimpleDropdown'
+  fieldType = 'TextInput'
+  // public get answerValue() {
+  //   return {
+  //     ...super.answerValue,
+  //     displayComponent: AnswerValueBackupStrings,
+  //     init: answerValueInitList,
+  //     prepForSave: (values: [string, boolean][]) => {
+  //       return values.map(([value, editable]) => value)
+  //     },
+  //     prepForFill: (answers: EditableAnswer[]): string[] => {
+  //       return super.answerValue.prepForFill(answers).flat()
+  //     },
+  //   }
+  // }
 
-  public get fieldSnapshot() {
-    return {
-      path: this.path,
-      answer: [this.currentValue()],
-    }
-  }
+  // public get fieldSnapshot() {
+  //   return {
+  //     path: this.path,
+  //     answer: [this.currentValue()],
+  //   }
+  // }
 
   get labelElement(): HTMLElement {
     return getElement(this.element, `.//label`)

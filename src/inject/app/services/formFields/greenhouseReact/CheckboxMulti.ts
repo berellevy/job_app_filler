@@ -11,26 +11,27 @@ import { CheckboxWrapperContainer } from "./ElementWrappers/CheckboxWrapperConta
 
 export class CheckboxMulti extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.CHECKBOX_MULTI
-  fieldType = "SimpleDropdown"
-  public get answerValue() {
-    return {
-      ...super.answerValue,
-      displayComponent: AnswerValueBackupStrings,
-      init: answerValueInitList,
-      prepForSave: (values: [string, boolean][]) => {
-        return values.map(([value, editable]) => value)
-      },
-      prepForFill: (answers: EditableAnswer[]): string[] => {
-        return super.answerValue.prepForFill(answers).flat()
-      },
-    }
-  }
-  public get fieldSnapshot() {
-    return {
-      path: this.path,
-      answer: [this.currentValue()],
-    }
-  }
+  // fieldType = "SimpleDropdown"
+  fieldType = 'TextInput'
+  // public get answerValue() {
+  //   return {
+  //     ...super.answerValue,
+  //     displayComponent: AnswerValueBackupStrings,
+  //     init: answerValueInitList,
+  //     prepForSave: (values: [string, boolean][]) => {
+  //       return values.map(([value, editable]) => value)
+  //     },
+  //     prepForFill: (answers: EditableAnswer[]): string[] => {
+  //       return super.answerValue.prepForFill(answers).flat()
+  //     },
+  //   }
+  // }
+  // public get fieldSnapshot() {
+  //   return {
+  //     path: this.path,
+  //     answer: [this.currentValue()],
+  //   }
+  // }
 
   get labelElement(): HTMLElement {
     return getElement(

@@ -16,7 +16,8 @@ import { EditableAnswer } from "../../../hooks/useEditableAnswerState";
  */
 export class Dropdown extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.DROPDOWN
-  fieldType = "SimpleDropdown"
+  // fieldType = "SimpleDropdown"
+  fieldType = 'TextInput'
   public get answerValue() {
     return {
       ...super.answerValue,

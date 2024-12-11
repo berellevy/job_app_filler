@@ -8,28 +8,29 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class Dropdown extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.SIMPLE_DROPDOWN
-  fieldType = 'SimpleDropdown'
-  public get answerValue() {
-    return {
-      ...super.answerValue,
-      displayComponent: AnswerValueBackupStrings,
-      init: answerValueInitList,
-      prepForSave: (values: [string, boolean][]) => {
-        return values.map(([value, editable]) => value)
-      },
-      prepForFill: (answers: EditableAnswer[]): string[] => {
-        return super.answerValue.prepForFill(answers).flat()
-      },
-    }
-  }
+  // fieldType = 'SimpleDropdown'
+  fieldType = 'TextInput'
+  // public get answerValue() {
+  //   return {
+  //     ...super.answerValue,
+  //     displayComponent: AnswerValueBackupStrings,
+  //     init: answerValueInitList,
+  //     prepForSave: (values: [string, boolean][]) => {
+  //       return values.map(([value, editable]) => value)
+  //     },
+  //     prepForFill: (answers: EditableAnswer[]): string[] => {
+  //       return super.answerValue.prepForFill(answers).flat()
+  //     },
+  //   }
+  // }
 
 
-  public get fieldSnapshot() {
-    return {
-      path: this.path,
-      answer: [this.currentValue()],
-    }
-  }
+  // public get fieldSnapshot() {
+  //   return {
+  //     path: this.path,
+  //     answer: [this.currentValue()],
+  //   }
+  // }
 
   inputElement(): HTMLInputElement {
     return getElement(this.element, './/select') as HTMLInputElement
@@ -97,6 +98,7 @@ export class Dropdown extends GreenhouseBaseInput<any> {
   currentValue() {
     return this.select2ContainerAElement?.innerText
   }
+  
   async fill(): Promise<void> {
     const answers = await this.answer()
     await fieldFillerQueue.enqueue(async () => {

@@ -17,19 +17,27 @@ export class DropdownSearchable extends WorkdayBaseInput<
 > {
   editableAnswerHook = useEditableAnswerState
   static XPATH = xpaths.SEARCHABLE_SINGLE_DROPDOWN
-  fieldType = 'SimpleDropdown'
-  public get answerValue() {
-    return {
-      ...super.answerValue,
-      displayComponent: AnswerValueBackupStrings,
-      init: answerValueInitList,
-      prepForSave: (values: [string, boolean][]) =>
-        values.map(([value, editable]) => value),
-      prepForFill: (answers: EditableAnswer[]): string[] => {
-        return super.answerValue.prepForFill(answers).flat()
-      },
-    } as AnswerValueMethods
-  }
+  // fieldType = 'SimpleDropdown'
+  fieldType = 'TextInput'
+  // public get answerValue() {
+  //   return {
+  //     ...super.answerValue,
+  //     displayComponent: AnswerValueBackupStrings,
+  //     init: answerValueInitList,
+  //     prepForSave: (values: [string, boolean][]) =>
+  //       values.map(([value, editable]) => value),
+  //     prepForFill: (answers: EditableAnswer[]): string[] => {
+  //       return super.answerValue.prepForFill(answers).flat()
+  //     },
+  //   } as AnswerValueMethods
+  // }
+
+  // public get fieldSnapshot(): Answer {
+  //   return {
+  //     path: this.path,
+  //     answer: [this.currentValue()],
+  //   }
+  // }
 
   /**
    * A change is when an answer element is added or removed.
@@ -62,12 +70,7 @@ export class DropdownSearchable extends WorkdayBaseInput<
     }
   }
 
-  public get fieldSnapshot(): Answer {
-    return {
-      path: this.path,
-      answer: [this.currentValue()],
-    }
-  }
+
 
   // CLOSE DROPDOWN AFTER FILL.
   /**
@@ -126,11 +129,11 @@ export class DropdownSearchable extends WorkdayBaseInput<
     return getElement(this.element, './/input')
   }
 
-  isFilled(current: string, stored: string[]) {
-    return stored.some((answer) => {
-      return answer === current
-    })
-  }
+  // isFilled(current: string, stored: string[]) {
+  //   return stored.some((answer) => {
+  //     return answer === current
+  //   })
+  // }
 
   /**
    * FILL PROCESS

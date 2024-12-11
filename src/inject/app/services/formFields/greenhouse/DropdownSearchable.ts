@@ -1,6 +1,10 @@
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
 import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
-import { getElement, getElements, waitForElement } from '@src/shared/utils/getElements'
+import {
+  getElement,
+  getElements,
+  waitForElement,
+} from '@src/shared/utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'
@@ -8,28 +12,28 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class DropdownSearchable extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.DROPDOWN_SEARCHABLE
-  fieldType = 'SimpleDropdown'
-  public get answerValue() {
-    return {
-      ...super.answerValue,
-      displayComponent: AnswerValueBackupStrings,
-      init: answerValueInitList,
-      prepForSave: (values: [string, boolean][]) => {
-        return values.map(([value, editable]) => value)
-      },
-      prepForFill: (answers: EditableAnswer[]): string[] => {
-        return super.answerValue.prepForFill(answers).flat()
-      },
-    }
-  }
+  // fieldType = 'SimpleDropdown'
+  fieldType = 'TextInput'
+  // public get answerValue() {
+  //   return {
+  //     ...super.answerValue,
+  //     displayComponent: AnswerValueBackupStrings,
+  //     init: answerValueInitList,
+  //     prepForSave: (values: [string, boolean][]) => {
+  //       return values.map(([value, editable]) => value)
+  //     },
+  //     prepForFill: (answers: EditableAnswer[]): string[] => {
+  //       return super.answerValue.prepForFill(answers).flat()
+  //     },
+  //   }
+  // }
 
-
-  public get fieldSnapshot() {
-    return {
-      path: this.path,
-      answer: [this.currentValue()],
-    }
-  }
+  // public get fieldSnapshot() {
+  //   return {
+  //     path: this.path,
+  //     answer: [this.currentValue()],
+  //   }
+  // }
 
   inputElement(): HTMLInputElement {
     return getElement(this.element, './/select') as HTMLInputElement
@@ -41,7 +45,7 @@ export class DropdownSearchable extends GreenhouseBaseInput<any> {
       ".//div[contains(@class, 'select2-container')]"
     )
   }
-  
+
   get select2ContainerAElement(): HTMLElement {
     return getElement(this.select2ContainerElement, './/a')
   }
@@ -68,25 +72,24 @@ export class DropdownSearchable extends GreenhouseBaseInput<any> {
   }
 
   get dropdownId(): string {
-    return getElement(this.select2ContainerElement, "./label")?.getAttribute("for")
+    return getElement(this.select2ContainerElement, './label')?.getAttribute(
+      'for'
+    )
   }
 
   get dropdownElement(): DropdownElement {
     const XPATH = [
       ".//div[contains(@class, 'select2-drop-active')]",
-      `[.//label[@for='${this.dropdownId}_search']]`
-    ].join("")
-    const dropdown = getElement(
-      document,
-      XPATH
-    )
+      `[.//label[@for='${this.dropdownId}_search']]`,
+    ].join('')
+    const dropdown = getElement(document, XPATH)
     return new DropdownElement(dropdown)
   }
 
   inputDisplayElement(): HTMLElement {
     return this.select2ContainerElement
   }
-  
+
   listenForChanges(): void {
     const observer = new MutationObserver((mutationsList) => {
       this.triggerReactUpdate()
@@ -97,17 +100,18 @@ export class DropdownSearchable extends GreenhouseBaseInput<any> {
       subtree: true,
     })
   }
-  
+
   currentValue() {
     return this.select2ContainerAElement?.innerText
   }
 
   async fill(): Promise<void> {
-    const answers = await this.answer()
     await fieldFillerQueue.enqueue(async () => {
+      const answers = await this.answer()
       if (answers.length > 0) {
         for (const answer of answers) {
-          const answerValue = answer.answer[0]
+          const answerValue = answer.answer
+          // const answerValue = answer.answer[0]
           this.openDropdown()
           if (await this.dropdownElement.selectCorrectAnswer(answerValue)) {
             break
@@ -118,7 +122,6 @@ export class DropdownSearchable extends GreenhouseBaseInput<any> {
     })
   }
 }
-
 
 class DropdownElement {
   element: HTMLElement
@@ -134,7 +137,7 @@ class DropdownElement {
     return this.getElement(
       `.//div[@class="select2-search"]/input`
     ) as HTMLInputElement
-  } 
+  }
 
   /**
    * perform a search and return the resultslist.
@@ -146,15 +149,14 @@ class DropdownElement {
     const RESULTS_ELEMENT_XPATH = [
       `.//ul`,
       `[not(./li[starts-with(text(),"Searching")])]`,
-    ].join("")
+    ].join('')
     return new Promise((resolve) => {
-      waitForElement(
-        this.element, 
-        RESULTS_ELEMENT_XPATH,
-        {onlyNew: true , timeout: 600}
-      ).then((foundElement) => resolve(foundElement))
+      waitForElement(this.element, RESULTS_ELEMENT_XPATH, {
+        onlyNew: true,
+        timeout: 600,
+      }).then((foundElement) => resolve(foundElement))
       this.searchInput.value = value
-      this.searchInput.dispatchEvent(new InputEvent("input"))
+      this.searchInput.dispatchEvent(new InputEvent('input'))
     })
   }
 
@@ -171,10 +173,12 @@ class DropdownElement {
    */
   async selectCorrectAnswer(answerValue: string): Promise<boolean> {
     const correctAnswerElement = await this.search(answerValue)
-    const mouseupEvent = new Event("mouseup", {
+    const mouseupEvent = new Event('mouseup', {
       bubbles: true,
       cancelable: true,
     })
-    return !!(correctAnswerElement && correctAnswerElement.dispatchEvent(mouseupEvent)) 
+    return !!(
+      correctAnswerElement && correctAnswerElement.dispatchEvent(mouseupEvent)
+    )
   }
 }

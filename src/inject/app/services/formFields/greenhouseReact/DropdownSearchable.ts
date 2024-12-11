@@ -16,30 +16,30 @@ import { sleep } from '@src/shared/utils/async'
 
 export class DropdownSearchable extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.DROPDOWN_SEARCHABLE
-  fieldType = 'SimpleDropdown'
-  public get answerValue() {
-    return {
-      ...super.answerValue,
-      displayComponent: AnswerValueBackupStrings,
-      init: answerValueInitList,
-      prepForSave: (values: [string, boolean][]) => {
-        return values.map(([value, editable]) => value)
-      },
-      prepForFill: (answers: EditableAnswer[]): string[] => {
-        return super.answerValue.prepForFill(answers).flat()
-      },
-    }
-  }
+  // fieldType = 'SimpleDropdown'
+  fieldType = 'TextInput'
+  // public get answerValue() {
+  //   return {
+  //     ...super.answerValue,
+  //     displayComponent: AnswerValueBackupStrings,
+  //     init: answerValueInitList,
+  //     prepForSave: (values: [string, boolean][]) => {
+  //       return values.map(([value, editable]) => value)
+  //     },
+  //     prepForFill: (answers: EditableAnswer[]): string[] => {
+  //       return super.answerValue.prepForFill(answers).flat()
+  //     },
+  //   }
+  // }
+  // public get fieldSnapshot() {
+  //   return {
+  //     path: this.path,
+  //     answer: [this.currentValue()],
+  //   }
+  // }
 
   get labelElement(): HTMLElement {
     return this.elements.label
-  }
-
-  public get fieldSnapshot() {
-    return {
-      path: this.path,
-      answer: [this.currentValue()],
-    }
   }
 
   listenForChanges(): void {
@@ -88,7 +88,7 @@ export class DropdownSearchable extends GreenhouseReactBaseInput<any> {
           this.dropdown.open()
           if (await this.dropdown.isOpen()) {
             const choices = await this.elements.waitForChoices()
-            // pagination of lazy answers is 
+            // pagination of lazy answers is
             if (choices.length < 100) {
               for (const storedAnswer of answers) {
                 const answerValue = storedAnswer.answer[0]
@@ -150,8 +150,6 @@ class DropdownContainer {
     const choices = await this.elements.waitForChoices()
     return choices.find((el) => el.innerText === value)
   }
-
-
 
   async fill(value: string): Promise<boolean> {
     const correctChoice = await this.getCorrectAnswerElement(value)
@@ -248,7 +246,7 @@ class Elements {
     return await waitForElement(
       this.element,
       `.//div[starts-with(@class, "select__menu")]`,
-      { timeout}
+      { timeout }
     )
   }
 

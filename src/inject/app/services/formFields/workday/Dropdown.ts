@@ -18,20 +18,21 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class Dropdown extends WorkdayBaseInput<string[] | null> {
   static XPATH: string = xpaths.SIMPLE_DROPDOWN
-  fieldType: string = 'SimpleDropdown'
-  public get answerValue() {
-    return {
-      ...super.answerValue,
-      displayComponent: AnswerValueBackupStrings,
-      init: answerValueInitList,
-      prepForSave: (values: [string, boolean][]) => {
-        return values.map(([value, editable]) => value)
-      },
-      prepForFill: (answers: EditableAnswer[]): string[] => {
-        return super.answerValue.prepForFill(answers).flat()
-      },
-    }
-  }
+  // fieldType: string = 'SimpleDropdown'
+  fieldType = 'TextInput'
+  // public get answerValue() {
+  //   return {
+  //     ...super.answerValue,
+  //     displayComponent: AnswerValueBackupStrings,
+  //     init: answerValueInitList,
+  //     prepForSave: (values: [string, boolean][]) => {
+  //       return values.map(([value, editable]) => value)
+  //     },
+  //     prepForFill: (answers: EditableAnswer[]): string[] => {
+  //       return super.answerValue.prepForFill(answers).flat()
+  //     },
+  //   }
+  // }
 
   private get buttonElement(): HTMLElement {
     return getElement(this.element, './/button[@aria-haspopup="listbox"]')
@@ -53,12 +54,12 @@ export class Dropdown extends WorkdayBaseInput<string[] | null> {
     }
   }
 
-  public get fieldSnapshot(): Answer {
-    return {
-      path: this.path,
-      answer: [this.currentValue()],
-    }
-  }
+  // public get fieldSnapshot(): Answer {
+  //   return {
+  //     path: this.path,
+  //     answer: [this.currentValue()],
+  //   }
+  // }
 
   closeDropdown() {
     if (this.dropdownIsOpen) {

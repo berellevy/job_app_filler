@@ -12,27 +12,28 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class DropdownMulti extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.DROPDOWN_MULTI
-  fieldType = 'SimpleDropdown'
-  public get answerValue() {
-    return {
-      ...super.answerValue,
-      displayComponent: AnswerValueBackupStrings,
-      init: answerValueInitList,
-      prepForSave: (values: [string, boolean][]) => {
-        return values.map(([value, editable]) => value)
-      },
-      prepForFill: (answers: EditableAnswer[]): string[] => {
-        return super.answerValue.prepForFill(answers).flat()
-      },
-    }
-  }
+  // fieldType = 'SimpleDropdown'
 
-  public get fieldSnapshot() {
-    return {
-      path: this.path,
-      answer: [this.currentValue()],
-    }
-  }
+  // public get answerValue() {
+  //   return {
+  //     ...super.answerValue,
+  //     displayComponent: AnswerValueBackupStrings,
+  //     init: answerValueInitList,
+  //     prepForSave: (values: [string, boolean][]) => {
+  //       return values.map(([value, editable]) => value)
+  //     },
+  //     prepForFill: (answers: EditableAnswer[]): string[] => {
+  //       return super.answerValue.prepForFill(answers).flat()
+  //     },
+  //   }
+  // }
+
+  // public get fieldSnapshot() {
+  //   return {
+  //     path: this.path,
+  //     answer: [this.currentValue()],
+  //   }
+  // }
 
   get elements(): ElementContainer {
     return new ElementContainer(this.element)
@@ -68,7 +69,8 @@ export class DropdownMulti extends GreenhouseBaseInput<any> {
         dropdown.clearSelection()
         dropdown.open()
         for (const answer of answers) {
-          const answerValue = answer.answer[0]
+          // const answerValue = answer.answer[0]
+          const answerValue = answer.answer
           if (dropdown.selectAnswer(answerValue)) {
             break
           }
