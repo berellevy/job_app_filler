@@ -1,6 +1,7 @@
 import { Answer } from '@src/shared/utils/types'
 import { AppContextType } from '../AppContext'
 import  contentScriptAPI  from '../services/contentScriptApi'
+import AnswerDTO from '../services/DTOs/AnswerDTO'
 
 export interface SaveButtonClickHndler {
   (
@@ -12,8 +13,8 @@ export interface SaveButtonClickHndler {
   ): void | Promise<void>
 }
 
-const basic: SaveButtonClickHndler = async (newAnswer, { init }) => {
-  const resp = await contentScriptAPI.addAnswer(newAnswer)
+const basic: SaveButtonClickHndler = async (newAnswer, { init, backend: {answerDTOClass} }) => {
+  const resp = await contentScriptAPI.addAnswer(newAnswer, answerDTOClass)
   if (resp.ok) {
     await init()
   }
