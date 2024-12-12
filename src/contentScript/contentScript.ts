@@ -48,10 +48,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 })
 
 const run = async () => {
-  await answers1010.load()
   await migrate1010()
   await migrateEducation()
   await simpleDropdownToDropdownMigration.run()
+  await answers1010.load()
   injectScript('inject.js')
   loadApp()
 }
