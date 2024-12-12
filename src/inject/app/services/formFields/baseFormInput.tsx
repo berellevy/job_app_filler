@@ -9,6 +9,7 @@ import { App } from '../../App'
 import { SaveButtonClickHndler, saveButtonClickHandlers } from '../../hooks/saveButtonClickHandlers'
 import { EditableAnswer, useEditableAnswerState } from '../../hooks/useEditableAnswerState'
 import  contentScriptAPI  from '../contentScriptApi'
+import AnswerDTO from '../DTOs/AnswerDTO'
 
 export type AnswerValueMethods = {
   displayComponent: FC<{ id: number }>
@@ -26,6 +27,7 @@ export function isVisible(el: HTMLElement): boolean {
 }
 
 export abstract class BaseFormInput<AnswerType> {
+  answerDTOClass: typeof AnswerDTO = AnswerDTO
   public editableAnswerHook = useEditableAnswerState
   public saveButtonClickHandler: SaveButtonClickHndler =
     saveButtonClickHandlers.basic
@@ -167,7 +169,7 @@ export abstract class BaseFormInput<AnswerType> {
   }
 
   async save(answer: Answer): Promise<Answer> {
-    const response = await contentScriptAPI.addAnswer(answer)
+    const response = await contentScriptAPI.addAnswer(answer, this.answerDTOClass)
     return response.data
   }
 
@@ -178,7 +180,7 @@ export abstract class BaseFormInput<AnswerType> {
 
   async answer(path?: FieldPath): Promise<Answer[]> {
     path = path || this.path
-    const res = await contentScriptAPI.getAnswers(path)
+    const res = await contentScriptAPI.getAnswers(path, this.answerDTOClass)
     if (res.ok) {
       return res.data
     } else {
