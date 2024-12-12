@@ -3,7 +3,7 @@ import AnswerDTO from "./DTOs/AnswerDTO";
 import { Answer, FieldPath } from "@src/shared/utils/types";
 const client = new Client(process.env.CONTENT_SCRIPT_URL)
 
-const addAnswer = async (newAnswer: any, DTOClass = AnswerDTO) => {
+const addAnswer = async (newAnswer: any, DTOClass: typeof AnswerDTO) => {
     const resp = await client.send("addAnswer", newAnswer)
     if (resp.ok) {
         resp.data = DTOClass.from106(newAnswer)
@@ -11,7 +11,7 @@ const addAnswer = async (newAnswer: any, DTOClass = AnswerDTO) => {
     return resp
 }
 
-const updateAnswer = async (answer: any, DTOClass = AnswerDTO) => {
+const updateAnswer = async (answer: any, DTOClass: typeof AnswerDTO) => {
     const resp = await client.send("updateAnswer", answer)
     if (resp.ok) {
         resp.data = DTOClass.from106(resp.data)
@@ -19,7 +19,7 @@ const updateAnswer = async (answer: any, DTOClass = AnswerDTO) => {
     return resp
 }
 
-const getAnswers = async (path: FieldPath, DTOClass = AnswerDTO) => {
+const getAnswers = async (path: FieldPath, DTOClass: typeof AnswerDTO) => {
     const resp = await client.send("getAnswer", path)
     if (resp.ok) {
         resp.data = resp.data.map((a: Answer) => DTOClass.from106(a))
