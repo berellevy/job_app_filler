@@ -1,3 +1,4 @@
+import { Answer } from "@src/shared/utils/types"
 
 
 
@@ -26,5 +27,10 @@ export default class AnswerDTO {
             fieldName,
             fieldType,
         }
+    }
+
+    static from106(answer106: Answer): AnswerDTO {
+        const {answer, id, matchType, path: {section, fieldName, fieldType}} = answer106
+        return new this({ answer, id, matchType, section, fieldName, fieldType })
     }
 }
