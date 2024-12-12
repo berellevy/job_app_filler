@@ -8,7 +8,7 @@ import stringMatch from '@src/shared/utils/stringMatch'
 import { App } from '../../App'
 import { SaveButtonClickHndler, saveButtonClickHandlers } from '../../hooks/saveButtonClickHandlers'
 import { EditableAnswer, useEditableAnswerState } from '../../hooks/useEditableAnswerState'
-import { contentScriptAPI } from '../contentScriptApi'
+import  contentScriptAPI  from '../contentScriptApi'
 
 export type AnswerValueMethods = {
   displayComponent: FC<{ id: number }>
@@ -167,18 +167,18 @@ export abstract class BaseFormInput<AnswerType> {
   }
 
   async save(answer: Answer): Promise<Answer> {
-    const response = await contentScriptAPI.send('saveAnswer', answer)
+    const response = await contentScriptAPI.addAnswer(answer)
     return response.data
   }
 
   async deleteAnswer(id: number): Promise<boolean> {
-    const res = await contentScriptAPI.send('deleteAnswer', id)
+    const res = await contentScriptAPI.deleteAnswer(id)
     return res.ok
   }
 
   async answer(path?: FieldPath): Promise<Answer[]> {
     path = path || this.path
-    const res = await contentScriptAPI.send('getAnswer', path)
+    const res = await contentScriptAPI.getAnswers(path)
     if (res.ok) {
       return res.data
     } else {

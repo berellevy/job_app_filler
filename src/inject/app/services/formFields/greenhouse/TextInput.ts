@@ -33,9 +33,9 @@ export class TextInput extends GreenhouseBaseInput<any> {
         answer,
         id,
         matchType,
-        path: { section, fieldName },
+        path: { section, fieldName, fieldType },
       } = answer106
-      return new this.DTO({ answer, id, matchType, section, fieldName })
+      return new this.DTO({ answer, id, matchType, section, fieldName, fieldType })
     })
   }
   async fill(): Promise<void> {

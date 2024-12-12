@@ -1,13 +1,14 @@
-import { DataType, AnswerDTO } from "./types"
+import { DataType } from "./types"
 
 
 export default class StringDTO {
-  dataType: DataType = "string"
+  // dataType: DataType = "string"
   answer: string
   id: number
   matchType: string
   section: string
   fieldName: string
+  fieldType: string
 
   path: {
     section: string
@@ -15,7 +16,7 @@ export default class StringDTO {
     fieldType: string
   }
 
-  constructor({answer, id, matchType, section, fieldName}) {
+  constructor({answer, id, matchType, section, fieldName, fieldType}) {
     this.answer = answer
     this.id = id
     this.matchType = matchType
@@ -24,9 +25,8 @@ export default class StringDTO {
     this.path = {
       section,
       fieldName,
-      fieldType: "TextInput"
+      fieldType,
     }
-    
   }
 
   

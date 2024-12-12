@@ -1,6 +1,6 @@
 import { Answer } from '@src/shared/utils/types'
 import { AppContextType } from '../AppContext'
-import { contentScriptAPI } from '../services/contentScriptApi'
+import  contentScriptAPI  from '../services/contentScriptApi'
 
 export interface SaveButtonClickHndler {
   (
@@ -13,7 +13,7 @@ export interface SaveButtonClickHndler {
 }
 
 const basic: SaveButtonClickHndler = async (newAnswer, { init }) => {
-  const resp = await contentScriptAPI.send('addAnswer', newAnswer)
+  const resp = await contentScriptAPI.addAnswer(newAnswer)
   if (resp.ok) {
     await init()
   }

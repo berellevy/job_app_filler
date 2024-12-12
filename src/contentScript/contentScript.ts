@@ -4,7 +4,7 @@ import { EVENT_LISTENER_ID, loadApp } from './app/App'
 import { answers1010, migrate1010 } from './utils/storage/Answers1010'
 import { convert106To1010, convert1010To106 } from './utils/storage/DataStore'
 import { SavedAnswer } from './utils/storage/DataStoreTypes'
-import { migrateEducation } from './utils/storage/migrations/migrateEducationSectionNames'
+import educationSectionNameMigration from './utils/storage/migrations/migrateEducationSectionNames'
 import simpleDropdownToDropdownMigration from './utils/storage/migrations/simpleDropdownToDropdown'
 
 // Regiser server and methods accessible to injected script.
@@ -49,7 +49,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 const run = async () => {
   await migrate1010()
-  await migrateEducation()
+  // await migrateEducation()
+  await educationSectionNameMigration.run()
   await simpleDropdownToDropdownMigration.run()
   await answers1010.load()
   injectScript('inject.js')

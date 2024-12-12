@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { sleep } from '@src/shared/utils/async'
 import { Answer, FieldPath } from '@src/shared/utils/types'
 import { BaseFormInput } from '../services/formFields/baseFormInput'
-import { contentScriptAPI } from '../services/contentScriptApi'
+import contentScriptAPI from '../services/contentScriptApi'
 
 export type EditableAnswerState = {
   answers: EditableAnswer[]
@@ -157,14 +157,14 @@ export const useEditableAnswerState = (
   }
 
   const saveAnswer: EditableAnswerState['saveAnswer'] = async (id) => {
-    const { editedAnswer, isNew } = answers.find((a) => a.id === id)
+    const { editedAnswer: {path, value}, isNew } = answers.find((a) => a.id === id)
     const answerForSave = {
-      answer: backend.answerValue.prepForSave(editedAnswer.value),
-      path: editedAnswer.path,
+      answer: backend.answerValue.prepForSave(value),
+      path,
     }
     const method = isNew ? 'addAnswer' : 'updateAnswer'
     const answer = isNew ? { ...answerForSave } : { ...answerForSave, id }
-    const resp = await contentScriptAPI.send(method, answer)
+    const resp = await contentScriptAPI[method](answer)
     if (resp.ok) {
       const newAnswer = initAnswer(resp.data)
       setAnswers((answers) => {
@@ -184,7 +184,7 @@ export const useEditableAnswerState = (
   }
 
   const deleteAnswer: EditableAnswerState['deleteAnswer'] = async (id) => {
-    const resp = await contentScriptAPI.send('deleteAnswer', id)
+    const resp = await contentScriptAPI.deleteAnswer(id)
     if (resp.ok && resp.data) {
       setAnswers((answers) => {
         return answers.filter((answer) => {
