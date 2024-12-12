@@ -11,26 +11,6 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 export class AddressSearchable extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.ADDRESS_SEARCH_FIELD
   fieldType = 'Dropdown'
-  public get answerValue() {
-    return {
-      ...super.answerValue,
-      // displayComponent: AnswerValueBackupStrings,
-      // init: answerValueInitList,
-      // prepForSave: (values: [string, boolean][]) => {
-      //   return values.map(([value, editable]) => value)
-      // },
-      // prepForFill: (answers: EditableAnswer[]): string[] => {
-      //   return super.answerValue.prepForFill(answers).flat()
-      // },
-    }
-  }
-
-  // public get fieldSnapshot() {
-  //   return {
-  //     path: this.path,
-  //     answer: [this.currentValue()],
-  //   }
-  // }
 
   inputElement(): HTMLInputElement {
     return getElement(
@@ -78,7 +58,6 @@ export class AddressSearchable extends GreenhouseBaseInput<any> {
             correctAnswerXpath
           )
           correctAnswerElement && correctAnswerElement.click()
-          // if (this.currentValue() === answer.answer[0]) {
           if (this.currentValue() === answer.answer) {
             return
           }

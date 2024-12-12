@@ -1,16 +1,12 @@
-import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
-
 import { sleep } from '@src/shared/utils/async'
 import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import { getElement, waitForElement } from '@src/shared/utils/getElements'
 import { scrollBack } from '@src/shared/utils/scroll'
 import { Answer106 } from '@src/shared/utils/types'
-import { AnswerValueMethods } from '../baseFormInput'
 import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { getReactProps } from '../utils'
 import { xpaths } from './xpaths'
-import { answerValueInitList } from '../../../hooks/answerValueInit'
-import { useEditableAnswerState, EditableAnswer } from '../../../hooks/useEditableAnswerState'
+import { useEditableAnswerState } from '../../../hooks/useEditableAnswerState'
 
 export class DropdownSearchable extends WorkdayBaseInput<
   string[] | null
@@ -18,25 +14,6 @@ export class DropdownSearchable extends WorkdayBaseInput<
   editableAnswerHook = useEditableAnswerState
   static XPATH = xpaths.SEARCHABLE_SINGLE_DROPDOWN
   fieldType = 'Dropdown'
-  // public get answerValue() {
-  //   return {
-  //     ...super.answerValue,
-  //     displayComponent: AnswerValueBackupStrings,
-  //     init: answerValueInitList,
-  //     prepForSave: (values: [string, boolean][]) =>
-  //       values.map(([value, editable]) => value),
-  //     prepForFill: (answers: EditableAnswer[]): string[] => {
-  //       return super.answerValue.prepForFill(answers).flat()
-  //     },
-  //   } as AnswerValueMethods
-  // }
-
-  // public get fieldSnapshot(): Answer106 {
-  //   return {
-  //     path: this.path,
-  //     answer: [this.currentValue()],
-  //   }
-  // }
 
   /**
    * A change is when an answer element is added or removed.
@@ -127,12 +104,6 @@ export class DropdownSearchable extends WorkdayBaseInput<
   get inputElement(): HTMLElement {
     return getElement(this.element, './/input')
   }
-
-  // isFilled(current: string, stored: string[]) {
-  //   return stored.some((answer) => {
-  //     return answer === current
-  //   })
-  // }
 
   /**
    * FILL PROCESS

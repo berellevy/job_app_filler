@@ -1,4 +1,3 @@
-import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
 import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import {
   getElement,
@@ -9,33 +8,10 @@ import { scrollBack } from '@src/shared/utils/scroll'
 import { getReactProps } from '../utils'
 import { GreenhouseReactBaseInput } from './GreenhouseReactBaseInput'
 import { xpaths } from './xpaths'
-import { answerValueInitList } from '../../../hooks/answerValueInit'
-import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
-import { createKeyboardEvent } from '@src/shared/utils/events'
-import { sleep } from '@src/shared/utils/async'
 
 export class DropdownSearchable extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.DROPDOWN_SEARCHABLE
   fieldType = 'Dropdown'
-  // public get answerValue() {
-  //   return {
-  //     ...super.answerValue,
-  //     displayComponent: AnswerValueBackupStrings,
-  //     init: answerValueInitList,
-  //     prepForSave: (values: [string, boolean][]) => {
-  //       return values.map(([value, editable]) => value)
-  //     },
-  //     prepForFill: (answers: EditableAnswer[]): string[] => {
-  //       return super.answerValue.prepForFill(answers).flat()
-  //     },
-  //   }
-  // }
-  // public get fieldSnapshot() {
-  //   return {
-  //     path: this.path,
-  //     answer: [this.currentValue()],
-  //   }
-  // }
 
   get labelElement(): HTMLElement {
     return this.elements.label
@@ -87,18 +63,15 @@ export class DropdownSearchable extends GreenhouseReactBaseInput<any> {
           this.dropdown.open()
           if (await this.dropdown.isOpen()) {
             const choices = await this.elements.waitForChoices()
-            // pagination of lazy answers is
             if (choices.length < 100) {
               for (const storedAnswer of answers) {
                 const answerValue = storedAnswer.answer
-                // const answerValue = storedAnswer.answer[0]
                 if (await this.dropdown.fill(answerValue)) {
                   break
                 }
               }
             } else {
               for (const storedAnswer of answers) {
-                // const answerValue = storedAnswer.answer[0]
                 const answerValue = storedAnswer.answer
                 if (await this.dropdown.fillBySearch(answerValue)) {
                   break

@@ -1,4 +1,3 @@
-import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
 import { createKeyboardEvent } from '@src/shared/utils/events'
 import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import {
@@ -7,40 +6,17 @@ import {
 } from '@src/shared/utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
-import { answerValueInitList } from '../../../hooks/answerValueInit'
-import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class DropdownMulti extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.DROPDOWN_MULTI
   fieldType = 'Dropdown'
-
-  // public get answerValue() {
-  //   return {
-  //     ...super.answerValue,
-  //     displayComponent: AnswerValueBackupStrings,
-  //     init: answerValueInitList,
-  //     prepForSave: (values: [string, boolean][]) => {
-  //       return values.map(([value, editable]) => value)
-  //     },
-  //     prepForFill: (answers: EditableAnswer[]): string[] => {
-  //       return super.answerValue.prepForFill(answers).flat()
-  //     },
-  //   }
-  // }
-
-  // public get fieldSnapshot() {
-  //   return {
-  //     path: this.path,
-  //     answer: [this.currentValue()],
-  //   }
-  // }
 
   get elements(): ElementContainer {
     return new ElementContainer(this.element)
   }
 
   listenForChanges(): void {
-    // the only answer elements are added or removed. no need to filter.
+    /** the only answer elements are added or removed. no need to filter. */
     const observer = new MutationObserver((mutations: MutationRecord[]) => {
       this.triggerReactUpdate()
     })
@@ -56,7 +32,7 @@ export class DropdownMulti extends GreenhouseBaseInput<any> {
   }
 
   currentValue() {
-    // return only first value for now to make it compatible with dropdown single
+    /** return only first value for now to make it compatible with dropdown single */
     return (
       this.elements.selectedOptions.map((element) => element.innerText)[0] || ''
     )
@@ -69,7 +45,6 @@ export class DropdownMulti extends GreenhouseBaseInput<any> {
         dropdown.clearSelection()
         dropdown.open()
         for (const answer of answers) {
-          // const answerValue = answer.answer[0]
           const answerValue = answer.answer
           if (dropdown.selectAnswer(answerValue)) {
             break

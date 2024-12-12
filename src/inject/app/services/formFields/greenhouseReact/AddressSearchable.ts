@@ -1,5 +1,3 @@
-import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
-import { sleep } from '@src/shared/utils/async'
 import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import {
   getElement,
@@ -9,31 +7,10 @@ import { scrollBack } from '@src/shared/utils/scroll'
 import { getReactProps } from '../utils'
 import { GreenhouseReactBaseInput } from './GreenhouseReactBaseInput'
 import { xpaths } from './xpaths'
-import { answerValueInitList } from '../../../hooks/answerValueInit'
-import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class AddressSearchable extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.ADDRESS_SEARCHABLE
   fieldType = 'Dropdown'
-  // public get answerValue() {
-  //   return {
-  //     ...super.answerValue,
-  //     displayComponent: AnswerValueBackupStrings,
-  //     init: answerValueInitList,
-  //     prepForSave: (values: [string, boolean][]) => {
-  //       return values.map(([value, editable]) => value)
-  //     },
-  //     prepForFill: (answers: EditableAnswer[]): string[] => {
-  //       return super.answerValue.prepForFill(answers).flat()
-  //     },
-  //   }
-  // }
-  // public get fieldSnapshot() {
-  //   return {
-  //     path: this.path,
-  //     answer: [this.currentValue()],
-  //   }
-  // }
   get labelElement(): HTMLElement {
     return getElement(this.element, `.//label`)
   }
@@ -161,7 +138,6 @@ export class AddressSearchable extends GreenhouseReactBaseInput<any> {
           const reactProps = getReactProps(this.searchInputElement)
           for (const storedAnswer of answers) {
             const answerValue = storedAnswer.answer
-            // const answerValue = storedAnswer.answer[0]
             this.searchInputElement.value = answerValue
             reactProps?.onChange({ currentTarget: this.searchInputElement })
             const correctAnswerElement = await this.waitForCorrectAnswerElement(

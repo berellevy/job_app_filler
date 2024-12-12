@@ -142,11 +142,11 @@ export abstract class BaseFormInput<AnswerType> {
    * A section is a grouping of fields that can be repeating
    * e.g. work history.
    * In such cases the form field name can appear twice on a page.
-   *
+   * 
+   * must always return a string, even a blank one
    * Job site specific
    */
   public get section(): string {
-    // must always return a string, even a blank one
     return ''
   }
 

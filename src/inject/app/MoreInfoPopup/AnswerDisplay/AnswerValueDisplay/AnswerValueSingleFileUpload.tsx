@@ -65,7 +65,6 @@ export const AnswerValueSingleFileUpload: FC<{ id: number }> = ({ id }) => {
           <Button
             component="label"
             role={undefined}
-            // variant="contained"
             tabIndex={-1}
             startIcon={<UploadFileIcon />}
           >

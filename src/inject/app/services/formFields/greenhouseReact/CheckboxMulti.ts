@@ -12,25 +12,6 @@ import { CheckboxWrapperContainer } from "./ElementWrappers/CheckboxWrapperConta
 export class CheckboxMulti extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.CHECKBOX_MULTI
   fieldType = "Dropdown"
-  // public get answerValue() {
-  //   return {
-  //     ...super.answerValue,
-  //     displayComponent: AnswerValueBackupStrings,
-  //     init: answerValueInitList,
-  //     prepForSave: (values: [string, boolean][]) => {
-  //       return values.map(([value, editable]) => value)
-  //     },
-  //     prepForFill: (answers: EditableAnswer[]): string[] => {
-  //       return super.answerValue.prepForFill(answers).flat()
-  //     },
-  //   }
-  // }
-  // public get fieldSnapshot() {
-  //   return {
-  //     path: this.path,
-  //     answer: [this.currentValue()],
-  //   }
-  // }
 
   get labelElement(): HTMLElement {
     return getElement(
@@ -75,7 +56,6 @@ export class CheckboxMulti extends GreenhouseReactBaseInput<any> {
         choiceElements.forEach(el => el.uncheck())
         for (const storedAnswer of answers) {
           const correctChoice = this.choiceElements.find(el => el.value === storedAnswer.answer)
-          // const correctChoice = this.choiceElements.find(el => el.value === storedAnswer.answer[0])
           if (correctChoice) {
             correctChoice.check()
             break

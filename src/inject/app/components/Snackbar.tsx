@@ -45,7 +45,6 @@ export default function SimpleSnackbar() {
         autoHideDuration={6000}
         onClose={handleClose}
         message="Note archived"
-        // action={action}
       />
     </div>
   );

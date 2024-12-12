@@ -5,33 +5,16 @@ import {
   waitForElement,
 } from '@src/shared/utils/getElements'
 import { scrollBack } from '@src/shared/utils/scroll'
-import { Answer106 } from '@src/shared/utils/types'
 import { addCharacterMutationObserver, getReactProps } from '../utils'
 import { WorkdayBaseInput } from './WorkdayBaseInput'
-import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
 
 import stringMatch from '@src/shared/utils/stringMatch'
 import { lowerText } from '@src/shared/utils/xpath'
 import { xpaths } from './xpaths'
-import { answerValueInitList } from '../../../hooks/answerValueInit'
-import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class Dropdown extends WorkdayBaseInput<string[] | null> {
   static XPATH: string = xpaths.SIMPLE_DROPDOWN
   fieldType = 'Dropdown'
-  // public get answerValue() {
-  //   return {
-  //     ...super.answerValue,
-  //     displayComponent: AnswerValueBackupStrings,
-  //     init: answerValueInitList,
-  //     prepForSave: (values: [string, boolean][]) => {
-  //       return values.map(([value, editable]) => value)
-  //     },
-  //     prepForFill: (answers: EditableAnswer[]): string[] => {
-  //       return super.answerValue.prepForFill(answers).flat()
-  //     },
-  //   }
-  // }
 
   private get buttonElement(): HTMLElement {
     return getElement(this.element, './/button[@aria-haspopup="listbox"]')
@@ -52,13 +35,6 @@ export class Dropdown extends WorkdayBaseInput<string[] | null> {
       this.buttonElement.click()
     }
   }
-
-  // public get fieldSnapshot(): Answer106 {
-  //   return {
-  //     path: this.path,
-  //     answer: [this.currentValue()],
-  //   }
-  // }
 
   closeDropdown() {
     if (this.dropdownIsOpen) {

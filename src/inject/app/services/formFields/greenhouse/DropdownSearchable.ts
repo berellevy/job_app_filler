@@ -1,4 +1,3 @@
-import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
 import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import {
   getElement,
@@ -7,32 +6,10 @@ import {
 } from '@src/shared/utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
-import { answerValueInitList } from '../../../hooks/answerValueInit'
-import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class DropdownSearchable extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.DROPDOWN_SEARCHABLE
   fieldType = 'Dropdown'
-  // public get answerValue() {
-  //   return {
-  //     ...super.answerValue,
-  //     displayComponent: AnswerValueBackupStrings,
-  //     init: answerValueInitList,
-  //     prepForSave: (values: [string, boolean][]) => {
-  //       return values.map(([value, editable]) => value)
-  //     },
-  //     prepForFill: (answers: EditableAnswer[]): string[] => {
-  //       return super.answerValue.prepForFill(answers).flat()
-  //     },
-  //   }
-  // }
-
-  // public get fieldSnapshot() {
-  //   return {
-  //     path: this.path,
-  //     answer: [this.currentValue()],
-  //   }
-  // }
 
   inputElement(): HTMLInputElement {
     return getElement(this.element, './/select') as HTMLInputElement
@@ -110,7 +87,6 @@ export class DropdownSearchable extends GreenhouseBaseInput<any> {
       if (answers.length > 0) {
         for (const answer of answers) {
           const answerValue = answer.answer
-          // const answerValue = answer.answer[0]
           this.openDropdown()
           if (await this.dropdownElement.selectCorrectAnswer(answerValue)) {
             break
