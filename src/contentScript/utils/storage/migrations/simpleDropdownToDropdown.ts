@@ -12,13 +12,24 @@ const simpleDropdownToDropdownMigration = new OneOffTask(
             return
         }
         answers1010.store = answers1010.store.map(performConversion)
-        await chrome.storage.local.set({answers1010})
+        await chrome.storage.local.set({ answers1010 })
     }
 )
 export default simpleDropdownToDropdownMigration
 
 
 // HELPERS
+const performConversion = (item: any) => {
+    if (!isDropdown(item)) {
+        return item
+    }
+    item[1].fieldType = "Dropdown"
+    if (isStringArray(item[1].answer)) {
+        item[1].answer = item[1].answer[0]
+    }
+    return item
+}
+
 const isDropdown = (item: { fieldType: string; }[]): boolean => {
     return ["SimpleDropdown", "Dropdown"].includes(item[1].fieldType)
 }
@@ -31,14 +42,4 @@ const isStringArray = (answerValue: string | [string]): boolean => {
     )
 }
 
-const performConversion = (item: any) => {
-    if (!isDropdown(item)) {
-        return item
-    }
-    item[1].fieldType = "Dropdown"
-    if (isStringArray(item[1].answer)) {
-        item[1].answer = item[1].answer[0]
-    }
-    return item
-}
 
