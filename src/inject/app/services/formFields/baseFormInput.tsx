@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { getElement, getElements } from '@src/shared/utils/getElements'
 import '@fontsource/roboto'
 import { v4 as uuid4 } from 'uuid'
-import { Answer, FieldPath } from '@src/shared/utils/types'
+import { Answer106, FieldPath } from '@src/shared/utils/types'
 import { AnswerValueSingleString } from '../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleString'
 import stringMatch from '@src/shared/utils/stringMatch'
 import { App } from '../../App'
@@ -161,14 +161,14 @@ export abstract class BaseFormInput<AnswerType> {
 
   abstract currentValue(): any
 
-  public get fieldSnapshot(): Answer {
+  public get fieldSnapshot(): Answer106 {
     return {
       path: this.path,
       answer: this.currentValue(),
     }
   }
 
-  async save(answer: Answer): Promise<Answer> {
+  async save(answer: Answer106): Promise<Answer106> {
     const response = await contentScriptAPI.addAnswer(answer, this.answerDTOClass)
     return response.data
   }
@@ -178,10 +178,12 @@ export abstract class BaseFormInput<AnswerType> {
     return res.ok
   }
 
-  async answer(path?: FieldPath): Promise<Answer[]> {
+  async answer(path?: FieldPath): Promise<Answer106[]> {
     path = path || this.path
     const res = await contentScriptAPI.getAnswers(path, this.answerDTOClass)
     if (res.ok) {
+      console.log(res.data);
+      
       return res.data
     } else {
       console.log(res, this.path)

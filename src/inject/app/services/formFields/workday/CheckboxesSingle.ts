@@ -1,7 +1,7 @@
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
 import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import { getElement} from '@src/shared/utils/getElements'
-import { Answer } from '@src/shared/utils/types'
+import { Answer106 } from '@src/shared/utils/types'
 import { WorkdayBaseInput } from './WorkdayBaseInput'
 import stringMatch from '@src/shared/utils/stringMatch'
 import { scrollBack } from '@src/shared/utils/scroll'
@@ -68,7 +68,7 @@ export class CheckboxesSingle extends WorkdayBaseInput<any> {
     return getElement(this.element, XPATH) as HTMLInputElement
   }
 
-  public get fieldSnapshot(): Answer {
+  public get fieldSnapshot(): Answer106 {
     return {
       path: this.path,
       answer: [this.currentValue()],
@@ -86,7 +86,7 @@ export class CheckboxesSingle extends WorkdayBaseInput<any> {
         }
         const answers = (await this.answer()) || []
         const answerValues = answers
-          .map((answer: Answer) => answer.answer)
+          .map((answer: Answer106) => answer.answer)
           .flat()
         const answerList = structuredClone(answerValues)
         while (answerList.length > 0) {

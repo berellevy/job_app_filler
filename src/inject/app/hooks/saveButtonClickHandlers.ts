@@ -1,11 +1,11 @@
-import { Answer } from '@src/shared/utils/types'
+import { Answer106 } from '@src/shared/utils/types'
 import { AppContextType } from '../AppContext'
 import  contentScriptAPI  from '../services/contentScriptApi'
 import AnswerDTO from '../services/DTOs/AnswerDTO'
 
 export interface SaveButtonClickHndler {
   (
-    newAnswer: Answer,
+    newAnswer: Answer106,
     context: Pick<
       AppContextType,
       'moreInfoPopper' | 'init' | 'editableAnswerState' | 'backend'

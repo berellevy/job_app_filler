@@ -1,6 +1,6 @@
 import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import { getElement } from '@src/shared/utils/getElements'
-import { Answer } from '@src/shared/utils/types'
+import { Answer106 } from '@src/shared/utils/types'
 import { AnswerValueMethods } from '../../baseFormInput'
 import { WorkdayBaseInput } from '../WorkdayBaseInput'
 import { AnswerValueSingleRelativeDate } from '../../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleRelativeDate'
@@ -71,7 +71,7 @@ export class MonthDayYear extends WorkdayBaseInput<[string, string]> {
     ]
   }
 
-  public get fieldSnapshot(): Answer {
+  public get fieldSnapshot(): Answer106 {
     return {
       path: this.path,
       answer: { value: this.currentValue(), relative: false },

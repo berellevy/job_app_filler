@@ -5,7 +5,7 @@ import {
   waitForElement,
 } from '@src/shared/utils/getElements'
 import { scrollBack } from '@src/shared/utils/scroll'
-import { Answer } from '@src/shared/utils/types'
+import { Answer106 } from '@src/shared/utils/types'
 import { addCharacterMutationObserver, getReactProps } from '../utils'
 import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
@@ -53,7 +53,7 @@ export class Dropdown extends WorkdayBaseInput<string[] | null> {
     }
   }
 
-  // public get fieldSnapshot(): Answer {
+  // public get fieldSnapshot(): Answer106 {
   //   return {
   //     path: this.path,
   //     answer: [this.currentValue()],

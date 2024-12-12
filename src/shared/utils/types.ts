@@ -26,7 +26,7 @@ export type FieldPath = {
   fieldType: string
   fieldName: string
 }
-export type Answer<T = any> = {
+export type Answer106<T = any> = {
   answer: T
   path: FieldPath | null
   hasAnswer?: boolean

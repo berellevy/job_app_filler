@@ -4,7 +4,7 @@ import { sleep } from '@src/shared/utils/async'
 import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import { getElement, waitForElement } from '@src/shared/utils/getElements'
 import { scrollBack } from '@src/shared/utils/scroll'
-import { Answer } from '@src/shared/utils/types'
+import { Answer106 } from '@src/shared/utils/types'
 import { AnswerValueMethods } from '../baseFormInput'
 import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { getReactProps } from '../utils'
@@ -31,7 +31,7 @@ export class DropdownSearchable extends WorkdayBaseInput<
   //   } as AnswerValueMethods
   // }
 
-  // public get fieldSnapshot(): Answer {
+  // public get fieldSnapshot(): Answer106 {
   //   return {
   //     path: this.path,
   //     answer: [this.currentValue()],
@@ -154,7 +154,7 @@ export class DropdownSearchable extends WorkdayBaseInput<
       await scrollBack(async () => {
         const answers = await this.answer()
         const answerValues = answers
-          .map((answer: Answer) => answer.answer)
+          .map((answer: Answer106) => answer.answer)
           .flat()
         if (answerValues.length > 0) {
           const answerList = structuredClone(answerValues)

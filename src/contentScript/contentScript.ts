@@ -1,5 +1,5 @@
 import { Server } from '@src/shared/utils/crossContextCommunication/server'
-import { FieldPath, Answer } from '@src/shared/utils/types'
+import { FieldPath, Answer106 } from '@src/shared/utils/types'
 import { EVENT_LISTENER_ID, loadApp } from './app/App'
 import { answers1010, migrate1010 } from './utils/storage/Answers1010'
 import { convert106To1010, convert1010To106 } from './utils/storage/DataStore'
@@ -9,12 +9,12 @@ import simpleDropdownToDropdownMigration from './utils/storage/migrations/simple
 
 // Regiser server and methods accessible to injected script.
 const server = new Server(process.env.CONTENT_SCRIPT_URL)
-server.register('addAnswer', async (newAnswer: Answer) => {
+server.register('addAnswer', async (newAnswer: Answer106) => {
   const answer1010 = answers1010.add(convert106To1010(newAnswer))
   return convert1010To106(answer1010)
 })
 
-server.register('updateAnswer', async (newAnswer: Answer) => {
+server.register('updateAnswer', async (newAnswer: Answer106) => {
   const answer1010 = answers1010.update(
     convert106To1010(newAnswer) as SavedAnswer
   )

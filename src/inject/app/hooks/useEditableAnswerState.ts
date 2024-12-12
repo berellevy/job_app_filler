@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { sleep } from '@src/shared/utils/async'
-import { Answer, FieldPath } from '@src/shared/utils/types'
+import { Answer106, FieldPath } from '@src/shared/utils/types'
 import { BaseFormInput } from '../services/formFields/baseFormInput'
 import contentScriptAPI from '../services/contentScriptApi'
 
 export type EditableAnswerState = {
   answers: EditableAnswer[]
   initAnswer?: (
-    originalAnswer: Answer & { id?: number | string },
+    originalAnswer: Answer106 & { id?: number | string },
     isNew?: boolean,
     editable?: boolean
   ) => EditableAnswer
@@ -23,7 +23,7 @@ export type EditableAnswerState = {
 }
 
 export type EditableAnswer = {
-  originalAnswer: Answer
+  originalAnswer: Answer106
   editedAnswer: {
     value: any
     path: FieldPath

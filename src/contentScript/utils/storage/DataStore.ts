@@ -1,9 +1,9 @@
 import elasticlunr from 'elasticlunr'
 import { NewAnswer, SavedAnswer } from './DataStoreTypes'
-import { Answer, FieldPath } from '@src/shared/utils/types'
+import { Answer106, FieldPath } from '@src/shared/utils/types'
 
 export const convert106To1010 = (
-  answer106: Answer
+  answer106: Answer106
 ): NewAnswer | SavedAnswer => {
   const answer1010 = { answer: answer106.answer, ...answer106.path }
   const { matchType, id } = answer106
@@ -18,7 +18,7 @@ export const convert106To1010 = (
 
 export const convert1010To106 = (
   answer1010: NewAnswer | SavedAnswer
-): Answer => {
+): Answer106 => {
   const { section, fieldType, fieldName, answer, id, matchType } =
     answer1010 as SavedAnswer
   return { answer, id, matchType, path: { section, fieldName, fieldType } }

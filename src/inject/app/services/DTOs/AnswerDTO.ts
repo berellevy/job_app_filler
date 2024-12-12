@@ -1,9 +1,11 @@
-import { Answer } from "@src/shared/utils/types"
+import { Answer106 } from "@src/shared/utils/types"
+import { AnswerDataTypes } from "./types"
 
 
 
-export default class AnswerDTO {
-    answer: string
+export default class AnswerDTO<AnswerDataType extends AnswerDataTypes.Any> {
+
+    answer: AnswerDataType
     id: number
     matchType: string
     section: string
@@ -29,7 +31,7 @@ export default class AnswerDTO {
         }
     }
 
-    static from106(answer106: Answer): AnswerDTO {
+    static from106(answer106: Answer106): AnswerDTO<AnswerDataTypes.Any> {
         const {answer, id, matchType, path: {section, fieldName, fieldType}} = answer106
         return new this({ answer, id, matchType, section, fieldName, fieldType })
     }

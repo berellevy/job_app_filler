@@ -3,7 +3,7 @@ import { getElement } from '@src/shared/utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
 import StringDTO from '../../DTOs/StringDTO'
-import { FieldPath, Answer } from '@src/shared/utils/types'
+import { FieldPath, Answer106 } from '@src/shared/utils/types'
 
 export class TextInput extends GreenhouseBaseInput<any> {
   DTO = StringDTO
@@ -26,7 +26,7 @@ export class TextInput extends GreenhouseBaseInput<any> {
     return this.inputElement()?.value
   }
 
-  async answer(path?: FieldPath): Promise<Answer[]> {
+  async answer(path?: FieldPath): Promise<Answer106[]> {
     const answers = await super.answer()
     return answers.map((answer106) => {
       const {
@@ -38,6 +38,7 @@ export class TextInput extends GreenhouseBaseInput<any> {
       return new this.DTO({ answer, id, matchType, section, fieldName, fieldType })
     })
   }
+  
   async fill(): Promise<void> {
     const answers = await this.answer()
     if (this.inputElement() && answers.length > 0) {
