@@ -12,7 +12,7 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class DropdownMulti extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.DROPDOWN_MULTI
-  // fieldType = 'SimpleDropdown'
+  fieldType = 'Dropdown'
 
   // public get answerValue() {
   //   return {

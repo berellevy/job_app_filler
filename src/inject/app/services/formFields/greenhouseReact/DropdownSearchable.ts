@@ -16,8 +16,7 @@ import { sleep } from '@src/shared/utils/async'
 
 export class DropdownSearchable extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.DROPDOWN_SEARCHABLE
-  // fieldType = 'SimpleDropdown'
-  fieldType = 'TextInput'
+  fieldType = 'Dropdown'
   // public get answerValue() {
   //   return {
   //     ...super.answerValue,
@@ -91,14 +90,16 @@ export class DropdownSearchable extends GreenhouseReactBaseInput<any> {
             // pagination of lazy answers is
             if (choices.length < 100) {
               for (const storedAnswer of answers) {
-                const answerValue = storedAnswer.answer[0]
+                const answerValue = storedAnswer.answer
+                // const answerValue = storedAnswer.answer[0]
                 if (await this.dropdown.fill(answerValue)) {
                   break
                 }
               }
             } else {
               for (const storedAnswer of answers) {
-                const answerValue = storedAnswer.answer[0]
+                // const answerValue = storedAnswer.answer[0]
+                const answerValue = storedAnswer.answer
                 if (await this.dropdown.fillBySearch(answerValue)) {
                   break
                 }

@@ -11,8 +11,7 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
  */
 export class Checkboxes extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.MULTI_CHECKBOX
-  // fieldType = 'SimpleDropdown'
-fieldType = 'TextInput'
+  fieldType = 'Dropdown'
   // public get answerValue() {
   //   return {
   //     ...super.answerValue,

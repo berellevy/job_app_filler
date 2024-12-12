@@ -17,8 +17,7 @@ export class DropdownSearchable extends WorkdayBaseInput<
 > {
   editableAnswerHook = useEditableAnswerState
   static XPATH = xpaths.SEARCHABLE_SINGLE_DROPDOWN
-  // fieldType = 'SimpleDropdown'
-  fieldType = 'TextInput'
+  fieldType = 'Dropdown'
   // public get answerValue() {
   //   return {
   //     ...super.answerValue,

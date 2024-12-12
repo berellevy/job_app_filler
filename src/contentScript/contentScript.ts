@@ -4,7 +4,8 @@ import { EVENT_LISTENER_ID, loadApp } from './app/App'
 import { answers1010, migrate1010 } from './utils/storage/Answers1010'
 import { convert106To1010, convert1010To106 } from './utils/storage/DataStore'
 import { SavedAnswer } from './utils/storage/DataStoreTypes'
-import { migrateEducation } from './utils/storage/migrateEducationSectionNames'
+import { migrateEducation } from './utils/storage/migrations/migrateEducationSectionNames'
+import simpleDropdownToDropdownMigration from './utils/storage/migrations/simpleDropdownToDropdown'
 
 // Regiser server and methods accessible to injected script.
 const server = new Server(process.env.CONTENT_SCRIPT_URL)
@@ -50,8 +51,8 @@ const run = async () => {
   await answers1010.load()
   await migrate1010()
   await migrateEducation()
+  await simpleDropdownToDropdownMigration.run()
   injectScript('inject.js')
   loadApp()
 }
-
 run()

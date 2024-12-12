@@ -14,22 +14,25 @@ async function migrationCompleted(): Promise<boolean> {
 }
 
 async function markMigrationAsCompleted() {
-  await chrome.storage.local.set({[EDUCATION_MIGRATION_KEY]: true})
+  await chrome.storage.local.set({ [EDUCATION_MIGRATION_KEY]: true })
 }
 
 async function runMigration() {
   console.log("migrating education")
-  const {answers1010} = await chrome.storage.local.get("answers1010")
+  const { answers1010 } = await chrome.storage.local.get("answers1010")
   if (!answers1010) {
     return
   }
-
-  for (const item of answers1010.store) {
-    if (item[1].section.length === 1) {
-      item[1].section = "education " + item[1].section
+  try {
+    for (const item of answers1010.store) {
+      if (item[1].section.length === 1) {
+        item[1].section = "education " + item[1].section
+      }
     }
+    await chrome.storage.local.set({ answers1010 })
+  } catch {
+
   }
-  await chrome.storage.local.set({answers1010})
 }
 
 export const migrateEducation = async () => {

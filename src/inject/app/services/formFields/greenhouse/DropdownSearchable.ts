@@ -12,8 +12,7 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class DropdownSearchable extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.DROPDOWN_SEARCHABLE
-  // fieldType = 'SimpleDropdown'
-  fieldType = 'TextInput'
+  fieldType = 'Dropdown'
   // public get answerValue() {
   //   return {
   //     ...super.answerValue,

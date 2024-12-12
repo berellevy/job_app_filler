@@ -18,8 +18,7 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class Dropdown extends WorkdayBaseInput<string[] | null> {
   static XPATH: string = xpaths.SIMPLE_DROPDOWN
-  // fieldType: string = 'SimpleDropdown'
-  fieldType = 'TextInput'
+  fieldType = 'Dropdown'
   // public get answerValue() {
   //   return {
   //     ...super.answerValue,
@@ -118,23 +117,18 @@ export class Dropdown extends WorkdayBaseInput<string[] | null> {
       const answers = await this.answer()
       await scrollBack(async () => {
         for (const answer of answers) {
-          const answerList = answer.answer
+          const answerValue = answer.answer
           this.openDropdown()
           await sleep(50)
           const dropdownElement = await this.dropdownElement()
           if (dropdownElement) {
-            while (answerList.length > 0) {
-              const answer = answerList.shift()
-              const XPATH = this.answerElementXpath(answer)
-              const answerElement = getElement(dropdownElement, XPATH)
-
-              if (answerElement) {
-                getReactProps(answerElement).onClick({
-                  preventDefault: () => {},
-                })
-                this.closeDropdown()
-                return
-              }
+            const XPATH = this.answerElementXpath(answerValue)
+            const answerElement = getElement(dropdownElement, XPATH)
+            if (answerElement) {
+              getReactProps(answerElement).onClick({
+                preventDefault: () => {},
+              })
+              break
             }
           }
         }

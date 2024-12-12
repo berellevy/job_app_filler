@@ -10,8 +10,7 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class AddressSearchable extends GreenhouseBaseInput<any> {
   static XPATH = xpaths.ADDRESS_SEARCH_FIELD
-  // fieldType = 'SimpleDropdown'
-fieldType = 'TextInput'
+  fieldType = 'Dropdown'
   public get answerValue() {
     return {
       ...super.answerValue,

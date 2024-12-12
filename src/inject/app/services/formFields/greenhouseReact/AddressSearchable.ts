@@ -14,8 +14,7 @@ import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
 
 export class AddressSearchable extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.ADDRESS_SEARCHABLE
-  // fieldType = 'SimpleDropdown'
-  fieldType = 'TextInput'
+  fieldType = 'Dropdown'
   // public get answerValue() {
   //   return {
   //     ...super.answerValue,
@@ -161,7 +160,8 @@ export class AddressSearchable extends GreenhouseReactBaseInput<any> {
           this.openDropdown()
           const reactProps = getReactProps(this.searchInputElement)
           for (const storedAnswer of answers) {
-            const answerValue = storedAnswer.answer[0]
+            const answerValue = storedAnswer.answer
+            // const answerValue = storedAnswer.answer[0]
             this.searchInputElement.value = answerValue
             reactProps?.onChange({ currentTarget: this.searchInputElement })
             const correctAnswerElement = await this.waitForCorrectAnswerElement(

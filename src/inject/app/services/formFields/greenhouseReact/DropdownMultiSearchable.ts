@@ -17,8 +17,7 @@ import { EditableAnswer } from "../../../hooks/useEditableAnswerState";
  */
 export class DropdownMultiSearchable extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.DROPDOWN_MULTI_SEARCHABLE
-  // fieldType = 'SimpleDropdown'
-  fieldType = 'TextInput'
+  fieldType = 'Dropdown'
   // public get answerValue() {
   //   return {
   //     ...super.answerValue,
@@ -175,7 +174,8 @@ export class DropdownMultiSearchable extends GreenhouseReactBaseInput<any> {
           this.clearSelection()
           this.openDropdown()
           for (const storedAnswer of answers) {
-            const answerValue = storedAnswer.answer[0]
+            const answerValue = storedAnswer.answer
+            // const answerValue = storedAnswer.answer[0]
             if (!answerValue) {
               break
             }

@@ -11,8 +11,7 @@ import { CheckboxWrapperContainer } from "./ElementWrappers/CheckboxWrapperConta
 
 export class CheckboxMulti extends GreenhouseReactBaseInput<any> {
   static XPATH = xpaths.CHECKBOX_MULTI
-  // fieldType = "SimpleDropdown"
-  fieldType = 'TextInput'
+  fieldType = "Dropdown"
   // public get answerValue() {
   //   return {
   //     ...super.answerValue,
@@ -42,9 +41,9 @@ export class CheckboxMulti extends GreenhouseReactBaseInput<any> {
 
   listenForChanges(): void {
     this.element.addEventListener("click", (e) => {
-      const {tagName} = (e.target as HTMLElement)
+      const { tagName } = (e.target as HTMLElement)
       if (tagName === "INPUT") {
-        this.triggerReactUpdate() 
+        this.triggerReactUpdate()
       }
     })
   }
@@ -75,7 +74,8 @@ export class CheckboxMulti extends GreenhouseReactBaseInput<any> {
         const choiceElements = this.choiceElements
         choiceElements.forEach(el => el.uncheck())
         for (const storedAnswer of answers) {
-          const correctChoice = this.choiceElements.find(el => el.value === storedAnswer.answer[0])
+          const correctChoice = this.choiceElements.find(el => el.value === storedAnswer.answer)
+          // const correctChoice = this.choiceElements.find(el => el.value === storedAnswer.answer[0])
           if (correctChoice) {
             correctChoice.check()
             break
