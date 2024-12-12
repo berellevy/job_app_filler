@@ -157,14 +157,14 @@ export const useEditableAnswerState = (
   }
 
   const saveAnswer: EditableAnswerState['saveAnswer'] = async (id) => {
-    const { editedAnswer: {path, value}, isNew } = answers.find((a) => a.id === id)
+    const { editedAnswer: { path, value }, isNew } = answers.find((a) => a.id === id)
     const answerForSave = {
       answer: backend.answerValue.prepForSave(value),
       path,
     }
     const method = isNew ? 'addAnswer' : 'updateAnswer'
     const answer = isNew ? { ...answerForSave } : { ...answerForSave, id }
-    const resp = await contentScriptAPI[method](answer)
+    const resp = await contentScriptAPI[method](answer, backend.answerDTOClass)
     if (resp.ok) {
       const newAnswer = initAnswer(resp.data)
       setAnswers((answers) => {
