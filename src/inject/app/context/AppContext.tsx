@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react'
 import { BaseFormInput } from '../services/formFields/baseFormInput'
-import { EditableAnswerState } from '../hooks/useEditableAnswerState'
+import { EditableAnswer, EditableAnswerState, useEditableAnswerState } from '../hooks/useEditableAnswerState'
 import { usePopperState } from '../hooks/usePopperState'
 import { AppContextType } from './types'
 import contentScriptAPI from '../services/contentScriptApi'
@@ -30,11 +30,14 @@ export const ContextProvider: FC<{
 }> = ({ children, backend }) => {
   const [currentValue, setCurrentValue] = useState<any>(null)
   const [fillButtonDisabled, setFillButtonDisabled] = useState<boolean>(false)
+
   const editableAnswerState: EditableAnswerState =
-    backend.editableAnswerHook(backend)
-  const {fieldNotice, saveButtonClickHandler} = backend
+    useEditableAnswerState(backend)
+
+  const { fieldNotice, saveButtonClickHandler } = backend
+
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       await editableAnswerState.init()
       await refresh()
       await handleFill()
@@ -45,6 +48,10 @@ export const ContextProvider: FC<{
     }
   }, [])
 
+  const originalAnswers = editableAnswerState.answers.map(({ originalAnswer }) => (
+    originalAnswer
+  ))
+
   const init = async () => {
     await editableAnswerState.init()
     await refresh()
@@ -53,7 +60,7 @@ export const ContextProvider: FC<{
   const refresh = async () => {
     setCurrentValue(backend.currentValue())
   }
-  
+
   const isFilled =
     editableAnswerState.answers.length > 0 &&
     backend.isFilled(
@@ -66,23 +73,25 @@ export const ContextProvider: FC<{
     await refresh()
   }
 
-  
+
 
   const handleFill = async () => {
     setFillButtonDisabled(true)
     try {
       const answers = await contentScriptAPI.getAnswers(backend.path, backend.answerDTOClass)
+      console.log({ originalAnswers, answers });
+
       if (answers.length > 0) {
         await backend.fill(answers)
         await refresh()
       }
-      
+
     } finally {
       setFillButtonDisabled(false)
     }
   }
-  
-  const moreInfoPopper = usePopperState({init, backend})
+
+  const moreInfoPopper = usePopperState({ init, backend })
   const value: AppContextType = {
     backend,
     refresh,
