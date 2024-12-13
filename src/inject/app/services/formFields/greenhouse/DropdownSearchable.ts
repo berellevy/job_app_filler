@@ -84,16 +84,14 @@ export class DropdownSearchable extends GreenhouseBaseInput {
 
   async fill(answers: AnswerDTO[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      if (answers.length > 0) {
-        for (const answer of answers) {
-          const answerValue = answer.answer
-          this.openDropdown()
-          if (await this.dropdownElement.selectCorrectAnswer(answerValue as string)) {
-            break
-          }
+      for (const answer of answers) {
+        const answerValue = answer.answer
+        this.openDropdown()
+        if (await this.dropdownElement.selectCorrectAnswer(answerValue as string)) {
+          break
         }
-        this.closeDropdown()
       }
+      this.closeDropdown()
     })
   }
 }

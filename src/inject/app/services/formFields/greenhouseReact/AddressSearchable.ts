@@ -114,7 +114,7 @@ export class AddressSearchable extends GreenhouseReactBaseInput {
   clearSelection(): void {
     if (this.clearSelectionButtonElement) {
       const reactProps = getReactProps(this.clearSelectionButtonElement)
-      reactProps.onMouseDown({ preventDefault: () => {} })
+      reactProps.onMouseDown({ preventDefault: () => { } })
     }
   }
 
@@ -132,24 +132,22 @@ export class AddressSearchable extends GreenhouseReactBaseInput {
   async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
       await scrollBack(async () => {
-        if (answers.length > 0) {
-          this.clearSelection()
-          this.openDropdown()
-          const reactProps = getReactProps(this.searchInputElement)
-          for (const storedAnswer of answers) {
-            const answerValue = storedAnswer.answer
-            this.searchInputElement.value = answerValue
-            reactProps?.onChange({ currentTarget: this.searchInputElement })
-            const correctAnswerElement = await this.waitForCorrectAnswerElement(
-              answerValue
-            )
-            if (correctAnswerElement) {
-              correctAnswerElement.click()
-              break
-            }
+        this.clearSelection()
+        this.openDropdown()
+        const reactProps = getReactProps(this.searchInputElement)
+        for (const storedAnswer of answers) {
+          const answerValue = storedAnswer.answer
+          this.searchInputElement.value = answerValue
+          reactProps?.onChange({ currentTarget: this.searchInputElement })
+          const correctAnswerElement = await this.waitForCorrectAnswerElement(
+            answerValue
+          )
+          if (correctAnswerElement) {
+            correctAnswerElement.click()
+            break
           }
-          reactProps?.onBlur()
         }
+        reactProps?.onBlur()
       })
     })
   }

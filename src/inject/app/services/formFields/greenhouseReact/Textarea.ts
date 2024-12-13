@@ -9,7 +9,7 @@ import AnswerDTO from "../../DTOs/AnswerDTO";
 export class Textarea extends GreenhouseReactBaseInput {
   static XPATH = xpaths.TEXTAREA
   fieldType = 'TextInput'
-  
+
   get labelElement(): HTMLElement {
     return getElement(this.element, `.//label`)
   }
@@ -27,13 +27,12 @@ export class Textarea extends GreenhouseReactBaseInput {
   currentValue() {
     return this.inputElement.value
   }
-  async fill(answers: AnswerDTO[]): Promise<void> {
-    if (answers.length > 0) {
-      const firstAnswer = answers[0]
-      this.inputElement.value = firstAnswer.answer as string
-      const reactProps = getReactProps(this.inputElement)
-      reactProps?.onChange({currentTarget: this.inputElement})
-    }
+
+  async fill(answers: AnswerDTO<string>[]): Promise<void> {
+    const firstAnswer = answers[0]
+    this.inputElement.value = firstAnswer.answer
+    const reactProps = getReactProps(this.inputElement)
+    reactProps?.onChange({ currentTarget: this.inputElement })
 
   }
 }

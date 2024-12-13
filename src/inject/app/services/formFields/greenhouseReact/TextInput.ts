@@ -5,11 +5,10 @@ import { getReactProps } from "../utils";
 import AnswerDTO from "../../DTOs/AnswerDTO";
 
 
-
 export class TextInput extends GreenhouseReactBaseInput {
   static XPATH = xpaths.TEXT_INPUT
   fieldType = 'TextInput'
-  
+
   get labelElement(): HTMLElement {
     return getElement(this.element, `.//label`)
   }
@@ -27,12 +26,11 @@ export class TextInput extends GreenhouseReactBaseInput {
   currentValue() {
     return this.inputElement.value
   }
+
   async fill(answers: AnswerDTO<string>[]): Promise<void> {
-      if (answers.length > 0) {
-        const firstAnswer = answers[0]
-        this.inputElement.value = firstAnswer.answer
-        const reactProps = getReactProps(this.inputElement)
-        reactProps?.onChange({currentTarget: this.inputElement})
-      }
+    const firstAnswer = answers[0]
+    this.inputElement.value = firstAnswer.answer
+    const reactProps = getReactProps(this.inputElement)
+    reactProps?.onChange({ currentTarget: this.inputElement })
   }
 }

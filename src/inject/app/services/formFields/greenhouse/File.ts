@@ -15,12 +15,9 @@ export class File extends GreenhouseBaseInput {
   static XPATH = xpaths.SINGLE_FILE_UPLOAD
   fieldType = 'SingleFileUpload'
   public saveButtonClickHandler = saveButtonClickHandlers.withNotice
-  fieldNotice =
-    "To save and autofill a file, upload it in the 'Answers' section below."
-  fieldNoticeLink = {
-    display: 'See How',
-    url: 'https://www.youtube.com/watch?v=JYMATq9siIY&t=134s',
-  }
+  fieldNotice = 
+    `##### To save and autofill files, upload them in the 'Answers' section below.
+    \n\n[See how](https://www.youtube.com/watch?v=JYMATq9siIY&t=134s)`
   get answerValue() {
     return {
       ...super.answerValue,
@@ -77,13 +74,12 @@ export class File extends GreenhouseBaseInput {
     ].join('')
     return getElement(this.element, XPATH)?.innerText || ''
   }
+  
   async fill(answers: AnswerDTO<AnswerDataTypes.File>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      if (answers.length > 0 && answers[0].answer) {
-        const file = localStorageToFile(answers[0].answer)
-        this.deleteButtonElement?.click()
-        dispatchFileDragEvent('drop', this.dropZoneElement, [file])
-      }
+      const file = localStorageToFile(answers[0].answer)
+      this.deleteButtonElement?.click()
+      dispatchFileDragEvent('drop', this.dropZoneElement, [file])
     })
   }
 }

@@ -15,22 +15,23 @@ export class File extends GreenhouseReactBaseInput {
   static XPATH = xpaths.FILE
   fieldType = 'SingleFileUpload'
   public saveButtonClickHandler = saveButtonClickHandlers.withNotice
-  fieldNotice = "To save and autofill files, upload them in the 'Answers' section below."
-  fieldNoticeLink = {
-    display: "See How",
-    url: "https://www.youtube.com/watch?v=JYMATq9siIY&t=134s"
-  }
+  fieldNotice =
+    `##### To save and autofill files, upload them in the 'Answers' section below.
+    \n\n[See how](https://www.youtube.com/watch?v=JYMATq9siIY&t=134s)`
+
   get answerValue() {
     return {
       ...super.answerValue,
       displayComponent: AnswerValueSingleFileUpload,
     } as AnswerValueMethods
   }
+
   get labelElement(): HTMLElement {
-    return getElement(this.element, 
+    return getElement(this.element,
       `.//div[contains(@class, "label")]`
     )
   }
+
   listenForChanges(): void {
     const observer = new MutationObserver((mutations: MutationRecord[]) => {
       const XPATH = `self::*[starts-with(@class, "file-upload__filename")]`
@@ -43,6 +44,7 @@ export class File extends GreenhouseReactBaseInput {
       subtree: true,
     })
   }
+
   currentValue() {
     return getElement(
       this.element,
@@ -57,6 +59,7 @@ export class File extends GreenhouseReactBaseInput {
       ".//button[@aria-label='Remove file']"
     )
   }
+
   get inputElement(): HTMLInputElement {
     return getElement(
       this.element,
@@ -68,18 +71,19 @@ export class File extends GreenhouseReactBaseInput {
     return current === stored[0].name
   }
 
-  
-  async fill(answers: AnswerDTO[]): Promise<void> {
+  async deleteCurrentFile(): Promise<void> {
+    if (this.deleteButtonElement) {
+      this.deleteButtonElement.click()
+      await sleep(500)
+    }
+  }
+
+  async fill(answers: AnswerDTO<LocalStorageFile>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      if (answers.length > 0) {
-        if (this.deleteButtonElement) {
-          this.deleteButtonElement.click()
-          await sleep(500)
-        }
-        const file = localStorageToFile(answers[0].answer as LocalStorageFile)
-        const reactProps = getReactProps(this.inputElement)
-        reactProps?.onChange({target: {files: [file]}})
-      }
+      await this.deleteCurrentFile()
+      const file = localStorageToFile(answers[0].answer)
+      const reactProps = getReactProps(this.inputElement)
+      reactProps?.onChange({ target: { files: [file] } })
     })
   }
 }

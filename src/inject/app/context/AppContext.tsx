@@ -72,8 +72,11 @@ export const ContextProvider: FC<{
     setFillButtonDisabled(true)
     try {
       const answers = await contentScriptAPI.getAnswers(backend.path, backend.answerDTOClass)
-      await backend.fill(answers)
-      await refresh()
+      if (answers.length > 0) {
+        await backend.fill(answers)
+        await refresh()
+      }
+      
     } finally {
       setFillButtonDisabled(false)
     }

@@ -8,7 +8,6 @@ import AnswerDTO from '../../DTOs/AnswerDTO'
 export class TextArea extends WorkdayBaseInput {
   static XPATH = xpaths.TEXT_AREA
   fieldType = 'TextInput'
-  private internalValue: string | null
 
   get inputElement(): HTMLInputElement {
     return getElement(this.element, './/textarea') as HTMLInputElement
@@ -29,11 +28,9 @@ export class TextArea extends WorkdayBaseInput {
 
   async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      if (answers.length > 0) {
-        fillReactTextInput(this.inputElement, answers[0].answer, {
-          eventName: 'onBlur',
-        })
-      }
+      fillReactTextInput(this.inputElement, answers[0].answer, {
+        eventName: 'onBlur',
+      })
     })
   }
 }

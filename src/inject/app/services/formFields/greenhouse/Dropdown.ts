@@ -77,7 +77,6 @@ export class Dropdown extends GreenhouseBaseInput {
   
   async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      if (answers.length > 0) {
         for (const answer of answers) {
           this.openDropdown()
           if (this.dropdownIsOpen) {
@@ -98,7 +97,6 @@ export class Dropdown extends GreenhouseBaseInput {
           }
         }
         this.closeDropdown()
-      }
     })
   }
 }

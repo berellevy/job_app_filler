@@ -40,19 +40,18 @@ export class DropdownMulti extends GreenhouseBaseInput {
   }
   async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      if (answers.length > 0) {
-        const {dropdown} = this.elements
-        dropdown.clearSelection()
-        dropdown.open()
-        for (const answer of answers) {
-          const answerValue = answer.answer
-          if (dropdown.selectAnswer(answerValue)) {
-            break
-          }
+      const { dropdown } = this.elements
+      dropdown.clearSelection()
+      dropdown.open()
+      for (const answer of answers) {
+        const answerValue = answer.answer
+        if (dropdown.selectAnswer(answerValue)) {
+          break
         }
-        dropdown.close()
       }
-      
+      dropdown.close()
+
+
     })
   }
 }
@@ -164,10 +163,10 @@ class DropdownContainer {
     if (!this.hasChoice(value)) {
       return false
     }
-    for (let i=0; i<this.choices.length; i++) {
+    for (let i = 0; i < this.choices.length; i++) {
       if (this.highlightedChoice()?.innerText === value) {
         this.keydownEnter()
-        return true 
+        return true
       }
       this.keydownArrowDown()
     }

@@ -27,8 +27,6 @@ export class Password extends WorkdayBaseInput {
   }
 
   async fill(answers: AnswerDTO<string>[]) {
-    if (answers.length > 0) {
-      fillReactTextInput(this.inputElement, answers[0].answer)
-    }
+    fillReactTextInput(this.inputElement, answers[0].answer)
   }
 }

@@ -29,9 +29,9 @@ export class CheckboxBoolean extends GreenhouseReactBaseInput {
 
   listenForChanges(): void {
     this.element.addEventListener("click", (e) => {
-      const {tagName} = (e.target as HTMLElement)
+      const { tagName } = (e.target as HTMLElement)
       if (tagName === "INPUT") {
-        this.triggerReactUpdate() 
+        this.triggerReactUpdate()
       }
     })
   }
@@ -54,11 +54,9 @@ export class CheckboxBoolean extends GreenhouseReactBaseInput {
 
   async fill(answers: AnswerDTO<boolean>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      if (answers.length > 0) {
-        const firstAnswer = answers[0].answer
-        if (!(this.currentValue() === firstAnswer)) {
-          this.checkboxWrapper.check()
-        }
+      const firstAnswer = answers[0].answer
+      if (!(this.currentValue() === firstAnswer)) {
+        this.checkboxWrapper.check()
       }
     })
   }

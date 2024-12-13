@@ -47,15 +47,13 @@ export class CheckboxMulti extends GreenhouseReactBaseInput {
 
   async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      if (answers.length > 0) {
-        const choiceElements = this.choiceElements
-        choiceElements.forEach(el => el.uncheck())
-        for (const storedAnswer of answers) {
-          const correctChoice = this.choiceElements.find(el => el.value === storedAnswer.answer)
-          if (correctChoice) {
-            correctChoice.check()
-            break
-          }
+      const choiceElements = this.choiceElements
+      choiceElements.forEach(el => el.uncheck())
+      for (const storedAnswer of answers) {
+        const correctChoice = this.choiceElements.find(el => el.value === storedAnswer.answer)
+        if (correctChoice) {
+          correctChoice.check()
+          break
         }
       }
     })

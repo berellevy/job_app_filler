@@ -58,11 +58,9 @@ export class MonthYear extends WorkdayBaseInput {
 
   async fill(answers: AnswerDTO<AnswerDataTypes.MonthYear>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      if (answers.length > 0) {
-        const [month, year] = answers[0].answer
-        await fillDatePart(this.monthInputElement, month)
-        await fillDatePart(this.yearInputElement, year)
-      }
+      const [month, year] = answers[0].answer
+      await fillDatePart(this.monthInputElement, month)
+      await fillDatePart(this.yearInputElement, year)
     })
   }
 }

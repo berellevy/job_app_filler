@@ -13,7 +13,7 @@ import AnswerDTO from '../../DTOs/AnswerDTO'
 export class Checkboxes extends GreenhouseBaseInput {
   static XPATH = xpaths.MULTI_CHECKBOX
   fieldType = 'Dropdown'
- 
+
   inputElement(): HTMLInputElement {
     return this.element as HTMLInputElement
   }
@@ -47,16 +47,14 @@ export class Checkboxes extends GreenhouseBaseInput {
 
   async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      if (answers.length > 0) {
-        for (const answer of answers) {
-          const correctAnswerElement = getElements(
-            this.element,
-            `.//label`
-          ).find((el) => el.innerText.trim() === answer.answer.trim())
-          if (correctAnswerElement) {
-            correctAnswerElement.click()
-            break
-          }
+      for (const answer of answers) {
+        const correctAnswerElement = getElements(
+          this.element,
+          `.//label`
+        ).find((el) => el.innerText.trim() === answer.answer.trim())
+        if (correctAnswerElement) {
+          correctAnswerElement.click()
+          break
         }
       }
     })

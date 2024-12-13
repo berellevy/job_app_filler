@@ -53,7 +53,7 @@ export class BooleanCheckbox extends WorkdayBaseInput {
   }
 
   public isFilled(current: any, stored: any[]): boolean {
-    return current===stored[0]
+    return current === stored[0]
   }
 
   /**
@@ -63,15 +63,15 @@ export class BooleanCheckbox extends WorkdayBaseInput {
    */
   async fill(answers: AnswerDTO<boolean>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      const isFilled = this.isFilled(this.currentValue(), answers.map(a=> a.answer))
-        if (answers.length > 0 && !isFilled) {
-          const initialValue = this.currentValue()
-          this.checkboxElement().click()
-          await waitForElement(
-            this.element,
-            this.currentStateXpath(!initialValue)
-          )
-        }
-      })
+      if (this.isFilled(this.currentValue(), answers.map(a => a.answer))) {
+        return
+      }
+      const initialValue = this.currentValue()
+      this.checkboxElement().click()
+      await waitForElement(
+        this.element,
+        this.currentStateXpath(!initialValue)
+      )
+    })
   }
 }

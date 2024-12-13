@@ -103,12 +103,12 @@ export class MonthDayYear extends WorkdayBaseInput {
 
   async fill(answers: AnswerDTO<AnswerDataTypes.MonthDayYear>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      if (answers.length > 0) {
-        const [month, day, year] = convertRelativeDate(answers[0].answer as unknown as AnswerValueRelativeDate)
-        await fillDatePart(this.monthInputElement, month)
-        await fillDatePart(this.dayInputElement, day)
-        await fillDatePart(this.yearInputElement, year)
-      }
+      const [month, day, year] = convertRelativeDate(
+        answers[0].answer as unknown as AnswerValueRelativeDate
+      )
+      await fillDatePart(this.monthInputElement, month)
+      await fillDatePart(this.dayInputElement, day)
+      await fillDatePart(this.yearInputElement, year)
     })
   }
 }

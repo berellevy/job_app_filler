@@ -37,27 +37,28 @@ export class AddressSearchable extends GreenhouseBaseInput {
   }
 
   async fill(answers: AnswerDTO<string>[]): Promise<void> {
+    if (!this.inputElement) {
+      return
+    }
     await fieldFillerQueue.enqueue(async () => {
-      if (this.inputElement && answers.length > 0) {
-        for (const answer of answers) {
-          this.inputElement().value = answer.answer
-          await sleep(100)
-          this.inputElement().dispatchEvent(new InputEvent('input'))
-          await waitForElement(this.element, './/auto-complete[@open]', {
-            timeout: 1500,
-          })
-          const correctAnswerXpath = [
-            './/ul/li',
-            `[text() = '${answer.answer}']`,
-          ].join('')
-          const correctAnswerElement = getElement(
-            this.element,
-            correctAnswerXpath
-          )
-          correctAnswerElement && correctAnswerElement.click()
-          if (this.currentValue() === answer.answer) {
-            return
-          }
+      for (const answer of answers) {
+        this.inputElement().value = answer.answer
+        await sleep(100)
+        this.inputElement().dispatchEvent(new InputEvent('input'))
+        await waitForElement(this.element, './/auto-complete[@open]', {
+          timeout: 1500,
+        })
+        const correctAnswerXpath = [
+          './/ul/li',
+          `[text() = '${answer.answer}']`,
+        ].join('')
+        const correctAnswerElement = getElement(
+          this.element,
+          correctAnswerXpath
+        )
+        correctAnswerElement && correctAnswerElement.click()
+        if (this.currentValue() === answer.answer) {
+          return
         }
       }
     })

@@ -10,7 +10,6 @@ export class BooleanRadio extends WorkdayBaseInput {
   static XPATH = xpaths.BOOLEAN_RADIO
   fieldType = 'BooleanRadio'
 
-
   listenForChanges(): void {
     const radioGroupElement = getElement(this.element, './/fieldset')
     radioGroupElement.addEventListener('change', (e) => {
@@ -34,7 +33,6 @@ export class BooleanRadio extends WorkdayBaseInput {
   }
 
   get checkedRadioElement(): HTMLElement {
-
     const XPATH = [
       ".//input[@type='radio'][@aria-checked='true']",
       '/ancestor::div',
@@ -57,16 +55,13 @@ export class BooleanRadio extends WorkdayBaseInput {
 
   async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      if (answers.length > 0) {
-        const XPATH = [
-          '//div',
-          `[label[${lowerText()}='${answers[0].answer.toLowerCase()}']]`,
-          "//input[@type='radio']",
-        ].join('')
-        const checkElement = getElement(this.element, XPATH)
-        checkElement?.click()
-      }
+      const XPATH = [
+        '//div',
+        `[label[${lowerText()}='${answers[0].answer.toLowerCase()}']]`,
+        "//input[@type='radio']",
+      ].join('')
+      const checkElement = getElement(this.element, XPATH)
+      checkElement?.click()
     })
   }
-  
 }

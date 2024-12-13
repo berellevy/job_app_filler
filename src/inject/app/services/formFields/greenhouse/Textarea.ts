@@ -11,24 +11,26 @@ export class Textarea extends GreenhouseBaseInput {
   inputElement(): HTMLInputElement {
     return getElement(this.element, ".//textarea") as HTMLInputElement
   }
+
   listenForChanges(): void {
     this.inputElement()?.addEventListener("input", () => {
       this.triggerReactUpdate()
     })
   }
+
   currentValue() {
     return this.inputElement()?.value
   }
+
   async fill(answers: AnswerDTO<string>[]): Promise<void> {
-    if (this.inputElement() && answers.length > 0){
-      const firstAnswer = answers[0]
-      await fieldFillerQueue.enqueue(async () => {
-        this.inputElement().value = firstAnswer.answer
-        this.inputElement().dispatchEvent(new InputEvent("input"))
-      })
+    if (!this.inputElement()) {
+      return
     }
+    const firstAnswer = answers[0]
+    this.inputElement().value = firstAnswer.answer
+    this.inputElement().dispatchEvent(new InputEvent("input"))
   }
 
-  
+
 
 }

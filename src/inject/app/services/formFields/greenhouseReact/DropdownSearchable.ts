@@ -38,7 +38,7 @@ export class DropdownSearchable extends GreenhouseReactBaseInput {
   clearSelection(): void {
     if (this.elements.clearSelectionButton) {
       const reactProps = getReactProps(this.elements.clearSelectionButton)
-      reactProps.onMouseDown({ preventDefault: () => {} })
+      reactProps.onMouseDown({ preventDefault: () => { } })
     }
   }
 
@@ -58,24 +58,22 @@ export class DropdownSearchable extends GreenhouseReactBaseInput {
     // TODO: break out dropdown as separate component.
     await fieldFillerQueue.enqueue(async () => {
       await scrollBack(async () => {
-        if (answers.length > 0) {
-          this.clearSelection()
-          this.dropdown.open()
-          if (await this.dropdown.isOpen()) {
-            const choices = await this.elements.waitForChoices()
-            if (choices.length < 100) {
-              for (const storedAnswer of answers) {
-                const answerValue = storedAnswer.answer
-                if (await this.dropdown.fill(answerValue)) {
-                  break
-                }
+        this.clearSelection()
+        this.dropdown.open()
+        if (await this.dropdown.isOpen()) {
+          const choices = await this.elements.waitForChoices()
+          if (choices.length < 100) {
+            for (const storedAnswer of answers) {
+              const answerValue = storedAnswer.answer
+              if (await this.dropdown.fill(answerValue)) {
+                break
               }
-            } else {
-              for (const storedAnswer of answers) {
-                const answerValue = storedAnswer.answer
-                if (await this.dropdown.fillBySearch(answerValue)) {
-                  break
-                }
+            }
+          } else {
+            for (const storedAnswer of answers) {
+              const answerValue = storedAnswer.answer
+              if (await this.dropdown.fillBySearch(answerValue)) {
+                break
               }
             }
           }
@@ -210,9 +208,9 @@ class Elements {
   get choices(): HTMLElement[] {
     return this.dropdown
       ? getElements(
-          this.dropdown,
-          `.//div[starts-with(@class, "select__option")]`
-        )
+        this.dropdown,
+        `.//div[starts-with(@class, "select__option")]`
+      )
       : []
   }
 

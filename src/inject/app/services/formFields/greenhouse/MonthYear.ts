@@ -58,14 +58,13 @@ export class MonthYear extends GreenhouseBaseInput {
   }
 
   async fill(answers: AnswerDTO<AnswerDataTypes.MonthYear>[]): Promise<void> {
-    if (answers.length > 0) {
-      await fieldFillerQueue.enqueue(async () => {
-        const [month, year] = answers[0].answer
-        this.monthInputElement.value = month
-        this.monthInputElement.dispatchEvent(new InputEvent('input'))
-        this.yearInputElement.value = year
-        this.yearInputElement.dispatchEvent(new InputEvent('input'))
-      })
-    }
+
+    await fieldFillerQueue.enqueue(async () => {
+      const [month, year] = answers[0].answer
+      this.monthInputElement.value = month
+      this.monthInputElement.dispatchEvent(new InputEvent('input'))
+      this.yearInputElement.value = year
+      this.yearInputElement.dispatchEvent(new InputEvent('input'))
+    })
   }
 }

@@ -70,9 +70,9 @@ export class DropdownMultiSearchable extends GreenhouseReactBaseInput {
     const { dropdownElement } = this
     return dropdownElement
       ? getElements(
-          dropdownElement,
-          `.//div[starts-with(@class, "select__option")]`
-        )
+        dropdownElement,
+        `.//div[starts-with(@class, "select__option")]`
+      )
       : []
   }
 
@@ -108,7 +108,7 @@ export class DropdownMultiSearchable extends GreenhouseReactBaseInput {
   clearSelection(): void {
     if (this.clearSelectionButtonElement) {
       const reactProps = getReactProps(this.clearSelectionButtonElement)
-      reactProps.onMouseDown({ preventDefault: () => {} })
+      reactProps.onMouseDown({ preventDefault: () => { } })
     }
   }
 
@@ -127,9 +127,9 @@ export class DropdownMultiSearchable extends GreenhouseReactBaseInput {
 
   async waitForDropdownElement(): Promise<HTMLElement> {
     return await waitForElement(
-      this.element, 
+      this.element,
       `.//div[starts-with(@class, "select__menu")]`,
-      {timeout: 200}
+      { timeout: 200 }
     )
   }
 
@@ -144,24 +144,22 @@ export class DropdownMultiSearchable extends GreenhouseReactBaseInput {
   }
 
   async fill(answers: AnswerDTO<string>[]): Promise<void> {
-    await scrollBack(async () => {
-      await fieldFillerQueue.enqueue(async () => {
-        if (answers.length > 0) {
-          this.clearSelection()
-          this.openDropdown()
-          for (const storedAnswer of answers) {
-            const answerValue = storedAnswer.answer
-            if (!answerValue) {
-              break
-            }
-            fillReactTextInput(this.searchInputElement, answerValue)
-            const correctAnswerElement = await this.waitForCorrectAnswerElement(
-              answerValue
-            )
-            if (correctAnswerElement) {
-              correctAnswerElement.click()
-              break
-            }
+    await fieldFillerQueue.enqueue(async () => {
+      await scrollBack(async () => {
+        this.clearSelection()
+        this.openDropdown()
+        for (const storedAnswer of answers) {
+          const answerValue = storedAnswer.answer
+          if (!answerValue) {
+            break // if the selected answer is blank...
+          }
+          fillReactTextInput(this.searchInputElement, answerValue)
+          const correctAnswerElement = await this.waitForCorrectAnswerElement(
+            answerValue
+          )
+          if (correctAnswerElement) {
+            correctAnswerElement.click()
+            break
           }
         }
         this.closeDropdown()

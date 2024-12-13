@@ -21,10 +21,9 @@ import { AnswerDataTypes } from '../../DTOs/types'
 export class FileMulti extends WorkdayBaseInput {
   fieldType = 'MultiFileUpload'
   public saveButtonClickHandler = saveButtonClickHandlers.withNotice
-  fieldNotice = [
+  fieldNotice =
     `##### To save and autofill files, upload them in the 'Answers' section below.
-    \n\n[See how](https://www.youtube.com/watch?v=JYMATq9siIY&t=134s)`,
-  ].join('')
+    \n\n[See how](https://www.youtube.com/watch?v=JYMATq9siIY&t=134s)`
   static XPATH = xpaths.MULTI_FILE_UPLOAD
 
   get answerValue() {
@@ -103,21 +102,19 @@ export class FileMulti extends WorkdayBaseInput {
 
   async fill(answers: AnswerDTO<AnswerDataTypes.File[]>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      if (answers.length > 0) {
-        const firstAnswer = answers[0]
-        const files = firstAnswer.answer.map(localStorageToFile)
-        for (const button of this.uploadedFileDeleteButtonElements) {
-          button.click()
+      const firstAnswer = answers[0]
+      const files = firstAnswer.answer.map(localStorageToFile)
+      for (const button of this.uploadedFileDeleteButtonElements) {
+        button.click()
+      }
+      await sleep(50)
+      for (const file of files) {
+        const fakeEvent = {
+          dataTransfer: { files: [file] },
+          preventDefault: () => { },
+          stopPropagation: () => { },
         }
-        await sleep(50)
-        for (const file of files) {
-          const fakeEvent = {
-            dataTransfer: { files: [file] },
-            preventDefault: () => {},
-            stopPropagation: () => {},
-          }
-          getReactProps(this.dropZoneElement).onDrop(fakeEvent)
-        }
+        getReactProps(this.dropZoneElement).onDrop(fakeEvent)
       }
     })
   }

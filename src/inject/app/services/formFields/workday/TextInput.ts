@@ -1,6 +1,6 @@
 import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import { getElement } from '@src/shared/utils/getElements'
-import { fillReactTextInput, getReactProps } from '../utils'
+import { getReactProps } from '../utils'
 import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { xpaths } from './xpaths'
 import AnswerDTO from '../../DTOs/AnswerDTO'
@@ -39,16 +39,14 @@ export class TextInput extends WorkdayBaseInput {
    */
   async fill(answers: AnswerDTO<string>[]) {
     await fieldFillerQueue.enqueue(async () => {
-      if (answers.length > 0) {
-        const firstAnswer = answers[0]
-        const reactProps = getReactProps(this.inputElement)
-        this.inputElement.value = firstAnswer.answer
-        if (reactProps.onChange) {
-          reactProps.onChange({ target: this.inputElement })
-        }
-        if (reactProps.onBlur) {
-          reactProps.onBlur({ target: this.inputElement })
-        }
+      const firstAnswer = answers[0]
+      const reactProps = getReactProps(this.inputElement)
+      this.inputElement.value = firstAnswer.answer
+      if (reactProps.onChange) {
+        reactProps.onChange({ target: this.inputElement })
+      }
+      if (reactProps.onBlur) {
+        reactProps.onBlur({ target: this.inputElement })
       }
     })
   }
