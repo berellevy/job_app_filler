@@ -28,7 +28,6 @@ export function isVisible(el: HTMLElement): boolean {
 
 export abstract class BaseFormInput<AnswerType = any> {
   answerDTOClass: typeof AnswerDTO = AnswerDTO
-  public editableAnswerHook = useEditableAnswerState
   public saveButtonClickHandler: SaveButtonClickHndler =
     saveButtonClickHandlers.basic
   /** Supports Markdown */
