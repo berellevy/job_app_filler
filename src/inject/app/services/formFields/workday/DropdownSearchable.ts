@@ -155,8 +155,6 @@ export class DropdownSearchable extends WorkdayBaseInput<
                 ".//div[@data-automation-id='promptOption']"
               )
             if (firstChoice) {
-              console.log('firstChoice');
-              
               firstChoice.click()
               break
             }
