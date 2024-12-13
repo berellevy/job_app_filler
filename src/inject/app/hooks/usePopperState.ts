@@ -7,7 +7,7 @@ import {
   useState,
   useEffect,
 } from 'react'
-import { AppContextType } from '../AppContext'
+import { AppContextType } from '../context/types'
 
 
 export type PopperState = {
@@ -49,7 +49,9 @@ const handleEscape = (e: KeyboardEvent) => {
   }
 }
 
-export const usePopperState = ({init, backend}: Pick<AppContextType, "init" | "backend">): PopperState => {
+
+type PopperStateArgs = Pick<AppContextType, "init" | "backend">
+export const usePopperState = ({init, backend}:PopperStateArgs ): PopperState => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const anchorRef = useRef(null)
   const popperRef = useRef(null)

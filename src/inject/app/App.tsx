@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 
 import { Box, Grid, ThemeProvider } from '@mui/material'
 import { theme } from '@src/shared/utils/react'
-import { ContextProvider } from './AppContext'
+import { ContextProvider } from './context/AppContext'
 
 import { BaseFormInput } from './services/formFields/baseFormInput'
 import { FieldWidgetButtons } from './FieldWidget/FieldWidgetButtons'

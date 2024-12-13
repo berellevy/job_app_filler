@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import React, { FC } from 'react'
 
-import { useAppContext } from '../AppContext'
+import { useAppContext } from '../context/AppContext'
 import { AddIcon, InfoIcon } from '@src/shared/utils/icons'
 import { AnswerDisplayComponent } from './AnswerDisplay/AnswerDisplayComponent'
 import { Item } from './components'

@@ -11,7 +11,7 @@ import React, { FC } from 'react'
 import { joinComponents } from '@src/shared/utils/react'
 import { CloseIcon, EditIcon, InputIcon } from '@src/shared/utils/icons'
 import { AbsoluteRelativeSwitch } from '../../../components/AbsoluteRelativeSwitch'
-import { useAppContext } from '../../../AppContext'
+import { useAppContext } from '../../../context/AppContext'
 
 /**
  * The Value is stored as an array of strings.

@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import React, { FC } from 'react'
 
-import { useAppContext } from '../../../AppContext'
+import { useAppContext } from '../../../context/AppContext'
 import { CloseIcon, EditIcon, InputIcon } from '@src/shared/utils/icons'
 
 export const AnswerValueSingleBool: FC<{ id: number }> = ({ id }) => {

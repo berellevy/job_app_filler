@@ -1,7 +1,7 @@
 import { Answer106 } from '@src/shared/utils/types'
-import { AppContextType } from '../AppContext'
 import  contentScriptAPI  from '../services/contentScriptApi'
 import AnswerDTO from '../services/DTOs/AnswerDTO'
+import { AppContextType } from '../context/types'
 
 export interface SaveButtonClickHndler {
   (

@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import React, { FC, useRef } from 'react'
 import { ConfirmButton } from '../../components/ConfirmButton'
-import { useAppContext } from '../../AppContext'
+import { useAppContext } from '../../context/AppContext'
 import { SimplePopper } from '../../components/SimplePopper'
 import { DeleteIcon, EditIcon, CloseIcon } from '@src/shared/utils/icons'
 import { sentenceCase } from '@src/shared/utils/strings'

@@ -9,7 +9,7 @@ import {
 import React, { FC } from 'react'
 
 import { CloseIcon, EditIcon, InputIcon } from '@src/shared/utils/icons'
-import { useAppContext } from '../../../AppContext'
+import { useAppContext } from '../../../context/AppContext'
 
 export const AnswerValueSingleString: FC<{ id: number }> = ({ id }) => {
   const {

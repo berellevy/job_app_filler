@@ -2,7 +2,7 @@ import { CardHeader, IconButton, CircularProgress, Box } from '@mui/material'
 import { startCase } from 'lodash'
 import React, { FC } from 'react'
 import { RefreshIcon, CloseIcon } from '@src/shared/utils/icons'
-import { useAppContext } from '../AppContext'
+import { useAppContext } from '../context/AppContext'
 
 export const MoreInfoHeader: FC = () => {
   const {

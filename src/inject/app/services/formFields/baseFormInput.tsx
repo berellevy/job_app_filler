@@ -182,11 +182,9 @@ export abstract class BaseFormInput<AnswerType> {
     path = path || this.path
     const res = await contentScriptAPI.getAnswers(path, this.answerDTOClass)
     if (res.ok) {
-      console.log(res.data);
-      
       return res.data
     } else {
-      console.log(res, this.path)
+      console.error(res, this.path)
       return []
     }
   }

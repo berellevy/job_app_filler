@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import React, { FC } from 'react'
 
-import { useAppContext } from '../../../AppContext'
+import { useAppContext } from '../../../context/AppContext'
 import { joinComponents } from '@src/shared/utils/react'
 import { CloseIcon, EditIcon, InputIcon } from '@src/shared/utils/icons'
 

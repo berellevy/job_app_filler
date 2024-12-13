@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import React, { FC, useEffect } from 'react'
 
-import { useAppContext } from '../../../AppContext'
+import { useAppContext } from '../../../context/AppContext'
 import {
   EditIcon,
   CloseIcon,

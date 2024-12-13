@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import React, { FC } from 'react'
 
-import { useAppContext } from '../AppContext'
+import { useAppContext } from '../context/AppContext'
 import { MoreInfoHeader } from './MoreInfoHeader'
 import { FieldNotice, Item } from './components'
 import { AnswersSection } from './AnswerSection'
