@@ -10,7 +10,6 @@ import { useEditableAnswerState } from '../../../hooks/useEditableAnswerState'
 import AnswerDTO from '../../DTOs/AnswerDTO'
 
 export class DropdownSearchable extends WorkdayBaseInput {
-  editableAnswerHook = useEditableAnswerState
   static XPATH = xpaths.SEARCHABLE_SINGLE_DROPDOWN
   fieldType = 'Dropdown'
 
