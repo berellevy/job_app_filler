@@ -16,7 +16,6 @@ export type EditableAnswerState = {
   cancelEdit: (id: number) => void
   setEditedPath: (id: number, key: keyof FieldPath, value: any) => void
   setEditedValue: (id: number, value: any) => void
-  editedPathMatchesExistingPath: boolean
   saveAnswer: (id: number) => Promise<void>
   addNewAnswer: (path: FieldPath, value: any) => void
   deleteAnswer: (id: number) => Promise<void>
@@ -40,8 +39,6 @@ export const useEditableAnswerState = (
   backend: BaseFormInput
 ): EditableAnswerState => {
   const [answers, setAnswers] = useState<EditableAnswer[]>([])
-  const [editedPathMatchesExistingPath, setEditedPathMatchesExistingPath] =
-    useState<boolean>(false)
 
   const tempErrorMessage = (
     id: number,
@@ -201,7 +198,6 @@ export const useEditableAnswerState = (
     setEditable,
     setEditedPath,
     setEditedValue,
-    editedPathMatchesExistingPath,
     saveAnswer,
     addNewAnswer,
     deleteAnswer,
