@@ -2,9 +2,7 @@ import { createRoot } from 'react-dom/client'
 import { BaseFormInput } from '../baseFormInput'
 import { getElement } from '@src/shared/utils/getElements'
 
-export abstract class GreenhouseReactBaseInput<
-  AnswerType
-> extends BaseFormInput<AnswerType> {
+export abstract class GreenhouseReactBaseInput extends BaseFormInput {
   get labelDisplayElement(): HTMLElement {
     return this.labelElement
   }

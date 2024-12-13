@@ -1,7 +1,8 @@
 export type DataType = "string"
 
 export namespace AnswerDataTypes {
-    export type MonthDayYear = [string, string, string]
+    export type relativeDate = string
+    export type MonthDayYear = [string, string, string] | relativeDate
     export type MonthYear = [string, string]
     export type File = {
         body: string,

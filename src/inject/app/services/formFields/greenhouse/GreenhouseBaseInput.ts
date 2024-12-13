@@ -2,9 +2,7 @@ import { createRoot } from 'react-dom/client'
 import { BaseFormInput, isRegistered, isVisible } from '../baseFormInput'
 import { getElement, getElements } from '@src/shared/utils/getElements'
 
-export abstract class GreenhouseBaseInput<
-  AnswerType
-> extends BaseFormInput<AnswerType> {
+export abstract class GreenhouseBaseInput extends BaseFormInput {
   abstract inputElement(): HTMLInputElement
   static async autoDiscover(node: Node = document) {
     const elements = getElements(node, this.XPATH)

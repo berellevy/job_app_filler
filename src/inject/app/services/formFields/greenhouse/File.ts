@@ -7,9 +7,11 @@ import { LocalStorageFile, localStorageToFile } from '@src/shared/utils/file'
 import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import { dispatchFileDragEvent } from '@src/shared/utils/fileUploadHelpers'
 import { saveButtonClickHandlers } from '../../../hooks/saveButtonClickHandlers'
+import { AnswerDataTypes } from '../../DTOs/types'
+import AnswerDTO from '../../DTOs/AnswerDTO'
 
 
-export class File extends GreenhouseBaseInput<any> {
+export class File extends GreenhouseBaseInput {
   static XPATH = xpaths.SINGLE_FILE_UPLOAD
   fieldType = 'SingleFileUpload'
   public saveButtonClickHandler = saveButtonClickHandlers.withNotice
@@ -75,11 +77,10 @@ export class File extends GreenhouseBaseInput<any> {
     ].join('')
     return getElement(this.element, XPATH)?.innerText || ''
   }
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO<AnswerDataTypes.File>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      const answer = (await this.answer()) || []
-      if (answer.length > 0 && answer[0].answer) {
-        const file = localStorageToFile(answer[0].answer)
+      if (answers.length > 0 && answers[0].answer) {
+        const file = localStorageToFile(answers[0].answer)
         this.deleteButtonElement?.click()
         dispatchFileDragEvent('drop', this.dropZoneElement, [file])
       }

@@ -19,12 +19,13 @@ const updateAnswer = async (answer: any, DTOClass: typeof AnswerDTO) => {
     return resp
 }
 
-const getAnswers = async (path: FieldPath, DTOClass: typeof AnswerDTO) => {
+const getAnswers = async (path: FieldPath, DTOClass: typeof AnswerDTO): Promise<any[]> => {
     const resp = await client.send("getAnswer", path)
-    if (resp.ok) {
-        resp.data = resp.data.map((a: Answer106) => DTOClass.from106(a))
+    if (!resp.ok) {
+        console.error({resp, path})
+        return []
     }
-    return resp
+    return resp.data.map((a: Answer106) => DTOClass.from106(a))
 }
 
 const deleteAnswer = async (id: number) => {

@@ -3,7 +3,7 @@ import { AnswerDataTypes } from "./types"
 
 
 
-export default class AnswerDTO<AnswerDataType extends AnswerDataTypes.Any> {
+export default class AnswerDTO<AnswerDataType = AnswerDataTypes.Any> {
 
     answer: AnswerDataType
     id: number

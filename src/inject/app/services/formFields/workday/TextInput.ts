@@ -3,8 +3,9 @@ import { getElement } from '@src/shared/utils/getElements'
 import { fillReactTextInput, getReactProps } from '../utils'
 import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { xpaths } from './xpaths'
+import AnswerDTO from '../../DTOs/AnswerDTO'
 
-export class TextInput extends WorkdayBaseInput<string | null> {
+export class TextInput extends WorkdayBaseInput {
   static XPATH = xpaths.TEXT_INPUT
   fieldType = 'TextInput'
 
@@ -36,16 +37,9 @@ export class TextInput extends WorkdayBaseInput<string | null> {
    * the listenForChanges method gets the blur event with the target.value still blank
    * and goes ahead calls onBlur again (i think) which sets react state to be a blank string.
    */
-  async fill() {
+  async fill(answers: AnswerDTO<string>[]) {
     await fieldFillerQueue.enqueue(async () => {
-      const answers = await this.answer()
-      if (
-        answers.length > 0 &&
-        !this.isFilled(
-          this.currentValue(),
-          answers.map((a) => a.answer)
-        )
-      ) {
+      if (answers.length > 0) {
         const firstAnswer = answers[0]
         const reactProps = getReactProps(this.inputElement)
         this.inputElement.value = firstAnswer.answer

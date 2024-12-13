@@ -8,9 +8,11 @@ import { scrollBack } from '@src/shared/utils/scroll'
 import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'
 import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
+import AnswerDTO from '../../DTOs/AnswerDTO'
 
-export class CheckboxesSingle extends WorkdayBaseInput<any> {
+export class CheckboxesSingle extends WorkdayBaseInput {
   static XPATH: string = xpaths.MULTI_CHECKBOX
+  // TODO: convert to dropdown type
   fieldType: string = 'MultiCheckbox'
   public get answerValue() {
     return {
@@ -75,7 +77,7 @@ export class CheckboxesSingle extends WorkdayBaseInput<any> {
     }
   }
 
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
       await scrollBack(async () => {
         if (this.selectedCheckBoxElement) {
@@ -84,7 +86,6 @@ export class CheckboxesSingle extends WorkdayBaseInput<any> {
             ".//input[@type='checkbox']"
           ).click()
         }
-        const answers = (await this.answer()) || []
         const answerValues = answers
           .map((answer: Answer106) => answer.answer)
           .flat()

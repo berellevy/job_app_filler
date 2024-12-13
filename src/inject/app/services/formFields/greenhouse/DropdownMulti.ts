@@ -6,8 +6,9 @@ import {
 } from '@src/shared/utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
+import AnswerDTO from '../../DTOs/AnswerDTO'
 
-export class DropdownMulti extends GreenhouseBaseInput<any> {
+export class DropdownMulti extends GreenhouseBaseInput {
   static XPATH = xpaths.DROPDOWN_MULTI
   fieldType = 'Dropdown'
 
@@ -37,9 +38,8 @@ export class DropdownMulti extends GreenhouseBaseInput<any> {
       this.elements.selectedOptions.map((element) => element.innerText)[0] || ''
     )
   }
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      const answers = await this.answer()
       if (answers.length > 0) {
         const {dropdown} = this.elements
         dropdown.clearSelection()

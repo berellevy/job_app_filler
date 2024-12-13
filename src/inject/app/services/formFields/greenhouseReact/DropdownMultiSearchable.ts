@@ -4,6 +4,7 @@ import { scrollBack } from "@src/shared/utils/scroll";
 import { fillReactTextInput, getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { xpaths } from "./xpaths";
+import AnswerDTO from "../../DTOs/AnswerDTO";
 
 
 /**
@@ -11,7 +12,7 @@ import { xpaths } from "./xpaths";
  * Currently this is a clone of `Dropdown`.
  * the only difference is how current value is detected.
  */
-export class DropdownMultiSearchable extends GreenhouseReactBaseInput<any> {
+export class DropdownMultiSearchable extends GreenhouseReactBaseInput {
   static XPATH = xpaths.DROPDOWN_MULTI_SEARCHABLE
   fieldType = 'Dropdown'
 
@@ -142,10 +143,9 @@ export class DropdownMultiSearchable extends GreenhouseReactBaseInput<any> {
     return await waitForElement(dropdownElement, XPATH, { timeout: 200 })
   }
 
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await scrollBack(async () => {
       await fieldFillerQueue.enqueue(async () => {
-        const answers = await this.answer()
         if (answers.length > 0) {
           this.clearSelection()
           this.openDropdown()

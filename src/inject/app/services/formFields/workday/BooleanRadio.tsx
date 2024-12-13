@@ -4,8 +4,9 @@ import { WorkdayBaseInput } from './WorkdayBaseInput'
 import stringMatch from '@src/shared/utils/stringMatch'
 import { lowerText } from '@src/shared/utils/xpath'
 import { xpaths } from './xpaths'
+import AnswerDTO from '../../DTOs/AnswerDTO'
 
-export class BooleanRadio extends WorkdayBaseInput<string> {
+export class BooleanRadio extends WorkdayBaseInput {
   static XPATH = xpaths.BOOLEAN_RADIO
   fieldType = 'BooleanRadio'
 
@@ -54,13 +55,12 @@ export class BooleanRadio extends WorkdayBaseInput<string> {
     return this.checkedRadioElement?.textContent
   }
 
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      const answer = await this.answer()
-      if (answer.length > 0) {
+      if (answers.length > 0) {
         const XPATH = [
           '//div',
-          `[label[${lowerText()}='${answer[0].answer.toLowerCase()}']]`,
+          `[label[${lowerText()}='${answers[0].answer.toLowerCase()}']]`,
           "//input[@type='radio']",
         ].join('')
         const checkElement = getElement(this.element, XPATH)

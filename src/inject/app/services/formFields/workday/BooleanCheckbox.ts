@@ -4,8 +4,9 @@ import { WorkdayBaseInput } from './WorkdayBaseInput'
 import { xpaths } from './xpaths'
 import { AnswerValueSingleBool } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleBool'
 import { AnswerValueMethods } from '../baseFormInput'
+import AnswerDTO from '../../DTOs/AnswerDTO'
 
-export class BooleanCheckbox extends WorkdayBaseInput<boolean> {
+export class BooleanCheckbox extends WorkdayBaseInput {
   static XPATH = xpaths.SINGLE_CHECKBOX
   fieldType: string = 'SingleCheckbox'
   public answerValueDisplayComponent = AnswerValueSingleBool
@@ -60,11 +61,10 @@ export class BooleanCheckbox extends WorkdayBaseInput<boolean> {
    * after it's clicked. Therefore we have to wait for the value to update
    * before ending the function and allowing the react app to update.
    */
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO<boolean>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      const answer = await this.answer()
-      const isFilled = this.isFilled(this.currentValue(), answer.map(a=> a.answer))
-        if (answer.length > 0 && !isFilled) {
+      const isFilled = this.isFilled(this.currentValue(), answers.map(a=> a.answer))
+        if (answers.length > 0 && !isFilled) {
           const initialValue = this.currentValue()
           this.checkboxElement().click()
           await waitForElement(

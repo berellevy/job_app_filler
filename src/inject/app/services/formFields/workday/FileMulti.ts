@@ -15,8 +15,10 @@ import { isEqual } from 'lodash'
 import { getReactProps } from '../utils'
 import { xpaths } from './xpaths'
 import { saveButtonClickHandlers } from '../../../hooks/saveButtonClickHandlers'
+import AnswerDTO from '../../DTOs/AnswerDTO'
+import { AnswerDataTypes } from '../../DTOs/types'
 
-export class FileMulti extends WorkdayBaseInput<any> {
+export class FileMulti extends WorkdayBaseInput {
   fieldType = 'MultiFileUpload'
   public saveButtonClickHandler = saveButtonClickHandlers.withNotice
   fieldNotice = [
@@ -99,11 +101,10 @@ export class FileMulti extends WorkdayBaseInput<any> {
     return isEqual(current, firstAnswerFileNames)
   }
 
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO<AnswerDataTypes.File[]>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      const answer = (await this.answer()) || []
-      if (answer.length > 0) {
-        const firstAnswer = answer[0]
+      if (answers.length > 0) {
+        const firstAnswer = answers[0]
         const files = firstAnswer.answer.map(localStorageToFile)
         for (const button of this.uploadedFileDeleteButtonElements) {
           button.click()

@@ -11,8 +11,9 @@ import { WorkdayBaseInput } from './WorkdayBaseInput'
 import stringMatch from '@src/shared/utils/stringMatch'
 import { lowerText } from '@src/shared/utils/xpath'
 import { xpaths } from './xpaths'
+import AnswerDTO from '../../DTOs/AnswerDTO'
 
-export class Dropdown extends WorkdayBaseInput<string[] | null> {
+export class Dropdown extends WorkdayBaseInput {
   static XPATH: string = xpaths.SIMPLE_DROPDOWN
   fieldType = 'Dropdown'
 
@@ -88,9 +89,8 @@ export class Dropdown extends WorkdayBaseInput<string[] | null> {
    * For now the ui only supports one answer.
    *
    */
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      const answers = await this.answer()
       await scrollBack(async () => {
         for (const answer of answers) {
           const answerValue = answer.answer

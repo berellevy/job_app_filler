@@ -1,14 +1,12 @@
-import { AnswerValueBackupStrings } from '../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings'
 import { sleep } from '@src/shared/utils/async'
 import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import { getElement, waitForElement } from '@src/shared/utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
-import { answerValueInitList } from '../../../hooks/answerValueInit'
-import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
+import AnswerDTO from '../../DTOs/AnswerDTO'
 
 
-export class AddressSearchable extends GreenhouseBaseInput<any> {
+export class AddressSearchable extends GreenhouseBaseInput {
   static XPATH = xpaths.ADDRESS_SEARCH_FIELD
   fieldType = 'Dropdown'
 
@@ -38,9 +36,8 @@ export class AddressSearchable extends GreenhouseBaseInput<any> {
     return this.autoCompleteElement.getAttribute('value') || ''
   }
 
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      const answers = await this.answer()
       if (this.inputElement && answers.length > 0) {
         for (const answer of answers) {
           this.inputElement().value = answer.answer

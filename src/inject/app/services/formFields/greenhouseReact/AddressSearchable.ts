@@ -7,8 +7,9 @@ import { scrollBack } from '@src/shared/utils/scroll'
 import { getReactProps } from '../utils'
 import { GreenhouseReactBaseInput } from './GreenhouseReactBaseInput'
 import { xpaths } from './xpaths'
+import AnswerDTO from '../../DTOs/AnswerDTO'
 
-export class AddressSearchable extends GreenhouseReactBaseInput<any> {
+export class AddressSearchable extends GreenhouseReactBaseInput {
   static XPATH = xpaths.ADDRESS_SEARCHABLE
   fieldType = 'Dropdown'
   get labelElement(): HTMLElement {
@@ -128,10 +129,9 @@ export class AddressSearchable extends GreenhouseReactBaseInput<any> {
     ) as HTMLInputElement
   }
 
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
       await scrollBack(async () => {
-        const answers = await this.answer()
         if (answers.length > 0) {
           this.clearSelection()
           this.openDropdown()

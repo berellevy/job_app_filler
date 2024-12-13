@@ -4,8 +4,10 @@ import { getElement } from '@src/shared/utils/getElements'
 import { dateCompare } from '../utils/dateUtils'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
+import { AnswerDataTypes } from '../../DTOs/types'
+import AnswerDTO from '../../DTOs/AnswerDTO'
 
-export class MonthYear extends GreenhouseBaseInput<any> {
+export class MonthYear extends GreenhouseBaseInput {
   static XPATH = xpaths.MONTH_YEAR
   fieldType = 'MonthYear'
   public answerValueDisplayComponent = AnswerValueSingleDate
@@ -55,8 +57,7 @@ export class MonthYear extends GreenhouseBaseInput<any> {
     return dateCompare(stored[0], current)
   }
 
-  async fill(): Promise<void> {
-    const answers = await this.answer()
+  async fill(answers: AnswerDTO<AnswerDataTypes.MonthYear>[]): Promise<void> {
     if (answers.length > 0) {
       await fieldFillerQueue.enqueue(async () => {
         const [month, year] = answers[0].answer

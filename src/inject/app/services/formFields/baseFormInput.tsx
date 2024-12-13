@@ -26,7 +26,7 @@ export function isVisible(el: HTMLElement): boolean {
   return el.getBoundingClientRect().height > 0
 }
 
-export abstract class BaseFormInput<AnswerType> {
+export abstract class BaseFormInput<AnswerType = any> {
   answerDTOClass: typeof AnswerDTO = AnswerDTO
   public editableAnswerHook = useEditableAnswerState
   public saveButtonClickHandler: SaveButtonClickHndler =
@@ -178,16 +178,16 @@ export abstract class BaseFormInput<AnswerType> {
     return res.ok
   }
 
-  async answer(path?: FieldPath): Promise<Answer106[]> {
-    path = path || this.path
-    const res = await contentScriptAPI.getAnswers(path, this.answerDTOClass)
-    if (res.ok) {
-      return res.data
-    } else {
-      console.error(res, this.path)
-      return []
-    }
-  }
+  // async answer(path?: FieldPath): Promise<Answer106[]> {
+  //   path = path || this.path
+  //   const res = await contentScriptAPI.getAnswers(path, this.answerDTOClass)
+  //   if (res.ok) {
+  //     return res.data
+  //   } else {
+  //     console.error(res, this.path)
+  //     return []
+  //   }
+  // }
 
   public clickIsInFormfield(e: PointerEvent) {
     return e.composedPath().includes(this.element)
@@ -202,5 +202,5 @@ export abstract class BaseFormInput<AnswerType> {
    *
    * for most fields it's enough to put the actual filling logic in the `fillField` method.
    */
-  abstract fill(): Promise<void>
+  abstract fill(answers: AnswerDTO<any>[]): Promise<void>
 }

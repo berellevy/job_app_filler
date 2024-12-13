@@ -2,8 +2,9 @@ import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import { getElement } from '@src/shared/utils/getElements'
 import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
+import AnswerDTO from '../../DTOs/AnswerDTO'
 
-export class Dropdown extends GreenhouseBaseInput<any> {
+export class Dropdown extends GreenhouseBaseInput {
   static XPATH = xpaths.SIMPLE_DROPDOWN
   fieldType = 'Dropdown'
 
@@ -74,8 +75,7 @@ export class Dropdown extends GreenhouseBaseInput<any> {
     return this.select2ContainerAElement?.innerText
   }
   
-  async fill(): Promise<void> {
-    const answers = await this.answer()
+  async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
       if (answers.length > 0) {
         for (const answer of answers) {

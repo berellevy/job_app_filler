@@ -5,9 +5,10 @@ import { AnswerValueMethods } from "../baseFormInput";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { xpaths } from "./xpaths";
 import { CheckboxWrapperContainer } from "./ElementWrappers/CheckboxWrapperContainer";
+import AnswerDTO from "../../DTOs/AnswerDTO";
 
 
-export class CheckboxBoolean extends GreenhouseReactBaseInput<any> {
+export class CheckboxBoolean extends GreenhouseReactBaseInput {
   static XPATH = xpaths.CHECKBOX_BOOLEAN
   fieldType: string = 'SingleCheckbox'
   public answerValueDisplayComponent = AnswerValueSingleBool
@@ -51,12 +52,11 @@ export class CheckboxBoolean extends GreenhouseReactBaseInput<any> {
     return current === stored[0]
   }
 
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO<boolean>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      const answers = await this.answer()
       if (answers.length > 0) {
         const firstAnswer = answers[0].answer
-        if (!(this.currentValue === firstAnswer)) {
+        if (!(this.currentValue() === firstAnswer)) {
           this.checkboxWrapper.check()
         }
       }

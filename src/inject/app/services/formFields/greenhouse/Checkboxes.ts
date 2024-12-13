@@ -5,11 +5,12 @@ import { GreenhouseBaseInput } from './GreenhouseBaseInput'
 import { xpaths } from './xpaths'
 import { answerValueInitList } from '../../../hooks/answerValueInit'
 import { EditableAnswer } from '../../../hooks/useEditableAnswerState'
+import AnswerDTO from '../../DTOs/AnswerDTO'
 
 /**
  * Note: "Two or More Races opens a text box, add support eventually"
  */
-export class Checkboxes extends GreenhouseBaseInput<any> {
+export class Checkboxes extends GreenhouseBaseInput {
   static XPATH = xpaths.MULTI_CHECKBOX
   fieldType = 'Dropdown'
  
@@ -44,9 +45,8 @@ export class Checkboxes extends GreenhouseBaseInput<any> {
     return this.selectedElement?.innerText || ''
   }
 
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      const answers = await this.answer()
       if (answers.length > 0) {
         for (const answer of answers) {
           const correctAnswerElement = getElements(

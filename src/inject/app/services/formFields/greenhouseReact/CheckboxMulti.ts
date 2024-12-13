@@ -1,15 +1,12 @@
-import { AnswerValueBackupStrings } from "../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueBackupStrings";
-
 import fieldFillerQueue from "@src/shared/utils/fieldFillerQueue";
 import { getElement, getElements } from "@src/shared/utils/getElements";
 
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { xpaths } from "./xpaths";
-import { answerValueInitList } from "../../../hooks/answerValueInit";
-import { EditableAnswer } from "../../../hooks/useEditableAnswerState";
 import { CheckboxWrapperContainer } from "./ElementWrappers/CheckboxWrapperContainer";
+import AnswerDTO from "../../DTOs/AnswerDTO";
 
-export class CheckboxMulti extends GreenhouseReactBaseInput<any> {
+export class CheckboxMulti extends GreenhouseReactBaseInput {
   static XPATH = xpaths.CHECKBOX_MULTI
   fieldType = "Dropdown"
 
@@ -48,9 +45,8 @@ export class CheckboxMulti extends GreenhouseReactBaseInput<any> {
     return stored.includes(current)
   }
 
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      const answers = await this.answer()
       if (answers.length > 0) {
         const choiceElements = this.choiceElements
         choiceElements.forEach(el => el.uncheck())

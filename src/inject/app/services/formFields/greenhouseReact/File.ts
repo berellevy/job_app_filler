@@ -1,16 +1,17 @@
 import { AnswerValueSingleFileUpload } from "../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleFileUpload";
 import { sleep } from "@src/shared/utils/async";
 import fieldFillerQueue from "@src/shared/utils/fieldFillerQueue";
-import { localStorageToFile } from "@src/shared/utils/file";
+import { LocalStorageFile, localStorageToFile } from "@src/shared/utils/file";
 import { getElement } from "@src/shared/utils/getElements";
 import { AnswerValueMethods, } from "../baseFormInput";
 import { getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { xpaths } from "./xpaths";
 import { saveButtonClickHandlers } from "../../../hooks/saveButtonClickHandlers";
+import AnswerDTO from "../../DTOs/AnswerDTO";
 
 
-export class File extends GreenhouseReactBaseInput<any> {
+export class File extends GreenhouseReactBaseInput {
   static XPATH = xpaths.FILE
   fieldType = 'SingleFileUpload'
   public saveButtonClickHandler = saveButtonClickHandlers.withNotice
@@ -68,15 +69,14 @@ export class File extends GreenhouseReactBaseInput<any> {
   }
 
   
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      const answers = await this.answer()
       if (answers.length > 0) {
         if (this.deleteButtonElement) {
           this.deleteButtonElement.click()
           await sleep(500)
         }
-        const file = localStorageToFile(answers[0].answer)
+        const file = localStorageToFile(answers[0].answer as LocalStorageFile)
         const reactProps = getReactProps(this.inputElement)
         reactProps?.onChange({target: {files: [file]}})
       }

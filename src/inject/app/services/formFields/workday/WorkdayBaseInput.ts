@@ -2,10 +2,7 @@ import { createRoot } from 'react-dom/client'
 import { getElement } from '@src/shared/utils/getElements'
 import { BaseFormInput } from '../baseFormInput'
 
-export abstract class WorkdayBaseInput<
-  AnswerType
-> extends BaseFormInput<AnswerType> {
-
+export abstract class WorkdayBaseInput extends BaseFormInput {
   attachReactApp(
     app: React.ReactNode,
     inputContainer: HTMLElement
@@ -30,7 +27,7 @@ export abstract class WorkdayBaseInput<
     /**
      * different method found occasionally
      */
-    const secondaryXpath = [ 
+    const secondaryXpath = [
       'ancestor::div[@role="group"][1]', // nearest ancestor div roll group
       `[.//div[@job-app-filler='${this.uuid}']]`, // the above div/fieldset element must contain this forminput's main element.
       "[1]",
@@ -43,7 +40,7 @@ export abstract class WorkdayBaseInput<
   get sectionLabelElement(): HTMLElement {
     return getElement(this.element, this.sectionLabelXpath)
   }
-  
+
   public get section(): string {
     // must always return a string, even a blank one.
     return this.sectionLabelElement?.innerText || ''

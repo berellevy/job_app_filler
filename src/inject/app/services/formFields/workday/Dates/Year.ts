@@ -3,8 +3,9 @@ import { getElement } from '@src/shared/utils/getElements'
 import { WorkdayBaseInput } from '../WorkdayBaseInput'
 import { setupChangeListener, fillDatePart } from './utils'
 import { xpaths } from '../xpaths'
+import AnswerDTO from '../../../DTOs/AnswerDTO'
 
-export class Year extends WorkdayBaseInput<string> {
+export class Year extends WorkdayBaseInput {
   static XPATH = xpaths.YEAR
   fieldType = 'Year'
   listenForChanges(): void {
@@ -32,14 +33,9 @@ export class Year extends WorkdayBaseInput<string> {
     return stored[0] === current
   }
 
-  async fill(): Promise<void> {
+  async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      const answers = await this.answer()
-      const isFilled = this.isFilled(
-        this.currentValue(),
-        answers.map((a) => a.answer)
-      )
-      if (answers.length > 0 && !isFilled) {
+      if (answers.length > 0) {
         const year = answers[0]?.answer
         await fillDatePart(this.yearInputElement, year)
       }

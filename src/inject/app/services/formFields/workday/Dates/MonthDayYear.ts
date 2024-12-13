@@ -15,8 +15,10 @@ import {
   AbsoluteDateValue,
 } from '../../../../hooks/answerValueInit'
 import { saveButtonClickHandlers } from '../../../../hooks/saveButtonClickHandlers'
+import AnswerDTO from '../../../DTOs/AnswerDTO'
+import { AnswerDataTypes } from '../../../DTOs/types'
 
-export class MonthDayYear extends WorkdayBaseInput<[string, string]> {
+export class MonthDayYear extends WorkdayBaseInput {
   static XPATH = xpaths.MONTH_DAY_YEAR
   fieldType = 'MonthDayYear'
   public saveButtonClickHandler = saveButtonClickHandlers.withNotice
@@ -99,11 +101,10 @@ export class MonthDayYear extends WorkdayBaseInput<[string, string]> {
     return dateCompare(absDate, current)
   }
 
-  async fill(answers?: any): Promise<void> {
+  async fill(answers: AnswerDTO<AnswerDataTypes.MonthDayYear>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      answers = answers || (await this.answer())
       if (answers.length > 0) {
-        const [month, day, year] = convertRelativeDate(answers[0].answer)
+        const [month, day, year] = convertRelativeDate(answers[0].answer as unknown as AnswerValueRelativeDate)
         await fillDatePart(this.monthInputElement, month)
         await fillDatePart(this.dayInputElement, day)
         await fillDatePart(this.yearInputElement, year)

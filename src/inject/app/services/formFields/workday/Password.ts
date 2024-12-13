@@ -2,8 +2,9 @@ import { getElement } from "@src/shared/utils/getElements"
 import { fillReactTextInput } from "../utils"
 import { WorkdayBaseInput } from "./WorkdayBaseInput"
 import { xpaths } from "./xpaths"
+import AnswerDTO from "../../DTOs/AnswerDTO"
 
-export class Password extends WorkdayBaseInput<string | null> {
+export class Password extends WorkdayBaseInput {
   static XPATH = xpaths.PASSWORD_INPUT
   fieldType = 'PasswordInput'
 
@@ -25,10 +26,9 @@ export class Password extends WorkdayBaseInput<string | null> {
     return current === stored[0]
   }
 
-  async fill() {
-    const answer = await this.answer()
-    if (answer.length > 0) {
-      fillReactTextInput(this.inputElement, answer[0].answer)
+  async fill(answers: AnswerDTO<string>[]) {
+    if (answers.length > 0) {
+      fillReactTextInput(this.inputElement, answers[0].answer)
     }
   }
 }

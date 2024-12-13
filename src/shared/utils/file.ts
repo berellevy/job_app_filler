@@ -15,13 +15,14 @@ export type LocalStorageFile = {
   lastModified: number
 }
 
+// TODO: move this into answervalue dto
 export const fileToLocalStorage = async (file: File): Promise<LocalStorageFile> => {
   const {name, size, type, lastModified} = file
   const body = await fileToBase64(file)
   return {name, size, type, body, lastModified}
 }
 
-
+// TODO: move this into answervalue dto
 export function localStorageToFile(storageFile: LocalStorageFile): File {
   // Split the base64 string to get the actual Base64 data
   const {name, type, body, lastModified} = storageFile

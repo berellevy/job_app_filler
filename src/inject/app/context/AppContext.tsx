@@ -10,6 +10,7 @@ import { BaseFormInput } from '../services/formFields/baseFormInput'
 import { EditableAnswerState } from '../hooks/useEditableAnswerState'
 import { usePopperState } from '../hooks/usePopperState'
 import { AppContextType } from './types'
+import contentScriptAPI from '../services/contentScriptApi'
 
 
 
@@ -29,13 +30,9 @@ export const ContextProvider: FC<{
 }> = ({ children, backend }) => {
   const [currentValue, setCurrentValue] = useState<any>(null)
   const [fillButtonDisabled, setFillButtonDisabled] = useState<boolean>(false)
-  // const [editableAnswer, setEditableAnswer] = useState<LocalAnswer[]>([])
   const editableAnswerState: EditableAnswerState =
     backend.editableAnswerHook(backend)
-  const {fieldNotice} = backend
-  
-  
-
+  const {fieldNotice, saveButtonClickHandler} = backend
   useEffect(() => {
     ;(async () => {
       await editableAnswerState.init()
@@ -56,7 +53,7 @@ export const ContextProvider: FC<{
   const refresh = async () => {
     setCurrentValue(backend.currentValue())
   }
-
+  
   const isFilled =
     editableAnswerState.answers.length > 0 &&
     backend.isFilled(
@@ -69,16 +66,19 @@ export const ContextProvider: FC<{
     await refresh()
   }
 
+  
+
   const handleFill = async () => {
     setFillButtonDisabled(true)
     try {
-      await backend.fill()
+      const answers = await contentScriptAPI.getAnswers(backend.path, backend.answerDTOClass)
+      await backend.fill(answers)
       await refresh()
     } finally {
       setFillButtonDisabled(false)
     }
   }
-  const {saveButtonClickHandler} = backend
+  
   const moreInfoPopper = usePopperState({init, backend})
   const value: AppContextType = {
     backend,

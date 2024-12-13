@@ -2,8 +2,9 @@ import fieldFillerQueue from "@src/shared/utils/fieldFillerQueue";
 import { getElement } from "@src/shared/utils/getElements";
 import { GreenhouseBaseInput } from "./GreenhouseBaseInput";
 import { xpaths } from './xpaths'
+import AnswerDTO from "../../DTOs/AnswerDTO";
 
-export class Textarea extends GreenhouseBaseInput<any> {
+export class Textarea extends GreenhouseBaseInput {
   static XPATH = xpaths.TEXTAREA
   fieldType = 'TextInput'
 
@@ -18,8 +19,7 @@ export class Textarea extends GreenhouseBaseInput<any> {
   currentValue() {
     return this.inputElement()?.value
   }
-  async fill(): Promise<void> {
-    const answers = await this.answer()
+  async fill(answers: AnswerDTO<string>[]): Promise<void> {
     if (this.inputElement() && answers.length > 0){
       const firstAnswer = answers[0]
       await fieldFillerQueue.enqueue(async () => {

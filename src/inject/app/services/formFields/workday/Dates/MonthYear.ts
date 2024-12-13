@@ -5,8 +5,10 @@ import { xpaths } from '../xpaths'
 import { AnswerValueSingleDate } from '../../../../MoreInfoPopup/AnswerDisplay/AnswerValueDisplay/AnswerValueSingleDate'
 import { setupChangeListener, fillDatePart } from './utils'
 import { dateCompare } from '../../utils/dateUtils'
+import AnswerDTO from '../../../DTOs/AnswerDTO'
+import { AnswerDataTypes } from '../../../DTOs/types'
 
-export class MonthYear extends WorkdayBaseInput<[string, string]> {
+export class MonthYear extends WorkdayBaseInput {
   static XPATH = xpaths.MONTH_YEAR
   fieldType = 'MonthYear'
   public answerValueDisplayComponent = AnswerValueSingleDate
@@ -54,9 +56,8 @@ export class MonthYear extends WorkdayBaseInput<[string, string]> {
     return dateCompare(stored[0], current)
   }
 
-  async fill(answers?: any): Promise<void> {
+  async fill(answers: AnswerDTO<AnswerDataTypes.MonthYear>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
-      answers = answers || (await this.answer())
       if (answers.length > 0) {
         const [month, year] = answers[0].answer
         await fillDatePart(this.monthInputElement, month)

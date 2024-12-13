@@ -37,7 +37,7 @@ export type EditableAnswer = {
 let newAnswerKeyCounter = -1
 
 export const useEditableAnswerState = (
-  backend: BaseFormInput<any>
+  backend: BaseFormInput
 ): EditableAnswerState => {
   const [answers, setAnswers] = useState<EditableAnswer[]>([])
   const [editedPathMatchesExistingPath, setEditedPathMatchesExistingPath] =
@@ -81,7 +81,7 @@ export const useEditableAnswerState = (
   }
 
   const init: EditableAnswerState['init'] = async () => {
-    const originalAnswers = await backend.answer()
+    const originalAnswers = await contentScriptAPI.getAnswers(backend.path, backend.answerDTOClass)
     const editableAnswers = originalAnswers.map<EditableAnswer>((answer) =>
       initAnswer(answer)
     )
