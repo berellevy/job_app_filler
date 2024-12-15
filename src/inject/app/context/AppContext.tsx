@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react'
 import { BaseFormInput } from '../services/formFields/baseFormInput'
-import { EditableAnswer, EditableAnswerState, useEditableAnswerState } from '../hooks/useEditableAnswerState'
+import { EditableAnswerState, useEditableAnswerState } from '../hooks/useEditableAnswerState'
 import { usePopperState } from '../hooks/usePopperState'
 import { AppContextType } from './types'
 import contentScriptAPI from '../services/contentScriptApi'
@@ -48,9 +48,6 @@ export const ContextProvider: FC<{
     }
   }, [])
 
-  const originalAnswers = editableAnswerState.answers.map(({ originalAnswer }) => (
-    originalAnswer
-  ))
 
   const init = async () => {
     await editableAnswerState.init()
@@ -79,7 +76,7 @@ export const ContextProvider: FC<{
     setFillButtonDisabled(true)
     try {
       const answers = await contentScriptAPI.getAnswers(backend.path, backend.answerDTOClass)
-      console.log({ originalAnswers, answers });
+      // console.log({ originalAnswers, answers });
 
       if (answers.length > 0) {
         await backend.fill(answers)
