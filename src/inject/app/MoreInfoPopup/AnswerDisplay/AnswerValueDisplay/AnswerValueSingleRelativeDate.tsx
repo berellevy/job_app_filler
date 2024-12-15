@@ -18,54 +18,54 @@ import { useAppContext } from '../../../context/AppContext'
  */
 export const AnswerValueSingleRelativeDate: FC<{ id: number }> = ({ id }) => {
   const {
-    editableAnswerState: { setEditable, setEditedValue, cancelEdit, answers },
+    // editableAnswerState: { setEditable, setEditedValue, cancelEdit, answers },
     backend,
   } = useAppContext()
-  const {
-    editedAnswer: { value },
-    editable,
-  } = answers.find((a) => a.id === id)
+  // const {
+  //   editedAnswer: { value },
+  //   editable,
+  // } = answers.find((a) => a.id === id)
 
   const toggleRelative = ({ target }) => {
-    value.relative = target.checked
-    if (value.relative) {
-      value.relativeValue = 'today'
-    }
-    setEditedValue(id, structuredClone(value))
+    // value.relative = target.checked
+    // if (value.relative) {
+    //   value.relativeValue = 'today'
+    // }
+    // setEditedValue(id, structuredClone(value))
   }
   const fieldLengths = [2, 2, 4]
-  const AbsoluteDateEditFields =
-    editable &&
-    !value.relative &&
-    value.absoluteValue &&
-    value.absoluteValue.map((part: string, index: number) => {
-      return (
-        <TextField
-          key={index}
-          variant="standard"
-          inputProps={{ size: fieldLengths[index] }}
-          value={part}
-          onChange={(e) => {
-            value.absoluteValue[index] = e.target.value
-            setEditedValue(id, structuredClone(value))
-          }}
-        />
-      )
-    })
-  const AbsoluteDateEditComponent =
-    AbsoluteDateEditFields &&
-    joinComponents(
-      AbsoluteDateEditFields,
-      <Typography mx={1} variant="h6" display={'inline-flex'}>
-        /
-      </Typography>
-    )
+  // const AbsoluteDateEditFields =
+  //   editable &&
+  //   !value.relative &&
+  //   value.absoluteValue &&
+  //   value.absoluteValue.map((part: string, index: number) => {
+  //     return (
+  //       <TextField
+  //         key={index}
+  //         variant="standard"
+  //         inputProps={{ size: fieldLengths[index] }}
+  //         value={part}
+  //         onChange={(e) => {
+  //           value.absoluteValue[index] = e.target.value
+  //           setEditedValue(id, structuredClone(value))
+  //         }}
+  //       />
+  //     )
+  //   })
+  // const AbsoluteDateEditComponent =
+  //   AbsoluteDateEditFields &&
+  //   joinComponents(
+  //     AbsoluteDateEditFields,
+  //     <Typography mx={1} variant="h6" display={'inline-flex'}>
+  //       /
+  //     </Typography>
+  //   )
 
   return (
     <>
       <Divider sx={{ mb: 1 }} />
       <Typography>Value:</Typography>
-      {editable ? (
+      {/* {editable ? (
         <Collapse in={editable}>
           {!value.relative ? (
             <>
@@ -103,7 +103,7 @@ export const AnswerValueSingleRelativeDate: FC<{ id: number }> = ({ id }) => {
             <EditIcon />
           </IconButton>
         </>
-      )}
+      )} */}
     </>
   )
 }

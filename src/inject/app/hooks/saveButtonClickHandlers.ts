@@ -8,7 +8,7 @@ export interface SaveButtonClickHndler {
     newAnswer: Answer106,
     context: Pick<
       AppContextType,
-      'moreInfoPopper' | 'init' | 'editableAnswerState' | 'backend'
+      'moreInfoPopper' | 'init' | 'backend'
     >
   ): void | Promise<void>
 }
@@ -29,15 +29,14 @@ const withNotice: SaveButtonClickHndler = async (
 
 const backupAnswerList: SaveButtonClickHndler = async (
   newAnswer,
-  { editableAnswerState, backend }
+  { backend }
 ) => {
-  const { answers, init } = editableAnswerState
-  if (answers.length === 0) {
-    await backend.save(newAnswer)
-    await init()
-  } else if (answers[0].originalAnswer.matchType === 'exact') {
-    // make a popup that says to add a new answer
-  }
+  // if (answers.length === 0) {
+  //   await backend.save(newAnswer)
+  //   await init()
+  // } else if (answers[0].originalAnswer.matchType === 'exact') {
+  //   // make a popup that says to add a new answer
+  // }
 }
 
 export const saveButtonClickHandlers = {

@@ -20,52 +20,52 @@ import { sentenceCase } from '@src/shared/utils/strings'
 
 export const AnswerDisplayComponent: FC<{ id: number }> = ({ id }) => {
   const {
-    editableAnswerState: {
-      setEditable,
-      setEditedPath,
-      cancelEdit,
-      saveAnswer,
-      deleteAnswer,
-      answers,
-    },
+    // editableAnswerState: {
+    //   setEditable,
+    //   setEditedPath,
+    //   cancelEdit,
+    //   saveAnswer,
+    //   deleteAnswer,
+    //   answers,
+    // },
     backend,
   } = useAppContext()
 
-  const { editedAnswer, originalAnswer, editable, error, isNew } = answers.find(
-    (a) => a.id === id
-  )
+  // const { editedAnswer, originalAnswer, editable, error, isNew } = answers.find(
+  //   (a) => a.id === id
+  // )
   
   const errorPopperRef = useRef(null)
 
   return (
     <Paper elevation={4} sx={{ p: 1, width: '100%' }}>
-      <SimplePopper
+      {/* <SimplePopper
         anchorRef={errorPopperRef}
         message={error}
         placement={'top'}
-      />
+      /> */}
       <Grid spacing={2} ref={errorPopperRef} container direction="column">
         <Grid item>
           <Grid container justifyContent="space-between" direction={'row'}>
             <Box>
               <Typography>Path:</Typography>
-              {originalAnswer.matchType && (
+              {/* {originalAnswer.matchType && (
                 <Typography variant="caption">
                   Match: {sentenceCase(originalAnswer.matchType)}
                 </Typography>
-              )}
+              )} */}
             </Box>
             <Box>
-              {editable && (
+              {/* {editable && (
                 <>
                   {' '}
                   <Button onClick={() => saveAnswer(id)}>Save</Button>
                   <Button onClick={() => cancelEdit(id)}>Cancel</Button>
                 </>
-              )}
+              )} */}
             </Box>
             <Box>
-              {!isNew && (
+              {/* {!isNew && (
                 <ConfirmButton
                   component="IconButton"
                   action={() => deleteAnswer(id)}
@@ -75,11 +75,11 @@ export const AnswerDisplayComponent: FC<{ id: number }> = ({ id }) => {
                   Are you Sure you want to delete this answer? This action is
                   not reversible.
                 </ConfirmButton>
-              )}
+              )} */}
             </Box>
           </Grid>
           <Breadcrumbs separator=">">
-            <Chip
+            {/* <Chip
               variant="outlined"
               label={editedAnswer.path.section}
               avatar={
@@ -87,9 +87,9 @@ export const AnswerDisplayComponent: FC<{ id: number }> = ({ id }) => {
                   <Avatar>S</Avatar>
                 </Tooltip>
               }
-            />
+            /> */}
 
-            <Chip
+            {/* <Chip
               sx={{
                 height: 'auto',
                 minHeight: '32px',
@@ -100,29 +100,29 @@ export const AnswerDisplayComponent: FC<{ id: number }> = ({ id }) => {
                 },
               }}
               variant="outlined"
-              label={
-                editable ? (
-                  <TextField
-                    variant="standard"
-                    fullWidth
-                    multiline
-                    value={editedAnswer.path.fieldName}
-                    onChange={(e) =>
-                      setEditedPath(id, 'fieldName', e.target.value)
-                    }
-                    InputProps={{
-                      sx: { font: 'inherit', height: 'fit-content' },
-                      endAdornment: (
-                        <IconButton onClick={() => cancelEdit(id)}>
-                          <CloseIcon />
-                        </IconButton>
-                      ),
-                    }}
-                  />
-                ) : (
-                  editedAnswer.path.fieldName
-                )
-              }
+              // label={
+              //   editable ? (
+              //     <TextField
+              //       variant="standard"
+              //       fullWidth
+              //       multiline
+              //       value={editedAnswer.path.fieldName}
+              //       onChange={(e) =>
+              //         setEditedPath(id, 'fieldName', e.target.value)
+              //       }
+              //       InputProps={{
+              //         sx: { font: 'inherit', height: 'fit-content' },
+              //         endAdornment: (
+              //           <IconButton onClick={() => cancelEdit(id)}>
+              //             <CloseIcon />
+              //           </IconButton>
+              //         ),
+              //       }}
+              //     />
+              //   ) : (
+              //     editedAnswer.path.fieldName
+              //   )
+              // }
               avatar={
                 <Tooltip title="Question">
                   <Avatar>Q</Avatar>
@@ -132,7 +132,7 @@ export const AnswerDisplayComponent: FC<{ id: number }> = ({ id }) => {
                 deleteIcon: <EditIcon />,
                 onDelete: () => setEditable(id, true),
               })}
-            />
+            /> */}
           </Breadcrumbs>
         </Grid>
 

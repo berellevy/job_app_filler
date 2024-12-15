@@ -22,9 +22,8 @@ export interface AppContextType {
   currentValue: any
   setCurrentValue: (_: any) => void
   isFilled: boolean
-  editableAnswerState: EditableAnswerState
+  // editableAnswerState: EditableAnswerState
   moreInfoPopper: PopperState
-
   fieldNotice: string | null
 }
 

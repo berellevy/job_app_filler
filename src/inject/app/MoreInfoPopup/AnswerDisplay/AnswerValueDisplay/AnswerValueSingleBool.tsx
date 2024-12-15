@@ -12,15 +12,15 @@ import { useAppContext } from '../../../context/AppContext'
 import { CloseIcon, EditIcon, InputIcon } from '@src/shared/utils/icons'
 
 export const AnswerValueSingleBool: FC<{ id: number }> = ({ id }) => {
-  const { editableAnswerState, backend } = useAppContext()
-  const { setEditable, setEditedValue, cancelEdit } = editableAnswerState
-  const { editedAnswer, editable } = editableAnswerState.answers.find((a) => a.id === id)
+  // const { editableAnswerState, backend } = useAppContext()
+  // const { setEditable, setEditedValue, cancelEdit } = editableAnswerState
+  // const { editedAnswer, editable } = editableAnswerState.answers.find((a) => a.id === id)
 
   return (
     <>
       <Divider sx={{ mb: 1 }} />
       <Typography>Value:</Typography>
-      {editable ? (
+      {/* {editable ? (
         <Collapse in={editable}>
           <Checkbox
             checked={editedAnswer.value}
@@ -46,7 +46,7 @@ export const AnswerValueSingleBool: FC<{ id: number }> = ({ id }) => {
             <EditIcon />
           </IconButton>
         </>
-      )}
+      )} */}
     </>
   )
 }

@@ -17,36 +17,36 @@ import { CloseIcon, EditIcon, InputIcon } from '@src/shared/utils/icons'
  */
 export const AnswerValueSingleDate: FC<{ id: number }> = ({ id }) => {
   const {
-    editableAnswerState: { setEditable, setEditedValue, cancelEdit, answers },
+    // editableAnswerState: { setEditable, setEditedValue, cancelEdit, answers },
     backend,
   } = useAppContext()
-  const {
-    editedAnswer: { value },
-    editable,
-  } = answers.find((a) => a.id === id)
+  // const {
+  //   editedAnswer: { value },
+  //   editable,
+  // } = answers.find((a) => a.id === id)
 
-  const editFields =
-    editable &&
-    value.map((part: string, index: number) => {
-      return (
-        <TextField
-          key={index}
-          variant="standard"
-          inputProps={{ size: part.length }}
-          value={part}
-          onChange={(e) => {
-            value[index] = e.target.value
-            setEditedValue(id, structuredClone(value))
-          }}
-        />
-      )
-    })
+  // const editFields =
+  //   editable &&
+  //   value.map((part: string, index: number) => {
+  //     return (
+  //       <TextField
+  //         key={index}
+  //         variant="standard"
+  //         inputProps={{ size: part.length }}
+  //         value={part}
+  //         onChange={(e) => {
+  //           value[index] = e.target.value
+  //           setEditedValue(id, structuredClone(value))
+  //         }}
+  //       />
+  //     )
+  //   })
 
   return (
     <>
       <Divider sx={{ mb: 1 }} />
       <Typography>Value:</Typography>
-      {editable ? (
+      {/* {editable ? (
         <Collapse in={editable}>
           {joinComponents(
             editFields,
@@ -74,7 +74,7 @@ export const AnswerValueSingleDate: FC<{ id: number }> = ({ id }) => {
             <EditIcon />
           </IconButton>
         </>
-      )}
+      )} */}
     </>
   )
 }

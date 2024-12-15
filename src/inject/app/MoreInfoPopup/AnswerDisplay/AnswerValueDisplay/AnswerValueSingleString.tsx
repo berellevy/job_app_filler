@@ -13,15 +13,15 @@ import { useAppContext } from '../../../context/AppContext'
 
 export const AnswerValueSingleString: FC<{ id: number }> = ({ id }) => {
   const {
-    editableAnswerState: { setEditable, setEditedValue, cancelEdit, answers },
+    // editableAnswerState: { setEditable, setEditedValue, cancelEdit, answers },
     backend,
   } = useAppContext()
-  const { editedAnswer, editable } = answers.find((a) => a.id === id)
+  // const { editedAnswer, editable } = answers.find((a) => a.id === id)
   return (
     <>
       <Divider sx={{ mb: 1 }} />
       <Typography>Value:</Typography>
-      {editable ? (
+      {/* {editable ? (
         <Collapse in={editable}>
           <TextField
             variant="standard"
@@ -56,7 +56,7 @@ export const AnswerValueSingleString: FC<{ id: number }> = ({ id }) => {
             <EditIcon />
           </IconButton>
         </>
-      )}
+      )} */}
     </>
   )
 }

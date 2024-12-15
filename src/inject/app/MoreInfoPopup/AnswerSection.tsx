@@ -68,15 +68,15 @@ export const AnswersContainer: FC<{ answers: EditableAnswer[] }> = ({
 export const AnswersSection: FC = () => {
   const {
     backend,
-    editableAnswerState: { answers, addNewAnswer },
+    // editableAnswerState: { answers, addNewAnswer },
   } = useAppContext()
-  const hasAnswers = answers.length > 0
+  // const hasAnswers = answers.length > 0
 
   const addNewAnswerButton = (
     <IconButton
       onClick={() => {
         const { path, answer } = backend.fieldSnapshot
-        addNewAnswer(path, answer)
+        // addNewAnswer(path, answer)
       }}
     >
       <AddIcon />
@@ -88,11 +88,11 @@ export const AnswersSection: FC = () => {
         Answers
       </Typography>
       <Stack spacing={1}>
-        {hasAnswers ? (
+        {/* {hasAnswers ? (
           <AnswersContainer answers={answers} />
         ) : (
           <NoAnswerNotice />
-        )}
+        )} */}
         <Box>{addNewAnswerButton}</Box>
       </Stack>
     </>

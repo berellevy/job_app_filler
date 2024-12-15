@@ -21,21 +21,21 @@ import InsertDriveFile from '@mui/icons-material/InsertDriveFile'
 
 export const AnswerValueSingleFileUpload: FC<{ id: number }> = ({ id }) => {
   const {
-    editableAnswerState: { setEditable, setEditedValue, answers },
+    // editableAnswerState: { setEditable, setEditedValue, answers },
   } = useAppContext()
 
-  const { editedAnswer } = answers.find((a) => a.id === id)
+  // const { editedAnswer } = answers.find((a) => a.id === id)
 
-  const deleteAnswerValue = () => {
-    setEditedValue(id, '')
-    setEditable(id, true)
-  }
+  // const deleteAnswerValue = () => {
+  //   setEditedValue(id, '')
+  //   setEditable(id, true)
+  // }
 
-  const handleUpload = async (fileList: FileList) => {
-    const localStorageFile = await fileToLocalStorage(fileList[0])
-    setEditable(id, true)
-    setEditedValue(id, localStorageFile)
-  }
+  // const handleUpload = async (fileList: FileList) => {
+  //   const localStorageFile = await fileToLocalStorage(fileList[0])
+  //   setEditable(id, true)
+  //   setEditedValue(id, localStorageFile)
+  // }
 
   const handleDownload = (file: LocalStorageFile) => {
     downloadFile(localStorageToFile(file))
@@ -46,7 +46,7 @@ export const AnswerValueSingleFileUpload: FC<{ id: number }> = ({ id }) => {
       <Divider sx={{ mb: 1 }} />
       <Typography>Files:</Typography>
       <Box>
-        {editedAnswer.value ? (
+        {/* {editedAnswer.value ? (
           <>
             <Tooltip title="download">
               <Button
@@ -74,7 +74,7 @@ export const AnswerValueSingleFileUpload: FC<{ id: number }> = ({ id }) => {
               onChange={(event) => handleUpload(event.target.files)}
             />
           </Button>
-        )}
+        )} */}
       </Box>
     </>
   )
