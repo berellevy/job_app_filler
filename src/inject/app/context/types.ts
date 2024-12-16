@@ -14,7 +14,7 @@ export type LocalAnswer = [string, Boolean]
 
 export interface AppContextType {
   backend: BaseFormInput<any>
-  refresh: () => Promise<void>
+  refreshCurrentValue: () => Promise<void>
   init: () => Promise<void>
   fillButton: FillButtonState
   saveButton: SaveButtonState

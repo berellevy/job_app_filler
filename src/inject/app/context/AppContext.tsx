@@ -38,25 +38,25 @@ export const ContextProvider: FC<{
         setHasFilledOnce(true)
       })()
     }
-    refresh()
+    refreshCurrentValue()
   }, [answers.data, hasFilledOnce])
 
 
 
   useEffect(() => {
-    backend.element.addEventListener(backend.reactMessageEventId, refresh)
+    backend.element.addEventListener(backend.reactMessageEventId, refreshCurrentValue)
     return () => {
-      backend.element.removeEventListener(backend.reactMessageEventId, refresh)
+      backend.element.removeEventListener(backend.reactMessageEventId, refreshCurrentValue)
     }
   }, [])
 
 
   const init = async () => {
     // await editableAnswerState.init()
-    await refresh()
+    await refreshCurrentValue()
   }
 
-  const refresh = useCallback(async () => {
+  const refreshCurrentValue = useCallback(async () => {
     setCurrentValue(backend.currentValue())
   }, [])
 
@@ -70,7 +70,7 @@ export const ContextProvider: FC<{
 
   const deleteAnswer: AppContextType['deleteAnswer'] = async (id: number) => {
     await backend.deleteAnswer(id)
-    await refresh()
+    await refreshCurrentValue()
   }
 
   const handleFill = async () => {
@@ -78,7 +78,7 @@ export const ContextProvider: FC<{
     try {
       if (answers.data.length > 0) {
         await backend.fill(answers.data)
-        await refresh()
+        await refreshCurrentValue()
       }
     } finally {
       setFillButtonDisabled(false)
@@ -88,7 +88,7 @@ export const ContextProvider: FC<{
   const moreInfoPopper = usePopperState({ init, backend })
   const value: AppContextType = {
     backend,
-    refresh,
+    refreshCurrentValue,
     init,
     deleteAnswer,
     currentValue,
