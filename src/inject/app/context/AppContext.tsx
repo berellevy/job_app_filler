@@ -8,7 +8,6 @@ import React, {
   useState,
 } from 'react'
 import { BaseFormInput } from '../services/formFields/baseFormInput'
-import { EditableAnswerState, useEditableAnswerState } from '../hooks/useEditableAnswerState'
 import { usePopperState } from '../hooks/usePopperState'
 import { AppContextType } from './types'
 import useAnswerState from '../hooks/useAnswerState'
@@ -24,8 +23,6 @@ export const ContextProvider: FC<{
   const [currentValue, setCurrentValue] = useState<any>(null)
   const [fillButtonDisabled, setFillButtonDisabled] = useState<boolean>(false)
   const answers = useAnswerState(backend)
-  // const editableAnswerState: EditableAnswerState =
-  // useEditableAnswerState(backend)
   
   const { fieldNotice, saveButtonClickHandler } = backend
   const [hasFilledOnce, setHasFilledOnce] = useState<boolean>(false)
@@ -90,6 +87,7 @@ export const ContextProvider: FC<{
     backend,
     refreshCurrentValue,
     init,
+    answers,
     deleteAnswer,
     currentValue,
     setCurrentValue,
