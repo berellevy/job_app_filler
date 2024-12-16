@@ -9,32 +9,32 @@ import {
 import React, { FC } from 'react'
 
 import { useAppContext } from '../context/AppContext'
-import { AddIcon, InfoIcon } from '@src/shared/utils/icons'
+import { AddIcon } from '@src/shared/utils/icons'
 import { AnswerDisplayComponent } from './AnswerDisplay/AnswerDisplayComponent'
 import { Item } from './components'
 import { EditableAnswer } from '../hooks/useEditableAnswerState'
 
-export const NoAnswerNotice: FC = () => {
-  return (
-    <Fade in timeout={{ enter: 350 }} unmountOnExit>
-      <Item>
-        <Typography
-          component={'div'}
-          sx={{
-            fontStyle: 'italic',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          No answer
-          <Tooltip title="Fill in the field and click save to save an answer">
-            <InfoIcon sx={{ marginLeft: '4px' }} fontSize="inherit" />
-          </Tooltip>
-        </Typography>
-      </Item>
-    </Fade>
-  )
-}
+// export const NoAnswerNotice: FC = () => {
+//   return (
+//     <Fade in timeout={{ enter: 350 }} unmountOnExit>
+//       <Item>
+//         <Typography
+//           component={'div'}
+//           sx={{
+//             fontStyle: 'italic',
+//             display: 'flex',
+//             alignItems: 'center',
+//           }}
+//         >
+//           No answer
+//           <Tooltip title="Fill in the field and click save to save an answer">
+//             <InfoIcon sx={{ marginLeft: '4px' }} fontSize="inherit" />
+//           </Tooltip>
+//         </Typography>
+//       </Item>
+//     </Fade>
+//   )
+// }
 
 type ListContainerProps<T> = {
   items: T[]
@@ -68,9 +68,7 @@ export const AnswersContainer: FC<{ answers: EditableAnswer[] }> = ({
 export const AnswersSection: FC = () => {
   const {
     backend,
-    // editableAnswerState: { answers, addNewAnswer },
   } = useAppContext()
-  // const hasAnswers = answers.length > 0
 
   const addNewAnswerButton = (
     <IconButton
