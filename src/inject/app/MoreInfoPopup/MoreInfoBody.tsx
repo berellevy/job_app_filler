@@ -1,37 +1,32 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import React, { FC } from 'react'
 import { useAppContext } from '../context/AppContext'
 import { Answers } from './Answers'
 import { Item, FieldNotice } from './components'
+import { teal } from '@mui/material/colors'
 
 
 const MoreInfoBody: FC = () => {
-    const { currentValue, fieldNotice } = useAppContext()
-    return (
-        <Box
-          padding={1}
-          sx={{
-            maxHeight: 380,
-            overflow: 'scroll',
-            
-          }}
-        >
-          <Stack spacing={2}>
-            {fieldNotice && (
-              <Item>
-                <FieldNotice>{fieldNotice}</FieldNotice>
-              </Item>
-            )}
-            <Item>
-              <Answers />
-            </Item>
-            <Item>
-              <Typography variant="h6">Current Value</Typography>
-              <Typography>{String(currentValue)}</Typography>
-            </Item>
-          </Stack>
-        </Box>
-    )
+  const { fieldNotice } = useAppContext()
+  return (
+    <Box
+      padding={1}
+      sx={{
+        maxHeight: 380,
+        overflow: 'scroll',
+      }}
+      bgcolor={teal[100]}
+    >
+      <Stack spacing={2} >
+        {fieldNotice && (
+
+          <FieldNotice>{fieldNotice}</FieldNotice>
+
+        )}
+        <Answers />
+      </Stack>
+    </Box>
+  )
 }
 
 export default MoreInfoBody
