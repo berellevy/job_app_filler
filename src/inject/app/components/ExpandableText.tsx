@@ -1,76 +1,67 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, FC, useRef, useEffect } from 'react';
 import { Typography, Box, Link } from '@mui/material';
-
-// const ExpandableText = ({
-//   text,
-//   maxLength = 100, // Maximum characters to show before truncation
-// }: {
-//   text: string;
-//   maxLength?: number;
-// }) => {
-//   const [expanded, setExpanded] = useState(false);
-
-//   const handleToggle = () => {
-//     setExpanded((prev) => !prev);
-//   };
-
-//   const isTruncated = text.length > maxLength;
-//   const displayText = expanded || !isTruncated
-//     ? <Box display={"inline"}>{text}</Box>
-//     : <Box display={"inline"}>{`${text.slice(0, maxLength)}...`}</Box>;
-//   return (
-//     <>
-//       {displayText}
-//       {isTruncated && (
-//         <Link
-//           component="button"
-//           variant="body2"
-//           sx={{ ml: 1 }}
-//           onClick={handleToggle}
-//         >
-//           {expanded ? 'Less' : 'More'}
-//         </Link>
-//       )}
-//     </>
-//   );
-// };
+import { ConditionalTooltip } from './ConditionalTooltip';
 
 
-const ExpandableText = ({
+
+/**
+ * Full featured expandable text...
+ * If text is truncated, has a tooltip and expands on click.
+ * @param param0 
+ * @returns 
+ */
+export const ExpandableText: FC<{ text: string; maxLines?: number; }> = ({
   text,
-  maxLength = 100, // Maximum characters to show before truncation
-}: {
-  text: string;
-  maxLength?: number;
+  maxLines = 1,
 }) => {
+
   const [expanded, setExpanded] = useState(false);
+  const textRef = useRef<HTMLElement>(null)
+  const [isTruncated, setIsTruncated] = useState(false)
 
-  const handleToggle = () => {
-    setExpanded((prev) => !prev);
-  };
+  useEffect(() => {
+    const element = textRef.current;
+    if (element) {
+      // Check if the content is overflowing
+      setIsTruncated(element.scrollHeight > element.clientHeight);
+    }
+  }, [text]); // Runs when the text changes
 
-  const displayText = expanded
-    ? <Box display={"inline"}>{text}</Box>
-    : <Box display={"inline"}>{`${text.slice(0, maxLength)}...`}</Box>;
+
+  const CollapseButton = (
+    expanded &&
+    <Link
+      component="span"
+      variant='body1'
+      sx={{ ml: 1 }}
+      onClick={() => setExpanded(false)}
+    >
+      Collapse
+    </Link>
+  )
+
+  const expandable = isTruncated && !expanded
+
   return (
-
     <Box>
-      {displayText}
-      { (
-        <Link
-          component="button"
-          variant="body2"
-          sx={{ ml: 1 }}
-          onClick={handleToggle}
+      <ConditionalTooltip showIf={expandable} title="Click to expand.">
+        <Typography
+          variant="inherit"
+          component="span"
+          ref={textRef}
+          sx={{
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            WebkitLineClamp: expanded ? 'unset' : maxLines,
+          }}
+          onClick={() => expandable && setExpanded(true)}
         >
-          {expanded ? 'Less' : 'More'}
-        </Link>
-      )}
+          {text}
+          {CollapseButton}
+        </Typography>
+      </ConditionalTooltip>
     </Box>
   );
 };
-export default ExpandableText;
-
-
-
-
