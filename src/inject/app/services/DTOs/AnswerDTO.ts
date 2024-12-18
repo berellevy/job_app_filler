@@ -35,4 +35,17 @@ export default class AnswerDTO<AnswerDataType = AnswerDataTypes.Any> {
         const {answer, id, matchType, path: {section, fieldName, fieldType}} = answer106
         return new this({ answer, id, matchType, section, fieldName, fieldType })
     }
+
+    get match(): {type: "exact", score: null} | {type: "Similar", score: number} {
+        const split = this.matchType.split(": ")
+        if (split.length === 1) {
+            return {type: "exact", score: null}
+        } else if (split.length === 2) {
+            const [type, scoreString] = split
+            return {
+                type: "Similar",
+                score: parseFloat(scoreString)
+            }
+        }
+    }
 }
