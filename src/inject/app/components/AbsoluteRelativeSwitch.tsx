@@ -2,8 +2,6 @@ import { styled, Theme } from "@mui/material/styles";
 import Switch, { switchClasses } from "@mui/material/Switch";
 import { theme } from "@src/shared/utils/react";
 
-theme
-
 export const AbsoluteRelativeSwitch = styled(Switch)({
   width: 110,
   height: 48,
