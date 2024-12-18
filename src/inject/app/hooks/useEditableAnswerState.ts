@@ -154,30 +154,30 @@ export const useEditableAnswerState = (
   }
 
   const saveAnswer: EditableAnswerState['saveAnswer'] = async (id) => {
-    const { editedAnswer: { path, value }, isNew } = answers.find((a) => a.id === id)
-    const answerForSave = {
-      answer: backend.answerValue.prepForSave(value),
-      path,
-    }
-    const method = isNew ? 'addAnswer' : 'updateAnswer'
-    const answer = isNew ? { ...answerForSave } : { ...answerForSave, id }
-    const resp = await contentScriptAPI[method](answer, backend.answerDTOClass)
-    if (resp.ok) {
-      const newAnswer = initAnswer(resp.data)
-      setAnswers((answers) => {
-        let updatedAnswers = [...answers]
-        const existingIndex = answers.findIndex((answer) => answer.id === newAnswer.id)
-        if (existingIndex === -1) {
-          updatedAnswers.push(newAnswer)
-        } else {
-          updatedAnswers[existingIndex] = newAnswer
-        }
-        if (isNew) {
-          updatedAnswers = updatedAnswers.filter((a) => a.id !== id)
-        }
-        return updatedAnswers
-      })
-    }
+    // const { editedAnswer: { path, value }, isNew } = answers.find((a) => a.id === id)
+    // const answerForSave = {
+    //   answer: backend.answerValue.prepForSave(value),
+    //   path,
+    // }
+    // const method = isNew ? 'addAnswer' : 'updateAnswer'
+    // const answer = isNew ? { ...answerForSave } : { ...answerForSave, id }
+    // const resp = await contentScriptAPI[method](answer, backend.answerDTOClass)
+    // if (resp.ok) {
+    //   const newAnswer = initAnswer(resp.data)
+    //   setAnswers((answers) => {
+    //     let updatedAnswers = [...answers]
+    //     const existingIndex = answers.findIndex((answer) => answer.id === newAnswer.id)
+    //     if (existingIndex === -1) {
+    //       updatedAnswers.push(newAnswer)
+    //     } else {
+    //       updatedAnswers[existingIndex] = newAnswer
+    //     }
+    //     if (isNew) {
+    //       updatedAnswers = updatedAnswers.filter((a) => a.id !== id)
+    //     }
+    //     return updatedAnswers
+    //   })
+    // }
   }
 
   const deleteAnswer: EditableAnswerState['deleteAnswer'] = async (id) => {
