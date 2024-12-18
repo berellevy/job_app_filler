@@ -160,17 +160,19 @@ export abstract class BaseFormInput<AnswerType = any> {
 
   abstract currentValue(): any
 
-  public get fieldSnapshot(): Answer106 {
-    return {
-      path: this.path,
-      answer: this.currentValue(),
-    }
-  }
+  // public get fieldSnapshot() {
+  //   return {
+  //     question: this.fieldName,
+  //     section: this.section,
 
-  async save(answer: Answer106): Promise<Answer106> {
-    const response = await contentScriptAPI.addAnswer(answer, this.answerDTOClass)
-    return response.data
-  }
+  //     answer: this.currentValue(),
+  //   }
+  // }
+
+  // async save(answer: Answer106): Promise<Answer106> {
+  //   const response = await contentScriptAPI.addAnswer(answer, this.answerDTOClass)
+  //   return response.data
+  // }
 
   async deleteAnswer(id: number): Promise<boolean> {
     const res = await contentScriptAPI.deleteAnswer(id)

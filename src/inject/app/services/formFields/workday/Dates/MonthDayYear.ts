@@ -73,12 +73,12 @@ export class MonthDayYear extends WorkdayBaseInput {
     ]
   }
 
-  public get fieldSnapshot(): Answer106 {
-    return {
-      path: this.path,
-      answer: { value: this.currentValue(), relative: false },
-    }
-  }
+  // public get fieldSnapshot(): Answer106 {
+  //   return {
+  //     path: this.path,
+  //     answer: { value: this.currentValue(), relative: false },
+  //   }
+  // }
 
   get wrapperElement(): HTMLElement {
     return getElement(

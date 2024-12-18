@@ -102,10 +102,9 @@ export const ContextProvider: FC<{
     saveButton: {
       showSuccessBadge: answers.data.length > 0,
       clickHandler: () => {
-        saveButtonClickHandler(backend.fieldSnapshot, {
+        saveButtonClickHandler(currentValue, {
           moreInfoPopper,
-          init,
-          backend,
+          answers
         })
       },
     },

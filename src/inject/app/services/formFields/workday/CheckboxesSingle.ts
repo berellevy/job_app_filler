@@ -70,12 +70,12 @@ export class CheckboxesSingle extends WorkdayBaseInput {
     return getElement(this.element, XPATH) as HTMLInputElement
   }
 
-  public get fieldSnapshot(): Answer106 {
-    return {
-      path: this.path,
-      answer: [this.currentValue()],
-    }
-  }
+  // public get fieldSnapshot(): Answer106 {
+  //   return {
+  //     path: this.path,
+  //     answer: [this.currentValue()],
+  //   }
+  // }
 
   async fill(answers: AnswerDTO<string>[]): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
