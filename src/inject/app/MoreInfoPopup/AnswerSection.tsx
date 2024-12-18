@@ -73,7 +73,7 @@ export const AnswersSection: FC = () => {
   const addNewAnswerButton = (
     <IconButton
       onClick={() => {
-        const { path, answer } = backend.fieldSnapshot
+        // const { path, answer } = backend.fieldSnapshot
         // addNewAnswer(path, answer)
       }}
     >
