@@ -133,6 +133,7 @@ export abstract class BaseFormInput<AnswerType = any> {
     ].join('')
     return getElement(this.element, XPATH)
   }
+  
   public get fieldName(): string {
     return this.labelElement?.innerText
   }
