@@ -25,6 +25,14 @@ export class File extends GreenhouseBaseInput {
     } as AnswerValueMethods
   }
 
+  get labelElement(): HTMLElement {
+    const XPATH = [
+      './/label',
+      "[.//text()[(normalize-space() != '')]]",
+    ].join('')
+    return getElement(this.element, XPATH)
+  }
+
   listenForChanges(): void {
     const observer = new MutationObserver(() => {
       this.triggerReactUpdate()

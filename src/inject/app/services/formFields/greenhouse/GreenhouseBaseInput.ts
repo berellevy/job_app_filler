@@ -1,6 +1,8 @@
 import { createRoot } from 'react-dom/client'
 import { BaseFormInput, isRegistered, isVisible } from '../baseFormInput'
 import { getElement, getElements } from '@src/shared/utils/getElements'
+import { getShallowTextContent } from '@src/inject/utils/dom'
+
 
 export abstract class GreenhouseBaseInput extends BaseFormInput {
   abstract inputElement(): HTMLInputElement
@@ -22,7 +24,7 @@ export abstract class GreenhouseBaseInput extends BaseFormInput {
   }
 
   public get fieldName() {
-    return super.fieldName?.replace("j\n\na\n\nf", "")
+    return getShallowTextContent(this.labelElement)
   }
 
   sectionElement(): HTMLElement {
