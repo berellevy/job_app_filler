@@ -18,9 +18,22 @@ export class Checkboxes extends GreenhouseBaseInput {
     return this.element as HTMLInputElement
   }
 
-  public get fieldName(): string {
-    return this.element.childNodes[0].textContent.trim()
+  /**
+   * Some fields, mostly the dei fields, have the question as text 
+   * directly in the div.field.
+   * others have the question in a label field.
+   */
+  get firstTextNodeContent(): string {
+    const { firstChild } = this.element
+    if (firstChild.nodeType === Node.TEXT_NODE) {
+      return firstChild.textContent.trim()
+    }
   }
+
+  public get fieldName(): string {
+    return this.firstTextNodeContent || super.fieldName
+  }
+
   inputDisplayElement(): HTMLElement {
     return getElement(this.element, ".//input[@type='hidden']")
   }
