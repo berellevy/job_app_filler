@@ -16,9 +16,13 @@ import { CheckCircleIcon, DeleteIcon } from '@src/shared/utils/icons'
 import AnswerDTO from '../services/DTOs/AnswerDTO'
 import { ConfirmButton } from '../components/ConfirmButton'
 
-const TableH = styled(TableCell)(({ theme }) => ({
+const TH = styled(TableCell)(({ theme }) => ({
   fontSize: '1rem',
   fontWeight: 600,
+}));
+
+const TD = styled(TableCell)(({ theme }) => ({
+  verticalAlign: "top"
 }));
 
 const AnswerRow: FC<{ answerDTO: AnswerDTO }> = ({ answerDTO }) => {
@@ -36,8 +40,8 @@ const AnswerRow: FC<{ answerDTO: AnswerDTO }> = ({ answerDTO }) => {
       </Tooltip>
   )
 
-  const DeleteCell = (
-    <TableCell>
+  const DeleteButton = (
+
       <ConfirmButton
         component="IconButton"
         action={() => answers.deleteAnswer(id)}
@@ -47,15 +51,14 @@ const AnswerRow: FC<{ answerDTO: AnswerDTO }> = ({ answerDTO }) => {
         Are you Sure you want to delete this answer? This action is
         not reversible.
       </ConfirmButton>
-    </TableCell>
   )
   return (
     <TableRow>
-      <TableCell>{MatchValue}</TableCell>
-      <TableCell >{fieldName}</TableCell>
-      {section && <TableCell>{section}</TableCell>}
-      <TableCell>{answer.toString()}</TableCell>
-      {DeleteCell}
+      <TD>{MatchValue}</TD>
+      <TD >{fieldName}</TD>
+      {section && <TD>{section}</TD>}
+      <TD>{answer.toString()}</TD>
+      <TD>{DeleteButton}</TD>
     </TableRow>
   )
 }
@@ -67,11 +70,11 @@ export const Answers: FC = () => {
       <Table sx={{ width: "100%" }} size='small' stickyHeader>
         <TableHead>
           <TableRow >
-            <TableH></TableH>
-            <TableH >Question</TableH>
-            {backend.section && <TableH>Section</TableH>}
-            <TableH>Answer</TableH>
-            <TableH></TableH>
+            <TH></TH>
+            <TH >Question</TH>
+            {backend.section && <TH>Section</TH>}
+            <TH>Answer</TH>
+            <TH></TH>
           </TableRow>
         </TableHead>
         <TableBody>
