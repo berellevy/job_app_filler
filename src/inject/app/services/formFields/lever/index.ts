@@ -1,10 +1,20 @@
-/**
- * Lever (jobs.lever.co) adapter — stub.
- *
- * Importable placeholder so the registry in `src/inject/inject.ts` resolves
- * during the build. The real autoDiscover logic is being added by a parallel
- * agent. Until then, this is a no-op.
- */
-export const RegisterInputs = async (_node: Node = document): Promise<void> => {
-  // intentionally empty — stub
+import { Dropdown } from './Dropdown'
+import { File } from './File'
+import { LinkedInUrl, OtherUrl } from './LinkedInUrl'
+import { Phone } from './Phone'
+import { EmailInput, NameInput, OrgInput } from './TextInput'
+
+const inputs = [
+  NameInput,
+  EmailInput,
+  Phone,
+  OrgInput,
+  LinkedInUrl,
+  OtherUrl,
+  File,
+  Dropdown,
+]
+
+export const RegisterInputs = async (node: Node = document): Promise<void> => {
+  await Promise.all(inputs.map((i) => i.autoDiscover(node)))
 }
