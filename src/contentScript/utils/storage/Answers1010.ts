@@ -1,10 +1,6 @@
-// Adapted from aerhedai/job-autofiller-ai (Apache-2.0). https://github.com/aerhedai/job-autofiller-ai
-//
-// The source selects the active profile in the popup and passes its fields to the
-// content script at fill time. Our content script instead resolves answers through
-// a singleton DataStore. To support multiple profiles we make that singleton an
-// "active answers" facade that delegates to the DataStore of whichever profile is
-// active, re-pointing itself when the user switches profiles in the popup.
+// Active-answers facade: a singleton that delegates to the DataStore of
+// whichever profile is active, re-pointing itself when the user switches
+// profiles in the popup.
 
 import { DataStore } from './DataStore'
 import { parseKey } from './utils'

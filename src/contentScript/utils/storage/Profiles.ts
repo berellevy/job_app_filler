@@ -1,12 +1,6 @@
-// Adapted from aerhedai/job-autofiller-ai (Apache-2.0). https://github.com/aerhedai/job-autofiller-ai
-//
-// The source models multiple per-role profiles as a flat `Profile[]` array in
-// chrome.storage.sync, where each profile embeds its own answer fields. Our fork
-// stores answers in a `DataStore` keyed by field path (see DataStore.ts), so the
-// shape does not transfer directly. We adapt the *concept*: a profile here is just
-// metadata (id + name); each profile's answers live in its own DataStore namespaced
-// by profile id. The legacy single store ("answers1010") becomes the "Default"
-// profile so existing users migrate with zero data movement.
+// A profile is metadata (id + name); each profile's answers live in its own
+// DataStore namespaced by profile id. The legacy single store ("answers1010")
+// is the "Default" profile, so existing users migrate with zero data movement.
 
 import { DataStore } from './DataStore'
 

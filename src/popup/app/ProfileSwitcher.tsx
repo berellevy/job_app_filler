@@ -1,9 +1,3 @@
-// Adapted from aerhedai/job-autofiller-ai (Apache-2.0). https://github.com/aerhedai/job-autofiller-ai
-//
-// The source exposes a `<select>` profile switcher plus create/edit/delete in a
-// plain-DOM settings page. Here we render the same capabilities (select / create /
-// rename / delete) using the fork's existing MUI popup component style.
-
 import React, { useEffect, useState } from 'react'
 import {
   Box,
