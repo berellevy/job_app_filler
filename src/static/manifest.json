@@ -25,11 +25,16 @@
         "https://jobs.smartrecruiters.com/*",
         "https://*.smartrecruiters.com/*",
         "https://apply.workable.com/*",
-        "https://jobs.workable.com/*"
+        "https://jobs.workable.com/*",
+        "https://*.icims.com/*"
       ],
       "all_frames": true
     }
   ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
   "web_accessible_resources": [
     {
       "resources": [
@@ -46,7 +51,8 @@
         "https://jobs.smartrecruiters.com/*",
         "https://*.smartrecruiters.com/*",
         "https://apply.workable.com/*",
-        "https://jobs.workable.com/*"
+        "https://jobs.workable.com/*",
+        "https://*.icims.com/*"
       ],
       "all_frames": true
     }
@@ -57,6 +63,7 @@
   ],
   "host_permissions": [
     "https://hiredsignal.com/*",
-    "https://*.hiredsignal.com/*"
+    "https://*.hiredsignal.com/*",
+    "https://*/*"
   ]
 }

@@ -1,12 +1,14 @@
 /**
  * HiredSignal background service worker.
  *
- * Owns the PAT, makes authenticated HTTPS calls to hiredsignal.com, and
- * serves results to content/inject scripts via chrome.runtime messages.
+ * Owns the PAT, makes authenticated HTTPS calls to hiredsignal.com, and serves
+ * results to content/inject scripts via chrome.runtime messages. Also handles
+ * AI open-text answer generation — the LLM call lives here because MV3 CORS
+ * blocks cross-origin fetch from content scripts; the content script relays via
+ * chrome.runtime.sendMessage.
  *
- * NOTE: This SW relies on host_permissions for hiredsignal.com being
- * present in manifest.json — that file is owned by the rebrand agent.
- * Until that lands, fetch() calls will be blocked by MV3 CORS.
+ * NOTE: relies on host_permissions for hiredsignal.com (and the AI endpoint)
+ * being present in manifest.json.
  */
 
 import {
@@ -27,6 +29,11 @@ import {
   HsMatch,
   HsResult,
 } from '../shared/utils/hs/types'
+import { generateAiAnswer } from './aiAnswerService'
+import {
+  AiGenerateAnswerResponse,
+  isAiGenerateAnswerRequest,
+} from '@src/shared/utils/ai/types'
 
 type HsResponseData = HsMatch | HsCandidate | HsCvFile | HsAuthStatus
 
@@ -36,6 +43,13 @@ function unauthResponse<T>(message: string): HsResult<T> {
 
 function invalidResponse<T>(message: string): HsResult<T> {
   return { ok: false, error: { code: 'invalid_response', message } }
+}
+
+const getErrorMessage = (error: unknown): string => {
+  if (error instanceof Error) {
+    return error.message
+  }
+  return 'Unexpected error'
 }
 
 async function handleMessage(msg: HsMessage): Promise<HsResult<HsResponseData>> {
@@ -76,21 +90,39 @@ chrome.runtime.onMessage.addListener(
     _sender: chrome.runtime.MessageSender,
     sendResponse: RuntimeSendResponse
   ): boolean => {
-    if (!isHsMessage(raw)) {
-      // Not addressed to us — surface a typed error so callers can
-      // distinguish from a real backend invalid_response.
-      sendResponse(invalidResponse('unrecognized message shape'))
-      return false
+    // AI open-text answer generation.
+    if (isAiGenerateAnswerRequest(raw)) {
+      generateAiAnswer(raw.context)
+        .then((answer: string) => {
+          const response: AiGenerateAnswerResponse = { ok: true, answer }
+          sendResponse(response)
+        })
+        .catch((error: unknown) => {
+          const response: AiGenerateAnswerResponse = {
+            ok: false,
+            error: getErrorMessage(error),
+          }
+          sendResponse(response)
+        })
+      // Keep the message channel open for the async response.
+      return true
     }
 
-    handleMessage(raw)
-      .then((response) => sendResponse(response))
-      .catch((e: unknown) => {
-        const message = e instanceof Error ? e.message : 'background handler threw'
-        sendResponse(invalidResponse(message))
-      })
+    // HiredSignal API messages.
+    if (isHsMessage(raw)) {
+      handleMessage(raw)
+        .then((response) => sendResponse(response))
+        .catch((e: unknown) => {
+          const message =
+            e instanceof Error ? e.message : 'background handler threw'
+          sendResponse(invalidResponse(message))
+        })
+      // Keep the message channel open for the async response.
+      return true
+    }
 
-    // Keep the message channel open for the async response.
-    return true
+    // Not addressed to us.
+    sendResponse(invalidResponse('unrecognized message shape'))
+    return false
   }
 )
