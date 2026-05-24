@@ -1,21 +1,8 @@
-import React, { FC } from 'react'
-import { MoreInfoPopper } from '../MoreInfoPopup/MoreInfoPopper'
-import { CloseIcon, MoreVertIcon } from '@src/shared/utils/icons'
-import { useAppContext } from '../AppContext'
-import { Button } from '@mui/material'
+import { FC } from 'react'
 
-export const MoreInfoButton: FC = () => {
-  const {
-    moreInfoPopper: { isOpen, handleToggleButtonClick },
-  } = useAppContext()
-  return (
-    <Button
-      type="button"
-      variant={isOpen ? 'contained' : 'outlined'}
-      onClick={handleToggleButtonClick}
-    >
-      {isOpen ? <CloseIcon /> : <MoreVertIcon />}
-      <MoreInfoPopper />
-    </Button>
-  )
-}
+/**
+ * Stub. The HiredSignal autofill bar replaces the per-field "more info"
+ * popper. Retained as an empty export so any leftover import paths still
+ * resolve.
+ */
+export const MoreInfoButton: FC = () => null

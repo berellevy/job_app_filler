@@ -1,29 +1,19 @@
 import React, { FC } from 'react'
 import { createRoot } from 'react-dom/client'
 
-import { Box, Grid, ThemeProvider } from '@mui/material'
-import { theme } from '@src/shared/utils/react'
 import { ContextProvider } from './AppContext'
 
 import { BaseFormInput } from './services/formFields/baseFormInput'
 import { FieldWidgetButtons } from './FieldWidget/FieldWidgetButtons'
-import Logo from '@src/shared/components/Logo'
 
+/**
+ * Per-field mount. In the HiredSignal model this renders nothing visible —
+ * `FieldWidgetButtons` only registers the field's backend with the page-global
+ * `HsAutofillBar` (see `hsBarSingleton`). All visible UX lives in that single
+ * floating bar, not at each field.
+ */
 const Main: FC = () => {
-  return (
-    <ThemeProvider theme={theme}>
-      <Box my={'4px'}>
-        <Grid container spacing={1} alignItems="center">
-          <Grid item>
-            <Logo />
-          </Grid>
-          <Grid item>
-            <FieldWidgetButtons />
-          </Grid>
-        </Grid>
-      </Box>
-    </ThemeProvider>
-  )
+  return <FieldWidgetButtons />
 }
 
 export const App: React.FC<{

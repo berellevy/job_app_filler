@@ -1,23 +1,8 @@
-import React, { FC } from 'react'
-import { Button, Tooltip } from '@mui/material'
-import { AutoFixHighIcon } from '@src/shared/utils/icons'
-import { useAppContext } from '../AppContext'
-import { ButtonSuccessBadge } from '../components/ButtonSuccessBadge'
+import { FC } from 'react'
 
-export const FillButton: FC = () => {
-  const {
-    fillButton: { isFilled, onClick, isDisabled },
-  } = useAppContext()
-
-  return (
-    <Tooltip title="Autofill" placement="top" arrow>
-      <span>
-        <ButtonSuccessBadge show={isFilled}>
-          <Button onClick={onClick} disabled={isDisabled}>
-            <AutoFixHighIcon />
-          </Button>
-        </ButtonSuccessBadge>
-      </span>
-    </Tooltip>
-  )
-}
+/**
+ * Stub. Per-field "Fill" buttons are replaced by the page-global HS bar
+ * (see `HsAutofillBar`). Retained as an empty export so any leftover
+ * import paths still resolve.
+ */
+export const FillButton: FC = () => null
