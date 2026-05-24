@@ -10,6 +10,7 @@ import {
   isSupportedAtsUrl,
 } from './components/HsCurrentPageSection'
 import { HsFooter } from './components/HsFooter'
+import { ProfileSwitcher } from './ProfileSwitcher'
 import { useActiveTab } from './hooks/useActiveTab'
 import { useHsAuth } from './hooks/useHsAuth'
 import { useHsMatch } from './hooks/useHsMatch'
@@ -68,14 +69,17 @@ export const App: FC = () => {
           onAuthChanged={refreshAll}
         />
         {auth.hasPat ? (
-          <HsCurrentPageSection
-            match={match.match}
-            error={match.error}
-            tabUrl={tab.url}
-            supported={supported}
-            onRefresh={match.refresh}
-            onOpenForm={onOpenForm}
-          />
+          <>
+            <ProfileSwitcher />
+            <HsCurrentPageSection
+              match={match.match}
+              error={match.error}
+              tabUrl={tab.url}
+              supported={supported}
+              onRefresh={match.refresh}
+              onOpenForm={onOpenForm}
+            />
+          </>
         ) : null}
         <Box sx={{ flexGrow: 1 }} />
         <HsFooter version={EXTENSION_VERSION} />
