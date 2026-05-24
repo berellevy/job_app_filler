@@ -10,6 +10,7 @@ import {
   isSupportedAtsUrl,
 } from './components/HsCurrentPageSection'
 import { HsFooter } from './components/HsFooter'
+import { HsAiSettings } from './components/HsAiSettings'
 import { ProfileSwitcher } from './ProfileSwitcher'
 import { useActiveTab } from './hooks/useActiveTab'
 import { useHsAuth } from './hooks/useHsAuth'
@@ -71,6 +72,7 @@ export const App: FC = () => {
         {auth.hasPat ? (
           <>
             <ProfileSwitcher />
+            <HsAiSettings />
             <HsCurrentPageSection
               match={match.match}
               error={match.error}
