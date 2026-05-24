@@ -1,34 +1,9 @@
-import { Box, Fade, Paper, Popper } from '@mui/material'
-import React, { FC } from 'react'
-import { useAppContext } from '../AppContext'
-import MoreInfoCardContainer from './MoreInfoCardContainer'
+import { FC } from 'react'
 
-export const MoreInfoPopper: FC = () => {
-  const {
-    moreInfoPopper: { isOpen, popperRef, anchorEl },
-  } = useAppContext()
-
-  return (
-    <Popper
-      id={isOpen ? `more-info-popper` : undefined}
-      ref={popperRef}
-      open={isOpen}
-      anchorEl={anchorEl}
-      placement="right-end"
-      transition
-      sx={{ zIndex: 100 }}
-    >
-      {({ TransitionProps }) => (
-        <Fade {...TransitionProps} timeout={350}>
-          <Box mx={1}>
-            <Paper elevation={8}>
-              <Box mt={2}>
-                <MoreInfoCardContainer />
-              </Box>
-            </Paper>
-          </Box>
-        </Fade>
-      )}
-    </Popper>
-  )
-}
+/**
+ * Stub. The MoreInfoPopper was the per-field "edit saved answer" UI in the
+ * upstream fork. HiredSignal answers live server-side; users edit them in
+ * HiredSignal's web UI, not here. Retained as an empty export so any
+ * leftover import paths still resolve.
+ */
+export const MoreInfoPopper: FC = () => null

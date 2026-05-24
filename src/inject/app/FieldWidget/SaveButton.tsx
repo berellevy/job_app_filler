@@ -1,20 +1,8 @@
-import React, { FC } from 'react'
-import { Button, Tooltip } from '@mui/material'
-import { SaveIcon } from '@src/shared/utils/icons'
-import { useAppContext } from '../AppContext'
-import { ButtonSuccessBadge } from '../components/ButtonSuccessBadge'
+import { FC } from 'react'
 
-export const SaveButton: FC = () => {
-  const {
-    saveButton: { clickHandler, showSuccessBadge },
-  } = useAppContext()
-  return (
-    <ButtonSuccessBadge show={showSuccessBadge}>
-      <Tooltip title="Save current value as answer." placement="top" arrow>
-        <Button onClick={() => clickHandler()}>
-          <SaveIcon />
-        </Button>
-      </Tooltip>
-    </ButtonSuccessBadge>
-  )
-}
+/**
+ * Stub. Per-field "Save" buttons are gone in the HiredSignal model — answers
+ * live in HiredSignal's API, not chrome.storage. Retained as an empty export
+ * so any leftover import paths still resolve.
+ */
+export const SaveButton: FC = () => null

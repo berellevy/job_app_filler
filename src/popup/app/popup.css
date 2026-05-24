@@ -1,3 +1,30 @@
+:root {
+  --hs-accent: #6366F1;
+  --hs-accent-dark: #4F46E5;
+  --hs-neutral-bg: #0F172A;
+  --hs-neutral-fg: #F8FAFC;
+  --hs-neutral-muted: #94A3B8;
+}
+
 body {
-    width: 325px;
+  width: 360px;
+  margin: 0;
+  font-family: "Inter", "Roboto", "Helvetica", "Arial", sans-serif;
+  color: #0F172A;
+  background: #ffffff;
+}
+
+a {
+  color: var(--hs-accent-dark);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus-visible {
+  text-decoration: underline;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--hs-accent);
+  outline-offset: 2px;
 }
