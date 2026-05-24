@@ -23,10 +23,10 @@ const inputRegistrars: [string, InputSetup][] = [
   // root domain covers every tenant subdomain.
   ['icims.com', icims],
 ]
-const getRegisterInput = (domain: string): InputSetup => {
+const getRegisterInput = (domain: string): InputSetup | undefined => {
   return inputRegistrars.find((site) => {
     return domain.endsWith(site[0])
-  })[1]
+  })?.[1]
 }
 
 /**
@@ -75,6 +75,12 @@ const registerInSameOriginFrames = (RegisterInputs: InputSetup): void => {
 
 const run = async () => {
   const RegisterInputs = getRegisterInput(window.location.host)
+  // The manifest may match a host (or sub-frame) that has no registered
+  // adapter — e.g. a greenhouse subdomain or workable variant not in the
+  // registrar list. Bail quietly instead of throwing on `undefined`.
+  if (!RegisterInputs) {
+    return
+  }
   const isIcims = window.location.host.endsWith('icims.com')
   const observer = new MutationObserver(async (_) => {
     RegisterInputs(document)
