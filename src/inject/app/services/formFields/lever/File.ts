@@ -6,6 +6,7 @@ import { xpaths } from './xpaths'
 import { LocalStorageFile, localStorageToFile } from '@src/shared/utils/file'
 import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import { saveButtonClickHandlers } from '../../../hooks/saveButtonClickHandlers'
+import { getHsCv } from '@src/shared/utils/hs/cvProvider'
 
 /**
  * Lever resume upload — `<input type="file" id="resume-upload-input">`.
@@ -95,14 +96,15 @@ export class File extends LeverBaseInput<LocalStorageFile> {
   async fill(): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
       const answers = await this.answer()
-      if (answers.length === 0 || !answers[0].answer) {
+      const hsCv = getHsCv()
+      const file = hsCv ?? (answers[0]?.answer ? localStorageToFile(answers[0].answer) : null)
+      if (!file) {
         return
       }
       const input = this.inputElement()
       if (!input) {
         return
       }
-      const file = localStorageToFile(answers[0].answer)
       const dataTransfer = new DataTransfer()
       dataTransfer.items.add(file)
       input.files = dataTransfer.files

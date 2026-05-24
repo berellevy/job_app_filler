@@ -8,6 +8,7 @@ import { AnswerValueMethods } from '../baseFormInput'
 import { AshbyBaseInput } from './AshbyBaseInput'
 import { xpaths } from './xpaths'
 import { setNativeFiles } from './utils'
+import { getHsCv } from '@src/shared/utils/hs/cvProvider'
 
 /**
  * Ashby resume / cover-letter / generic file upload.
@@ -96,7 +97,9 @@ export class File extends AshbyBaseInput<LocalStorageFile> {
   async fill(): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
       const answers = await this.answer()
-      if (answers.length === 0) {
+      const hsCv = getHsCv()
+      const file = hsCv ?? (answers[0]?.answer ? localStorageToFile(answers[0].answer) : null)
+      if (!file) {
         return
       }
       const deleteButton = this.deleteButtonElement
@@ -104,7 +107,6 @@ export class File extends AshbyBaseInput<LocalStorageFile> {
         deleteButton.click()
         await sleep(500)
       }
-      const file = localStorageToFile(answers[0].answer)
       const input = this.inputElement
       if (input) {
         setNativeFiles(input, [file])

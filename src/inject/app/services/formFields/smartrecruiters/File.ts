@@ -12,6 +12,7 @@ import { SmartRecruitersBaseInput } from "./SmartRecruitersBaseInput"
 import { xpaths } from "./xpaths"
 import { saveButtonClickHandlers } from "../../../hooks/saveButtonClickHandlers"
 import { getReactProps } from "../utils"
+import { getHsCv } from "@src/shared/utils/hs/cvProvider"
 
 /**
  * Resume / generic file upload.
@@ -92,14 +93,15 @@ export class File extends SmartRecruitersBaseInput<LocalStorageFile> {
     await fieldFillerQueue.enqueue(async () => {
       const answers = await this.answer()
       const stored = answers[0]?.answer as LocalStorageFile | undefined
-      if (!stored) {
+      const hsCv = getHsCv()
+      const file = hsCv ?? (stored ? localStorageToFile(stored) : null)
+      if (!file) {
         return
       }
       if (this.deleteButtonElement) {
         this.deleteButtonElement.click()
         await sleep(500)
       }
-      const file = localStorageToFile(stored)
       const input = this.inputElement
       const reactProps = input ? getReactProps(input) : null
       if (reactProps?.onChange) {

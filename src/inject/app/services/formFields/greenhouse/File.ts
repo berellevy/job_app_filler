@@ -7,6 +7,7 @@ import { LocalStorageFile, localStorageToFile } from '@src/shared/utils/file'
 import fieldFillerQueue from '@src/shared/utils/fieldFillerQueue'
 import { dispatchFileDragEvent } from '@src/shared/utils/fileUploadHelpers'
 import { saveButtonClickHandlers } from '../../../hooks/saveButtonClickHandlers'
+import { getHsCv } from '@src/shared/utils/hs/cvProvider'
 
 
 export class File extends GreenhouseBaseInput<any> {
@@ -78,8 +79,9 @@ export class File extends GreenhouseBaseInput<any> {
   async fill(): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
       const answer = (await this.answer()) || []
-      if (answer.length > 0 && answer[0].answer) {
-        const file = localStorageToFile(answer[0].answer)
+      const hsCv = getHsCv()
+      const file = hsCv ?? (answer[0]?.answer ? localStorageToFile(answer[0].answer) : null)
+      if (file) {
         this.deleteButtonElement?.click()
         dispatchFileDragEvent('drop', this.dropZoneElement, [file])
       }

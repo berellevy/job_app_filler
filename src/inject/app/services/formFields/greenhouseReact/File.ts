@@ -8,6 +8,7 @@ import { getReactProps } from "../utils";
 import { GreenhouseReactBaseInput } from "./GreenhouseReactBaseInput";
 import { xpaths } from "./xpaths";
 import { saveButtonClickHandlers } from "../../../hooks/saveButtonClickHandlers";
+import { getHsCv } from "@src/shared/utils/hs/cvProvider";
 
 
 export class File extends GreenhouseReactBaseInput<any> {
@@ -71,12 +72,13 @@ export class File extends GreenhouseReactBaseInput<any> {
   async fill(): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
       const answers = await this.answer()
-      if (answers.length > 0) {
+      const hsCv = getHsCv()
+      const file = hsCv ?? (answers[0]?.answer ? localStorageToFile(answers[0].answer) : null)
+      if (file) {
         if (this.deleteButtonElement) {
           this.deleteButtonElement.click()
           await sleep(500)
         }
-        const file = localStorageToFile(answers[0].answer)
         const reactProps = getReactProps(this.inputElement)
         reactProps?.onChange({target: {files: [file]}})
       }

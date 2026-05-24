@@ -36,7 +36,7 @@ const inPageTheme = createTheme({
 
 export type HsBarState =
   | { kind: 'detecting' }
-  | { kind: 'matched'; company: string; role: string }
+  | { kind: 'matched'; label: string }
   | { kind: 'filling'; progress: number }
   | { kind: 'done' }
   | { kind: 'no-match' }
@@ -53,7 +53,7 @@ const stateLabel = (state: HsBarState): string => {
     case 'detecting':
       return 'Detecting HiredSignal job…'
     case 'matched':
-      return `Matched: ${state.company} — ${state.role}`
+      return `Matched: ${state.label}`
     case 'filling':
       return `Filling… ${Math.round(state.progress * 100)}%`
     case 'done':

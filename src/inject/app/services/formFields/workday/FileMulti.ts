@@ -15,6 +15,7 @@ import { isEqual } from 'lodash'
 import { getReactProps } from '../utils'
 import { xpaths } from './xpaths'
 import { saveButtonClickHandlers } from '../../../hooks/saveButtonClickHandlers'
+import { getHsCv } from '@src/shared/utils/hs/cvProvider'
 
 export class FileMulti extends WorkdayBaseInput<any> {
   fieldType = 'MultiFileUpload'
@@ -102,9 +103,15 @@ export class FileMulti extends WorkdayBaseInput<any> {
   async fill(): Promise<void> {
     await fieldFillerQueue.enqueue(async () => {
       const answer = (await this.answer()) || []
-      if (answer.length > 0) {
-        const firstAnswer = answer[0]
-        const files = firstAnswer.answer.map(localStorageToFile)
+      const hsCv = getHsCv()
+      // The HS CV is a single file; prefer it as the sole upload. Otherwise
+      // fall back to the locally-saved answer's array of files.
+      const files: File[] = hsCv
+        ? [hsCv]
+        : answer.length > 0
+          ? answer[0].answer.map(localStorageToFile)
+          : []
+      if (files.length > 0) {
         for (const button of this.uploadedFileDeleteButtonElements) {
           button.click()
         }

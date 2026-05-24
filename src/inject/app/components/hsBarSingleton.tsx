@@ -4,6 +4,8 @@ import {
   HsAutofillBar,
   HsBarState,
 } from './HsAutofillBar'
+import { HsCvFile, HsMatch, isHsMatch } from '@src/shared/utils/hs/types'
+import { base64ToFile, setHsCv } from '@src/shared/utils/hs/cvProvider'
 
 /**
  * Page-global singleton that owns:
@@ -21,11 +23,6 @@ interface BackendLike {
   fill: () => Promise<unknown>
 }
 
-interface BarMatch {
-  company: string
-  role: string
-}
-
 interface HsBarSingleton {
   registerBackend: (backend: BackendLike) => void
   unregisterBackend: (backend: BackendLike) => void
@@ -36,8 +33,89 @@ interface InternalState {
   root: Root | null
   host: HTMLDivElement | null
   barState: HsBarState
-  match: BarMatch | null
+  match: HsMatch | null
   matchRequested: boolean
+}
+
+/**
+ * Turn a job slug (e.g. `senior-frontend-engineer-acme-london`) into a
+ * human-friendly label for the bar. There is no company/role on HsMatch, so
+ * the slug is the only display signal we have.
+ */
+const prettifySlug = (slug: string): string => {
+  const words = slug
+    .split(/[-_/]+/)
+    .map((w) => w.trim())
+    .filter((w) => w.length > 0)
+  if (words.length === 0) return 'HiredSignal job'
+  return words
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')
+}
+
+/**
+ * Narrow an HsResult-shaped response and pull the HsCvFile payload out of it.
+ * Returns null on any failure so the caller can proceed to fill anyway.
+ */
+const extractCvFile = (response: unknown): HsCvFile | null => {
+  if (
+    !response ||
+    typeof response !== 'object' ||
+    !('ok' in response) ||
+    (response as { ok: unknown }).ok !== true ||
+    !('data' in response)
+  ) {
+    return null
+  }
+  const data = (response as { data: unknown }).data
+  if (
+    !data ||
+    typeof data !== 'object' ||
+    typeof (data as { bytesBase64?: unknown }).bytesBase64 !== 'string' ||
+    typeof (data as { contentType?: unknown }).contentType !== 'string'
+  ) {
+    return null
+  }
+  const filename = (data as { filename?: unknown }).filename
+  return {
+    bytesBase64: (data as { bytesBase64: string }).bytesBase64,
+    contentType: (data as { contentType: string }).contentType,
+    filename: typeof filename === 'string' ? filename : null,
+  }
+}
+
+/**
+ * Fetch the matched job's CV from the background SW and stash it in the
+ * cvProvider so every file-upload adapter prefers it. Best-effort: any failure
+ * (no cvMaterialId, SW error, decode error) leaves the provider empty and the
+ * adapters fall back to the locally-saved answer.
+ */
+const loadHsCv = (materialId: string): Promise<void> => {
+  return new Promise((resolve) => {
+    try {
+      chrome.runtime.sendMessage(
+        { type: 'HS_CV', materialId },
+        (response: unknown) => {
+          if (chrome.runtime.lastError) {
+            resolve()
+            return
+          }
+          const cv = extractCvFile(response)
+          if (cv) {
+            const filename = cv.filename ?? 'hiredsignal-cv.pdf'
+            try {
+              setHsCv(base64ToFile(cv.bytesBase64, filename, cv.contentType))
+            } catch {
+              // Decode failure — leave provider empty, fall back to local.
+            }
+          }
+          resolve()
+        }
+      )
+    } catch {
+      resolve()
+    }
+  })
 }
 
 const state: InternalState = {
@@ -96,6 +174,13 @@ const render = (): void => {
           state.barState = { kind: 'filling', progress: 0 }
           render()
           try {
+            // Prefer the matched job's HiredSignal CV when one is available.
+            // Best-effort: failures leave the provider empty and adapters fall
+            // back to the locally-saved answer.
+            const materialId = state.match?.cvMaterialId
+            if (materialId) {
+              await loadHsCv(materialId)
+            }
             await fillAll()
             state.barState = { kind: 'done' }
           } catch (err) {
@@ -135,16 +220,12 @@ const requestMatch = (): void => {
           'data' in response
         ) {
           const data = (response as { data: unknown }).data
-          if (
-            data &&
-            typeof data === 'object' &&
-            'company' in data &&
-            'role' in data
-          ) {
-            const company = String((data as { company: unknown }).company)
-            const role = String((data as { role: unknown }).role)
-            state.match = { company, role }
-            state.barState = { kind: 'matched', company, role }
+          if (isHsMatch(data)) {
+            state.match = data
+            state.barState = {
+              kind: 'matched',
+              label: prettifySlug(data.slug),
+            }
             render()
             return
           }
