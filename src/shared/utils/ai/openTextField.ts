@@ -1,12 +1,10 @@
-// Adapted from Br1an67/OpenJobAutofill (MIT). https://github.com/Br1an67/OpenJobAutofill
-
 /**
  * Detection of "open-text" / long-answer fields — textareas, contenteditable
  * regions, and single-line inputs whose maxlength is large enough that a
  * free-text answer is expected (e.g. "Why do you want to work here?").
  *
- * The thresholds below are adapted from OpenJobAutofill's control-type
- * classification; the rest is original to fit our editable-element model.
+ * The thresholds below classify the control type to fit our
+ * editable-element model.
  */
 
 /**

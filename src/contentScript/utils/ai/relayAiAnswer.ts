@@ -1,5 +1,3 @@
-// Adapted from Br1an67/OpenJobAutofill (MIT). https://github.com/Br1an67/OpenJobAutofill
-
 import {
   AI_GENERATE_ANSWER_MESSAGE,
   AiAnswerContext,

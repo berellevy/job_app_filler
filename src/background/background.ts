@@ -1,5 +1,3 @@
-// Adapted from Br1an67/OpenJobAutofill (MIT). https://github.com/Br1an67/OpenJobAutofill
-//
 // Background service worker. In MV3, cross-origin fetches are CORS-restricted
 // from content scripts, so the LLM call lives here (the SW is exempt) and the
 // content script relays requests via chrome.runtime.sendMessage. This mirrors

@@ -1,10 +1,3 @@
-// Adapted from Br1an67/OpenJobAutofill (MIT). https://github.com/Br1an67/OpenJobAutofill
-//
-// Ported pieces: the OpenAI-compatible chat-completions call (key-from-config,
-// Authorization header building, response-content extraction). Adapted: the
-// field-mapping prompt is replaced with an open-text answer-generation prompt,
-// and the whole service runs in the background service worker (MV3 CORS-safe).
-
 import {
   AI_CONFIG_STORAGE_KEY,
   AiAnswerConfig,
@@ -70,8 +63,7 @@ const resolveAnswerCap = (maxLength?: number): number | undefined => {
 }
 
 /**
- * Builds the chat messages for an open-text answer. Original to this fork;
- * the field-mapping prompts from OpenJobAutofill do not apply to free text.
+ * Builds the chat messages for an open-text answer.
  */
 const buildMessages = (context: AiAnswerContext): ChatMessage[] => {
   const cap = resolveAnswerCap(context.maxLength)

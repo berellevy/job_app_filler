@@ -1,5 +1,3 @@
-// Adapted from Br1an67/OpenJobAutofill (MIT). https://github.com/Br1an67/OpenJobAutofill
-
 /**
  * Configuration for the OpenAI-compatible chat-completions endpoint used to
  * generate open-text answers. Persisted in `chrome.storage.local` under
