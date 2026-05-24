@@ -1,6 +1,10 @@
 import { RegisterInputs as workday } from './app/services/formFields/workday'
 import { RegisterInputs as greenhouse } from './app/services/formFields/greenhouse'
 import { RegisterInputs as greenhouseReact } from './app/services/formFields/greenhouseReact'
+import { RegisterInputs as lever } from './app/services/formFields/lever'
+import { RegisterInputs as ashby } from './app/services/formFields/ashby'
+import { RegisterInputs as smartrecruiters } from './app/services/formFields/smartrecruiters'
+import { RegisterInputs as workable } from './app/services/formFields/workable'
 
 type InputSetup = (node: Node) => Promise<void>
 const inputRegistrars: [string, InputSetup][] = [
@@ -9,6 +13,10 @@ const inputRegistrars: [string, InputSetup][] = [
   ['job-boards.greenhouse.io', greenhouseReact],
   ['boards.greenhouse.io', greenhouse],
   ['boards.eu.greenhouse.io', greenhouse],
+  ['jobs.lever.co', lever],
+  ['jobs.ashbyhq.com', ashby],
+  ['jobs.smartrecruiters.com', smartrecruiters],
+  ['apply.workable.com', workable],
 ]
 const getRegisterInput = (domain: string): InputSetup => {
   return inputRegistrars.find((site) => {

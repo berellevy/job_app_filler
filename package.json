@@ -1,15 +1,20 @@
 {
-  "name": "job_app_filler",
-  "version": "1.0.2",
-  "description": "Elevated Autofill for those pesky job application sites.",
+  "name": "hs-extension",
+  "version": "0.1.0",
+  "description": "Auto-fills job applications with the tailored CV HiredSignal generated for that specific job.",
   "main": "index.js",
   "scripts": {
     "start": "webpack --watch --progress --config webpack.dev.js",
-    "build": "webpack --watch --progress --config webpack.prod.js",
+    "build": "webpack --progress --config webpack.prod.js",
     "release": "node release.js"
   },
-  "author": "Berel Levy",
-  "license": "ISC",
+  "author": "Michael Tabet",
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michaeltabet/hs-extension.git"
+  },
+  "homepage": "https://github.com/michaeltabet/hs-extension",
   "devDependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
