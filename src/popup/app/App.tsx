@@ -17,6 +17,7 @@ import { ThemeProvider } from '@emotion/react'
 import { theme } from '@src/shared/utils/react'
 import { ContentCopyIcon, GitHubIcon, OpenInNewIcon } from '@src/shared/utils/icons'
 import { LogoTitleBar } from '@src/shared/components/LogoTitleBar'
+import { ProfileSwitcher } from './ProfileSwitcher'
 
 const EMAIL_ADDRESS = 'berellevy+chromeextensions@gmail.com'
 
@@ -71,6 +72,9 @@ export const App: FC<{}> = () => {
               Tutorial
             </Button>
           </Stack>
+          <Divider sx={{ my: 2 }} />
+
+          <ProfileSwitcher />
           <Divider sx={{ my: 2 }} />
 
           <Typography variant="h5" sx={{ mt: 2, mb: 1 }}>

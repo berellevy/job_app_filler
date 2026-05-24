@@ -9,23 +9,24 @@ import { migrateEducation } from './utils/storage/migrateEducationSectionNames'
 // Regiser server and methods accessible to injected script.
 const server = new Server(process.env.CONTENT_SCRIPT_URL)
 server.register('addAnswer', async (newAnswer: Answer) => {
-  const answer1010 = answers1010.add(convert106To1010(newAnswer))
+  const answer1010 = await answers1010.add(convert106To1010(newAnswer))
   return convert1010To106(answer1010)
 })
 
 server.register('updateAnswer', async (newAnswer: Answer) => {
-  const answer1010 = answers1010.update(
+  const answer1010 = await answers1010.update(
     convert106To1010(newAnswer) as SavedAnswer
   )
   return convert1010To106(answer1010)
 })
 
 server.register('getAnswer', async (fieldPath: FieldPath) => {
-  return answers1010.search(fieldPath).map((record) => convert1010To106(record))
+  const records = await answers1010.search(fieldPath)
+  return records.map((record) => convert1010To106(record))
 })
 
 server.register('deleteAnswer', async (id: number) => {
-  return answers1010.delete(id)
+  return await answers1010.delete(id)
 })
 
 // inject script
