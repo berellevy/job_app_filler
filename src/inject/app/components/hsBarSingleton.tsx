@@ -6,6 +6,7 @@ import {
 } from './HsAutofillBar'
 import { HsCvFile, HsMatch, isHsMatch } from '@src/shared/utils/hs/types'
 import { base64ToFile, setHsCv } from '@src/shared/utils/hs/cvProvider'
+import { sleep } from '@src/shared/utils/async'
 
 /**
  * Page-global singleton that owns:
@@ -164,6 +165,95 @@ const fillAll = async (): Promise<void> => {
   }
 }
 
+// ── Workday multi-page stepper ───────────────────────────────────────────────
+// Workday applications span several pages (My Information → My Experience →
+// questions → Review). The autofill backends only know about the CURRENT page,
+// so a single fillAll() fills one page. This walks the whole flow: fill → click
+// "Save and Continue" → wait for the next page's fields to register (via the
+// global MutationObserver in inject.ts) → fill again, until it reaches Review.
+//
+// SAFETY: it NEVER clicks Submit. It stops the moment a submit button or a
+// Review heading appears, and it stops if Workday refuses to advance (e.g. an
+// unfilled required field triggers validation) — so it can never push a
+// half-complete application through.
+
+const MAX_WORKDAY_PAGES = 12
+
+const isWorkday = (): boolean =>
+  /myworkdayjobs\.com|myworkdaysite\.com/i.test(location.hostname)
+
+const visibleText = (el: Element | null): string =>
+  el && el instanceof HTMLElement ? (el.innerText || '').trim() : ''
+
+// True when we've reached the end — never auto-submit past here.
+const atReviewOrSubmitStep = (): boolean => {
+  const submit = document.querySelector(
+    'button[data-automation-id*="submit" i], button[data-automation-id="pageFooterSubmitButton"]'
+  )
+  if (submit) return true
+  const headings = Array.from(document.querySelectorAll('h1, h2, h3'))
+  if (headings.some((h) => /\breview\b|\bsubmit\b/i.test(visibleText(h)))) return true
+  const buttons = Array.from(document.querySelectorAll('button'))
+  if (buttons.some((b) => /^submit\b/i.test(visibleText(b)))) return true
+  return false
+}
+
+const isSafeNextButton = (b: HTMLElement): boolean => {
+  const t = visibleText(b).toLowerCase()
+  const aid = (b.getAttribute('data-automation-id') || '').toLowerCase()
+  if (/submit/.test(t) || /submit/.test(aid)) return false
+  if (/back|previous|save for later|cancel|sign out/.test(t)) return false
+  return true
+}
+
+const findWorkdayNextButton = (): HTMLElement | null => {
+  const byId = document.querySelector(
+    'button[data-automation-id="bottom-navigation-next-button"], button[data-automation-id="pageFooterNextButton"]'
+  )
+  if (byId instanceof HTMLElement && isSafeNextButton(byId)) return byId
+  const buttons = Array.from(document.querySelectorAll('button'))
+  for (const b of buttons) {
+    if (!(b instanceof HTMLElement)) continue
+    const t = visibleText(b).toLowerCase()
+    if (/\b(save and continue|continue|next)\b/.test(t) && isSafeNextButton(b)) {
+      return b
+    }
+  }
+  return null
+}
+
+const fillWorkdayAllPages = async (): Promise<void> => {
+  for (let page = 0; page < MAX_WORKDAY_PAGES; page++) {
+    await fillAll()
+    await sleep(700)
+
+    if (atReviewOrSubmitStep()) break // reached the end — leave Submit to the human
+
+    const next = findWorkdayNextButton()
+    if (!next) break
+
+    const fingerprint = (): string => {
+      const h = document.querySelector('h2, h1')
+      return visibleText(h) + '|' + window.location.href
+    }
+    const before = fingerprint()
+    next.click()
+
+    // Wait for the page to actually change. If Workday blocks on validation
+    // (an unfilled required field), the fingerprint won't change and we stop —
+    // never forcing a half-filled page through.
+    let advanced = false
+    for (let w = 0; w < 15; w++) {
+      await sleep(400)
+      if (fingerprint() !== before) {
+        advanced = true
+        break
+      }
+    }
+    if (!advanced) break
+  }
+}
+
 const render = (): void => {
   const { root } = ensureHost()
   root.render(
@@ -181,7 +271,13 @@ const render = (): void => {
             if (materialId) {
               await loadHsCv(materialId)
             }
-            await fillAll()
+            // Workday spans multiple pages — walk them all (stops at Review,
+            // never submits). Every other ATS is a single page.
+            if (isWorkday()) {
+              await fillWorkdayAllPages()
+            } else {
+              await fillAll()
+            }
             state.barState = { kind: 'done' }
           } catch (err) {
             const message = err instanceof Error ? err.message : String(err)
