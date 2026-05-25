@@ -53,8 +53,7 @@
         "https://apply.workable.com/*",
         "https://jobs.workable.com/*",
         "https://*.icims.com/*"
-      ],
-      "all_frames": true
+      ]
     }
   ],
   "permissions": [
