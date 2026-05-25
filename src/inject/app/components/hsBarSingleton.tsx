@@ -4,8 +4,9 @@ import {
   HsAutofillBar,
   HsBarState,
 } from './HsAutofillBar'
-import { HsCvFile, HsMatch, isHsMatch } from '@src/shared/utils/hs/types'
+import { HsCvFile, HsFillField, HsMatch, isHsMatch } from '@src/shared/utils/hs/types'
 import { base64ToFile, setHsCv } from '@src/shared/utils/hs/cvProvider'
+import { sendHsMessage } from '@src/shared/utils/hs/messages'
 import { sleep } from '@src/shared/utils/async'
 
 /**
@@ -225,6 +226,7 @@ const findWorkdayNextButton = (): HTMLElement | null => {
 const fillWorkdayAllPages = async (): Promise<void> => {
   for (let page = 0; page < MAX_WORKDAY_PAGES; page++) {
     await fillAll()
+    await llmFillCurrentPage()
     await sleep(700)
 
     if (atReviewOrSubmitStep()) break // reached the end — leave Submit to the human
@@ -254,6 +256,166 @@ const fillWorkdayAllPages = async (): Promise<void> => {
   }
 }
 
+// ── LLM field fill ───────────────────────────────────────────────────────────
+// The universal path: scrape every fillable field on the current page, send the
+// labels to HiredSignal (POST /api/extension/fill), and apply the answers the
+// server's LLM returns from the user's CV + JD + profile. This is what fills the
+// long tail the per-ATS adapters don't know about. The extension is the hands;
+// the brain is on the server.
+
+let hsFieldCounter = 0
+const HS_FID = 'data-hs-fid'
+
+const deepFormControls = (): HTMLElement[] => {
+  const out: HTMLElement[] = []
+  const walk = (root: Document | ShadowRoot): void => {
+    try {
+      root.querySelectorAll('input, textarea, select').forEach((el) => {
+        if (el instanceof HTMLElement) out.push(el)
+      })
+    } catch {
+      /* ignore */
+    }
+    try {
+      root.querySelectorAll('*').forEach((el) => {
+        const sr = (el as HTMLElement).shadowRoot
+        if (sr) walk(sr)
+      })
+    } catch {
+      /* ignore */
+    }
+  }
+  walk(document)
+  return out
+}
+
+const fieldIsVisible = (el: HTMLElement): boolean => {
+  const s = window.getComputedStyle(el)
+  return s.display !== 'none' && s.visibility !== 'hidden'
+}
+
+const labelForControl = (el: HTMLElement): string => {
+  const inp = el as HTMLInputElement
+  let viaFor = ''
+  try {
+    if (inp.id) {
+      const sel = window.CSS ? CSS.escape(inp.id) : inp.id
+      const lab = document.querySelector(`label[for="${sel}"]`)
+      viaFor = lab instanceof HTMLElement ? lab.innerText : ''
+    }
+  } catch {
+    /* ignore */
+  }
+  const direct = inp.labels && inp.labels[0] ? inp.labels[0].textContent || '' : ''
+  return [
+    inp.getAttribute('aria-label'),
+    inp.getAttribute('placeholder'),
+    direct,
+    viaFor,
+    inp.getAttribute('name'),
+    inp.id,
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 200)
+}
+
+const SKIP_FIELD_TYPES = new Set([
+  'file', 'password', 'hidden', 'submit', 'button', 'reset', 'image', 'search',
+])
+
+const scanFields = (): { fields: HsFillField[]; map: Map<string, HTMLElement> } => {
+  const map = new Map<string, HTMLElement>()
+  const fields: HsFillField[] = []
+  for (const el of deepFormControls()) {
+    const tag = el.tagName.toLowerCase()
+    const type = (
+      tag === 'input' ? (el as HTMLInputElement).type || 'text' : tag
+    ).toLowerCase()
+    if (SKIP_FIELD_TYPES.has(type)) continue
+    if (!fieldIsVisible(el)) continue
+    if (
+      (tag === 'input' || tag === 'textarea') &&
+      (el as HTMLInputElement).value &&
+      (el as HTMLInputElement).value.trim()
+    ) {
+      continue // don't overwrite a field that already has a value
+    }
+    const label = labelForControl(el)
+    if (!label) continue
+    const id = `hsf${++hsFieldCounter}`
+    el.setAttribute(HS_FID, id)
+    const field: HsFillField = { id, label, type }
+    const max = (el as HTMLInputElement).maxLength
+    if (typeof max === 'number' && max > 0) field.maxLength = max
+    if (tag === 'select') {
+      field.options = Array.from((el as HTMLSelectElement).options)
+        .map((o) => (o.textContent || o.value || '').trim())
+        .filter((t) => t.length > 0)
+        .slice(0, 40)
+    }
+    fields.push(field)
+    map.set(id, el)
+    if (fields.length >= 60) break
+  }
+  return { fields, map }
+}
+
+const setNativeValue = (
+  el: HTMLInputElement | HTMLTextAreaElement,
+  value: string
+): void => {
+  const proto =
+    el instanceof HTMLTextAreaElement
+      ? HTMLTextAreaElement.prototype
+      : HTMLInputElement.prototype
+  const desc = Object.getOwnPropertyDescriptor(proto, 'value')
+  if (desc && desc.set) desc.set.call(el, value)
+  else el.value = value
+  el.dispatchEvent(new Event('input', { bubbles: true }))
+  el.dispatchEvent(new Event('change', { bubbles: true }))
+  el.dispatchEvent(new Event('blur', { bubbles: true }))
+}
+
+const applyValue = (el: HTMLElement, value: string): void => {
+  if (!value) return
+  const tag = el.tagName.toLowerCase()
+  try {
+    if (tag === 'select') {
+      const sel = el as HTMLSelectElement
+      const want = value.toLowerCase()
+      for (let i = 0; i < sel.options.length; i++) {
+        const t = (sel.options[i].textContent || sel.options[i].value || '')
+          .toLowerCase()
+          .trim()
+        if (t === want || t.includes(want) || want.includes(t)) {
+          sel.selectedIndex = i
+          sel.dispatchEvent(new Event('change', { bubbles: true }))
+          return
+        }
+      }
+    } else if (tag === 'input' || tag === 'textarea') {
+      setNativeValue(el as HTMLInputElement, value)
+    }
+  } catch {
+    /* per-field failures are non-fatal */
+  }
+}
+
+const llmFillCurrentPage = async (): Promise<void> => {
+  const jobUid = state.match && state.match.jobUid ? state.match.jobUid : ''
+  const { fields, map } = scanFields()
+  if (fields.length === 0) return
+  const res = await sendHsMessage({ type: 'HS_FILL', jobUid, fields })
+  if (!res.ok) return
+  for (const ans of res.data.answers) {
+    const el = map.get(ans.id)
+    if (el) applyValue(el, ans.value)
+  }
+}
+
 const render = (): void => {
   const { root } = ensureHost()
   root.render(
@@ -277,6 +439,7 @@ const render = (): void => {
               await fillWorkdayAllPages()
             } else {
               await fillAll()
+              await llmFillCurrentPage()
             }
             state.barState = { kind: 'done' }
           } catch (err) {

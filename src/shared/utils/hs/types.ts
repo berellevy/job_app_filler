@@ -35,6 +35,24 @@ export interface HsCvFile {
   filename: string | null
 }
 
+/** A form field the extension scraped, to be answered server-side by the LLM. */
+export interface HsFillField {
+  id: string
+  label: string
+  type: string
+  options?: string[]
+  maxLength?: number
+}
+
+export interface HsFillAnswer {
+  id: string
+  value: string
+}
+
+export interface HsFillResult {
+  answers: HsFillAnswer[]
+}
+
 export type HsErrorCode =
   | 'unauthenticated'
   | 'not_found'

@@ -10,12 +10,20 @@
  */
 
 import { HsAuthStatus } from './auth'
-import { HsCandidate, HsCvFile, HsMatch, HsResult } from './types'
+import {
+  HsCandidate,
+  HsCvFile,
+  HsFillField,
+  HsFillResult,
+  HsMatch,
+  HsResult,
+} from './types'
 
 export type HsMessage =
   | { type: 'HS_MATCH'; url: string }
   | { type: 'HS_CANDIDATE' }
   | { type: 'HS_CV'; materialId: string }
+  | { type: 'HS_FILL'; jobUid: string; fields: HsFillField[] }
   | { type: 'HS_AUTH_STATUS' }
   | { type: 'HS_AUTH_SET_PAT'; pat: string }
   | { type: 'HS_AUTH_CLEAR' }
@@ -28,6 +36,7 @@ export interface HsMessageResponseMap {
   HS_MATCH: HsResponse<HsMatch>
   HS_CANDIDATE: HsResponse<HsCandidate>
   HS_CV: HsResponse<HsCvFile>
+  HS_FILL: HsResponse<HsFillResult>
   HS_AUTH_STATUS: HsResponse<HsAuthStatus>
   HS_AUTH_SET_PAT: HsResponse<HsAuthStatus>
   HS_AUTH_CLEAR: HsResponse<HsAuthStatus>
@@ -111,6 +120,8 @@ export function isHsMessage(v: unknown): v is HsMessage {
       return true
     case 'HS_CV':
       return typeof (v as { materialId?: unknown }).materialId === 'string'
+    case 'HS_FILL':
+      return Array.isArray((v as { fields?: unknown }).fields)
     case 'HS_AUTH_SET_PAT':
       return typeof (v as { pat?: unknown }).pat === 'string'
     default:

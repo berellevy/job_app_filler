@@ -18,6 +18,9 @@ import {
   HsCandidate,
   HsCvFile,
   HsErrorCode,
+  HsFillAnswer,
+  HsFillField,
+  HsFillResult,
   HsMatch,
   HsMatchType,
   HsResult,
@@ -267,4 +270,27 @@ export async function fetchCv(materialId: string): Promise<HsResult<HsCvFile>> {
   const contentType = res.headers.get('content-type') || 'application/octet-stream'
   const filename = filenameFromContentDisposition(res.headers.get('content-disposition'))
   return ok({ bytesBase64: bytesToBase64(buf), contentType, filename })
+}
+
+// -- LLM field fill: send scraped fields, get back answers ------------------
+
+export async function fetchFill(
+  jobUid: string,
+  fields: HsFillField[]
+): Promise<HsResult<HsFillResult>> {
+  const r = await getJson('/api/extension/fill', {
+    method: 'POST',
+    body: JSON.stringify({ jobUid, fields }),
+  })
+  if (r.error) return err(r.error.code, r.error.message)
+  const payload = asRecord(r.data)
+  const rawAnswers = Array.isArray(payload.answers) ? payload.answers : []
+  const answers: HsFillAnswer[] = []
+  for (const a of rawAnswers) {
+    const rec = asRecord(a)
+    const id = asString(rec.id)
+    const value = asString(rec.value)
+    if (id) answers.push({ id, value })
+  }
+  return ok({ answers })
 }

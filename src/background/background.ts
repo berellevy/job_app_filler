@@ -20,12 +20,14 @@ import {
 import {
   fetchCandidate,
   fetchCv,
+  fetchFill,
   fetchMatch,
 } from '../shared/utils/hs/client'
 import { HsMessage, isHsMessage } from '../shared/utils/hs/messages'
 import {
   HsCandidate,
   HsCvFile,
+  HsFillResult,
   HsMatch,
   HsResult,
 } from '../shared/utils/hs/types'
@@ -35,7 +37,7 @@ import {
   isAiGenerateAnswerRequest,
 } from '@src/shared/utils/ai/types'
 
-type HsResponseData = HsMatch | HsCandidate | HsCvFile | HsAuthStatus
+type HsResponseData = HsMatch | HsCandidate | HsCvFile | HsFillResult | HsAuthStatus
 
 function unauthResponse<T>(message: string): HsResult<T> {
   return { ok: false, error: { code: 'unauthenticated', message } }
@@ -60,6 +62,8 @@ async function handleMessage(msg: HsMessage): Promise<HsResult<HsResponseData>> 
       return fetchCandidate()
     case 'HS_CV':
       return fetchCv(msg.materialId)
+    case 'HS_FILL':
+      return fetchFill(msg.jobUid, msg.fields)
     case 'HS_AUTH_STATUS': {
       const status = await getAuthStatus()
       return { ok: true, data: status }
