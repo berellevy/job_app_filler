@@ -1,0 +1,52 @@
+name: Build extension
+
+# Builds the MV3 extension on GitHub's servers (not on anyone's laptop) and
+# publishes the loadable bundle as a downloadable artifact on every push.
+
+on:
+  push:
+    branches: [main, integration]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Type-check (non-blocking)
+        run: npx tsc --noEmit -p tsconfig.json || true
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Zip the loadable extension
+        run: |
+          cd dist
+          zip -r ../hiredsignal-extension.zip .
+          cd ..
+
+      - name: Upload unpacked dist (Load unpacked)
+        uses: actions/upload-artifact@v4
+        with:
+          name: hiredsignal-extension-unpacked
+          path: dist/
+          if-no-files-found: error
+
+      - name: Upload zipped extension (Web Store / share)
+        uses: actions/upload-artifact@v4
+        with:
+          name: hiredsignal-extension-zip
+          path: hiredsignal-extension.zip
+          if-no-files-found: error
