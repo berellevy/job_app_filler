@@ -7,6 +7,7 @@ import { SavedAnswer } from './utils/storage/DataStoreTypes'
 import { migrateEducation } from './utils/storage/migrateEducationSectionNames'
 import { relayAiAnswer } from './utils/ai/relayAiAnswer'
 import { AiAnswerContext } from '@src/shared/utils/ai/types'
+import { HsMessage, isHsMessage, sendHsMessage } from '@src/shared/utils/hs/messages'
 
 // Regiser server and methods accessible to injected script.
 const server = new Server(process.env.CONTENT_SCRIPT_URL)
@@ -37,6 +38,22 @@ server.register('deleteAnswer', async (id: number) => {
 // through the same saved-answer fill path as every other field.
 server.register('generateAiAnswer', async (context: AiAnswerContext) => {
   return relayAiAnswer(context)
+})
+
+// The page-injected script cannot use chrome.runtime directly. Relay HiredSignal
+// API messages through this content script so the background SW remains the
+// only place that performs privileged extension work.
+server.register('sendHsMessage', async (message: HsMessage) => {
+  if (!isHsMessage(message)) {
+    return {
+      ok: false,
+      error: {
+        code: 'invalid_response',
+        message: 'Invalid HiredSignal message shape',
+      },
+    }
+  }
+  return sendHsMessage(message)
 })
 
 // inject script

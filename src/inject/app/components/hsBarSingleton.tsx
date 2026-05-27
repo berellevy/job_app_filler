@@ -6,8 +6,12 @@ import {
 } from './HsAutofillBar'
 import { HsCvFile, HsFillField, HsMatch, isHsMatch } from '@src/shared/utils/hs/types'
 import { base64ToFile, setHsCv } from '@src/shared/utils/hs/cvProvider'
-import { sendHsMessage } from '@src/shared/utils/hs/messages'
+import {
+  HsMessage,
+  HsMessageResponseMap,
+} from '@src/shared/utils/hs/messages'
 import { sleep } from '@src/shared/utils/async'
+import { contentScriptAPI } from '../services/contentScriptApi'
 
 /**
  * Page-global singleton that owns:
@@ -37,6 +41,34 @@ interface InternalState {
   barState: HsBarState
   match: HsMatch | null
   matchRequested: boolean
+}
+
+const hsMessageError = <M extends HsMessage>(
+  message: string
+): HsMessageResponseMap[M['type']] => {
+  return {
+    ok: false,
+    error: { code: 'network', message },
+  } as HsMessageResponseMap[M['type']]
+}
+
+const sendHsViaContentScript = async <M extends HsMessage>(
+  message: M
+): Promise<HsMessageResponseMap[M['type']]> => {
+  try {
+    const response = await contentScriptAPI.send<HsMessageResponseMap[M['type']]>(
+      'sendHsMessage',
+      message,
+      15000
+    )
+    if (!response.ok || !response.data) {
+      return hsMessageError<M>('content script bridge returned no HiredSignal response')
+    }
+    return response.data
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : 'content script bridge failed'
+    return hsMessageError<M>(msg)
+  }
 }
 
 /**
@@ -93,29 +125,15 @@ const extractCvFile = (response: unknown): HsCvFile | null => {
  * adapters fall back to the locally-saved answer.
  */
 const loadHsCv = (materialId: string): Promise<void> => {
-  return new Promise((resolve) => {
-    try {
-      chrome.runtime.sendMessage(
-        { type: 'HS_CV', materialId },
-        (response: unknown) => {
-          if (chrome.runtime.lastError) {
-            resolve()
-            return
-          }
-          const cv = extractCvFile(response)
-          if (cv) {
-            const filename = cv.filename ?? 'hiredsignal-cv.pdf'
-            try {
-              setHsCv(base64ToFile(cv.bytesBase64, filename, cv.contentType))
-            } catch {
-              // Decode failure — leave provider empty, fall back to local.
-            }
-          }
-          resolve()
-        }
-      )
-    } catch {
-      resolve()
+  return sendHsViaContentScript({ type: 'HS_CV', materialId }).then((response) => {
+    const cv = extractCvFile(response)
+    if (cv) {
+      const filename = cv.filename ?? 'hiredsignal-cv.pdf'
+      try {
+        setHsCv(base64ToFile(cv.bytesBase64, filename, cv.contentType))
+      } catch {
+        // Decode failure — leave provider empty, fall back to local.
+      }
     }
   })
 }
@@ -408,7 +426,7 @@ const llmFillCurrentPage = async (): Promise<void> => {
   const jobUid = state.match && state.match.jobUid ? state.match.jobUid : ''
   const { fields, map } = scanFields()
   if (fields.length === 0) return
-  const res = await sendHsMessage({ type: 'HS_FILL', jobUid, fields })
+  const res = await sendHsViaContentScript({ type: 'HS_FILL', jobUid, fields })
   if (!res.ok) return
   for (const ans of res.data.answers) {
     const el = map.get(ans.id)
@@ -458,45 +476,25 @@ const requestMatch = (): void => {
   if (state.matchRequested) return
   state.matchRequested = true
 
-  // The bg service worker is the source of truth for HS_MATCH responses.
-  // We use chrome.runtime.sendMessage exactly once per page load. If the
-  // call fails (e.g. SW not yet ready) we fall back to the 'no-match'
-  // state and let the user re-open the popup.
-  try {
-    chrome.runtime.sendMessage(
-      { type: 'HS_MATCH', url: window.location.href },
-      (response: unknown) => {
-        if (chrome.runtime.lastError) {
-          state.barState = { kind: 'no-match' }
-          render()
-          return
+  // The bg service worker is the source of truth for HS_MATCH responses, but
+  // this script runs in the page world. Route through the content script bridge.
+  void sendHsViaContentScript({ type: 'HS_MATCH', url: window.location.href })
+    .then((response) => {
+      if (response.ok && isHsMatch(response.data)) {
+        state.match = response.data
+        state.barState = {
+          kind: 'matched',
+          label: prettifySlug(response.data.slug),
         }
-        if (
-          response &&
-          typeof response === 'object' &&
-          'ok' in response &&
-          (response as { ok: boolean }).ok === true &&
-          'data' in response
-        ) {
-          const data = (response as { data: unknown }).data
-          if (isHsMatch(data)) {
-            state.match = data
-            state.barState = {
-              kind: 'matched',
-              label: prettifySlug(data.slug),
-            }
-            render()
-            return
-          }
-        }
+      } else {
         state.barState = { kind: 'no-match' }
-        render()
       }
-    )
-  } catch {
-    state.barState = { kind: 'no-match' }
-    render()
-  }
+      render()
+    })
+    .catch(() => {
+      state.barState = { kind: 'no-match' }
+      render()
+    })
 }
 
 export const hsBarSingleton: HsBarSingleton = {
