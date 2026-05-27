@@ -13,6 +13,11 @@ const SUPPORTED_HOST_FRAGMENTS = [
   'myworkdayjobs.com',
   'myworkdaysite.com',
   'greenhouse.io',
+  'lever.co',
+  'ashbyhq.com',
+  'smartrecruiters.com',
+  'workable.com',
+  'icims.com',
 ]
 
 export const isSupportedAtsUrl = (url: string | undefined | null): boolean => {
@@ -47,6 +52,11 @@ export const HsCurrentPageSection: FC<Props> = ({
   onRefresh,
   onOpenForm,
 }) => {
+  const title =
+    match?.slug || [match?.company, match?.role].filter(Boolean).join(' — ')
+  const cvLabel =
+    match?.cvName || (match?.cvMaterialId ? 'Ready' : 'Not found')
+
   return (
     <Box
       component="section"
@@ -68,7 +78,7 @@ export const HsCurrentPageSection: FC<Props> = ({
 
       {!supported ? (
         <Typography variant="body2" sx={{ color: '#475569' }}>
-          Open a Workday or Greenhouse application page to use autofill.
+          Open a supported application page to use autofill.
         </Typography>
       ) : error ? (
         <Stack spacing={1}>
@@ -102,10 +112,10 @@ export const HsCurrentPageSection: FC<Props> = ({
               variant="body2"
               sx={{ color: '#0F172A', fontWeight: 600 }}
             >
-              Matched: {match.company} — {match.role}
+              Matched: {title || 'Tracked job'}
             </Typography>
             <Typography variant="caption" sx={{ color: '#475569' }}>
-              CV: {match.cvName}
+              CV: {cvLabel}
             </Typography>
           </Box>
           <Stack direction="row" spacing={1}>
@@ -114,7 +124,7 @@ export const HsCurrentPageSection: FC<Props> = ({
               variant="contained"
               onClick={onOpenForm}
               endIcon={<OpenInNewIcon />}
-              aria-label={`Open application form for ${match.role} at ${match.company}`}
+              aria-label={`Open application form for ${title || 'tracked job'}`}
             >
               Open form
             </Button>

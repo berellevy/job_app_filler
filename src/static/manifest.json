@@ -57,7 +57,9 @@
     }
   ],
   "permissions": [
+    "activeTab",
     "storage",
+    "tabs",
     "unlimitedStorage"
   ],
   "host_permissions": [

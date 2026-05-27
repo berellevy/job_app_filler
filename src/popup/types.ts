@@ -13,11 +13,16 @@ export interface HsCandidate {
 }
 
 export interface HsJobMatch {
-  company: string
-  role: string
-  cvName: string
-  /** HiredSignal job URL for the matched job. */
-  hsJobUrl?: string
+  jobUid: string
+  slug: string
+  applyUrl: string
+  matchType: 'exact' | 'host+path' | 'host' | null
+  cvMaterialId: string | null
+  candidate?: HsCandidate
+  /** Legacy fields accepted while older background builds age out. */
+  company?: string
+  role?: string
+  cvName?: string
 }
 
 export type HsMessage =

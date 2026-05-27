@@ -42,7 +42,8 @@ export const App: FC = () => {
   const onOpenForm = useCallback(() => {
     if (tab.id === null) return
     try {
-      chrome.tabs.update(tab.id, { active: true })
+      const targetUrl = match.match?.applyUrl || tab.url || undefined
+      chrome.tabs.update(tab.id, { active: true, url: targetUrl })
       chrome.windows.getCurrent({}, (win) => {
         if (typeof win?.id === 'number') {
           chrome.windows.update(win.id, { focused: true })
@@ -52,7 +53,7 @@ export const App: FC = () => {
     } catch {
       window.close()
     }
-  }, [tab.id])
+  }, [match.match?.applyUrl, tab.id, tab.url])
 
   return (
     <ThemeProvider theme={hsTheme}>
