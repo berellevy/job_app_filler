@@ -87,6 +87,7 @@ export const App: FC = () => {
         <Box sx={{ flexGrow: 1 }} />
         <HsFooter
           version={EXTENSION_VERSION}
+          tabId={tab.id}
           tabUrl={tab.url}
           candidate={auth.candidate}
         />

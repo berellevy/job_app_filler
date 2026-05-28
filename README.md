@@ -65,10 +65,15 @@ The PAT never leaves your machine except to talk to `hiredsignal.com`. No analyt
 
 ```bash
 npm start          # webpack --watch, rebuilds dist/ on save
+npm run start:local # watch build with feedback posted to localhost:4002
 npm run build      # one-shot production build
+npm run build:local # production build with feedback posted to localhost:4002
 ```
 
 After `npm start`, reload the unpacked extension in `chrome://extensions` to pick up changes.
+
+For local feedback testing, run the feedback API on `http://localhost:4002`
+and load the extension from `dist/` after `npm run build:local`.
 
 ### Project layout
 

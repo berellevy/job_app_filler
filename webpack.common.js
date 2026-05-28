@@ -7,6 +7,9 @@ const uuid = require('uuid')
 
 const envKeys = {
   'process.env.CONTENT_SCRIPT_URL': `"${uuid.v4()}"`,
+  'process.env.HS_FEEDBACK_API_BASE': JSON.stringify(
+    process.env.HS_FEEDBACK_API_BASE || 'https://feedback-api.hiredsignal.com',
+  ),
 }
 
 module.exports = {

@@ -36,6 +36,8 @@ import {
   AiGenerateAnswerResponse,
   isAiGenerateAnswerRequest,
 } from '@src/shared/utils/ai/types'
+import { isFeedbackSubmitMessage } from '@src/shared/utils/feedback/messages'
+import { submitFeedback } from './feedbackService'
 
 type HsResponseData = HsMatch | HsCandidate | HsCvFile | HsFillResult | HsAuthStatus
 
@@ -109,6 +111,21 @@ chrome.runtime.onMessage.addListener(
           sendResponse(response)
         })
       // Keep the message channel open for the async response.
+      return true
+    }
+
+    // Public feedback collector. Network request is owned by the extension
+    // service worker because Chrome treats content-script cross-origin fetches
+    // as page-origin requests.
+    if (isFeedbackSubmitMessage(raw)) {
+      submitFeedback(raw.payload)
+        .then((response) => sendResponse(response))
+        .catch((error: unknown) => {
+          sendResponse({
+            ok: false,
+            error: getErrorMessage(error),
+          })
+        })
       return true
     }
 

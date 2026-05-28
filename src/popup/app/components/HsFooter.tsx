@@ -7,11 +7,12 @@ import { HsFeedbackDialog } from './HsFeedbackDialog'
 
 interface Props {
   version: string
+  tabId: number | null
   tabUrl: string | null
   candidate: HsCandidate | null
 }
 
-export const HsFooter: FC<Props> = ({ version, tabUrl, candidate }) => {
+export const HsFooter: FC<Props> = ({ version, tabId, tabUrl, candidate }) => {
   const [feedbackOpen, setFeedbackOpen] = useState(false)
 
   return (
@@ -61,6 +62,7 @@ export const HsFooter: FC<Props> = ({ version, tabUrl, candidate }) => {
       <HsFeedbackDialog
         open={feedbackOpen}
         version={version}
+        tabId={tabId}
         tabUrl={tabUrl}
         candidate={candidate}
         onClose={() => setFeedbackOpen(false)}

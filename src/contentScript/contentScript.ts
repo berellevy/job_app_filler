@@ -8,6 +8,8 @@ import { migrateEducation } from './utils/storage/migrateEducationSectionNames'
 import { relayAiAnswer } from './utils/ai/relayAiAnswer'
 import { AiAnswerContext } from '@src/shared/utils/ai/types'
 import { HsMessage, isHsMessage, sendHsMessage } from '@src/shared/utils/hs/messages'
+import { isStartFeedbackPickMessage } from '@src/shared/utils/feedback/messages'
+import { startPageFeedback } from './utils/feedback/pageFeedback'
 
 // Regiser server and methods accessible to injected script.
 const server = new Server(process.env.CONTENT_SCRIPT_URL)
@@ -71,7 +73,20 @@ function injectScript(filePath: string) {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'SHOW_WHATS_NEW') {
     document.dispatchEvent(new CustomEvent(EVENT_LISTENER_ID))
+    sendResponse({ ok: true })
+    return false
   }
+
+  if (isStartFeedbackPickMessage(message)) {
+    startPageFeedback({
+      version: message.version,
+      candidateEmail: message.candidateEmail,
+    })
+    sendResponse({ ok: true })
+    return false
+  }
+
+  return false
 })
 
 const run = async () => {

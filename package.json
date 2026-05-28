@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack --watch --progress --config webpack.dev.js",
+    "start:local": "HS_FEEDBACK_API_BASE=http://localhost:4002 webpack --watch --progress --config webpack.dev.js",
     "build": "webpack --progress --config webpack.prod.js",
+    "build:local": "HS_FEEDBACK_API_BASE=http://localhost:4002 webpack --progress --config webpack.prod.js",
     "release": "node release.js"
   },
   "author": "Michael Tabet",
